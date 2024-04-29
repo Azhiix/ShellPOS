@@ -1,0 +1,377 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+body {
+    background-color: #f3f5f9;
+}
+
+.wrapper {
+    display: flex;
+    position: relative;
+}
+
+    .wrapper .sidebar {
+        width: 200px;
+        height: 100%;
+        background: #4b4276;
+        padding: 30px 0px;
+        position: fixed;
+        overflow: auto;
+    }
+
+        .wrapper .sidebar h2 {
+            color: #fff;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .wrapper .sidebar ul li {
+            padding: 15px;
+            border-bottom: 1px solid #bdb8d7;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+            .wrapper .sidebar ul li a {
+                color: #bdb8d7;
+                display: block;
+            }
+
+                .wrapper .sidebar ul li a .fas {
+                    width: 25px;
+                }
+
+            .wrapper .sidebar ul li:hover {
+                background-color: #594f8d;
+            }
+
+                .wrapper .sidebar ul li:hover a {
+                    color: #fff;
+                }
+
+        .wrapper .sidebar .social_media {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+        }
+
+            .wrapper .sidebar .social_media a {
+                display: block;
+                width: 40px;
+                background: #594f8d;
+                height: 40px;
+                line-height: 45px;
+                text-align: center;
+                margin: 0 5px;
+                color: #bdb8d7;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+            }
+
+    .wrapper .main_content {
+        width: 100%;
+        margin-left: 200px;
+    }
+
+        .wrapper .main_content .header {
+            padding: 20px;
+            background: #fff;
+            color: #717171;
+            border-bottom: 1px solid #e0e4e8;
+        }
+
+        .wrapper .main_content .info {
+            margin: 20px;
+            color: #717171;
+            line-height: 25px;
+        }
+
+            .wrapper .main_content .info div {
+                margin-bottom: 20px;
+            }
+
+#employeeList {
+    padding: 11px;
+    margin-left: 41%;
+}
+
+.date {
+    padding: 11px;
+    margin-left: 41%;
+}
+
+.details {
+    margin-top: 5% !important;
+}
+
+.btnEnter {
+    margin-left: 46% !important;
+}
+
+.logos {
+    width: 13%;
+    margin-left: 43%;
+}
+
+#attDetails {
+    visibility: hidden;
+}
+
+#showSliderBtn {
+    cursor:pointer;
+    display:none;
+    padding-top:10px;
+    background-color: beige;
+    float: right;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    border-radius: 13px;
+    height: 44px;
+    width: 84px;
+    z-index: 4;
+}
+
+.holiday {
+    background-color: yellow;
+}
+
+.savebtn {
+    margin-left: 47%;
+}
+
+#fixedDivDetails {
+    background-color: beige;
+    float: right;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    border-radius: 30px;
+    padding-left: 15px;
+    z-index: 5;
+}
+
+#payslipBtns {
+}
+
+#absenceApproval {
+    height: 23px;
+}
+
+
+.tickValidate {
+    color: green;
+    cursor: pointer;
+}
+
+#absenceBlock {
+    display: flex;
+    height: 42px;
+}
+
+.centerContent {
+    text-align: center;
+    margin-top: 141px;
+}
+
+
+.ck-button {
+    margin: 4px;
+    width: 145px;
+    height: 76px;
+    background-color: #EFEFEF;
+    border-radius: 4px;
+    border: 1px solid #D0D0D0;
+    overflow: hidden;
+    float: left;
+    cursor: pointer;
+}
+
+    .ck-button label {
+        float: left;
+        width: 4.0em;
+    }
+
+        .ck-button label span {
+            text-align: center;
+            display: inline-grid;
+            height: 100px;
+            width: 145px;
+            cursor: pointer;
+        }
+
+        .ck-button label input {
+            position: absolute;
+            top: -50px;
+            cursor: pointer;
+        }
+
+    .ck-button input:checked + span {
+        background-color: #4b4276;
+        color: #fff;
+        height: 76px;
+        width: 145px;
+        cursor: pointer;
+    }
+
+#ck-button input:hover + span {
+    background-color: #191;
+    color: #fff;
+}
+
+.employeeListCommonAbsence {
+    margin-left: 50px !important;
+}
+
+.getEmpBtn {
+    position: relative;
+    margin-top: 128px;
+    margin-left: -14px;
+}
+
+#idapprovedTbxOT {
+    display: none;
+}
+
+.toggle {
+    background-color: paleturquoise;
+    margin-right: -140px;
+}
+
+#EmpName, #empHireDate {
+    text-align: center;
+}
+
+.prevbtn {
+    float: left;
+    color: blueviolet;
+    cursor: pointer;
+}
+
+.nextbtn {
+    float: right;
+    color: blueviolet;
+    cursor: pointer;
+}
+
+#table_id {
+    text-align-last: center;
+}
+
+.tblData {
+    width: 115%;
+}
+
+.btnPayroll {
+}
+
+#removeMargins {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#compAddress {
+    text-align: center;
+}
+
+
+#payslipWord {
+    font-size: 20px;
+}
+
+#payslipMonthDetails {
+    text-align: center;
+    background-color: bisque;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+}
+
+#empNameDetails {
+    display: grid;
+    grid-template-columns: 25% 25%;
+}
+
+hr {
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    border: 0;
+    border-top: 1px solid #4285f461;
+}
+
+#idNetSalaryText, #idNetSalary, #idTotalDeductions, #idDeductions, #idGrossSalaryText, #idGrossSalary {
+    font-weight: bold;
+}
+
+.clsDeductBtn1 {
+    color: red;
+}
+
+.clsDeductBtn2 {
+    color: red;
+}
+
+.clsDeductBtn3 {
+    color: red;
+}
+
+.clsAddBtn1 {
+    color: green;
+}
+
+.clsAddBtn2 {
+    color: green;
+}
+
+.adminSalText {
+    cursor: pointer;
+}
+
+#adminMonth {
+    padding: 7px;
+    margin-left: 5%;
+}
+
+#adminYear {
+    margin-top: 1%;
+    padding: 7px;
+    margin-left: 8%;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #4b4276;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #88B;
+    border-radius: 100px;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #88A;
+    }
+
+.fa-edit {
+    color: #4b4276;
+}

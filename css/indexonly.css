@@ -1,0 +1,340 @@
+﻿
+/*
+    Below is CSS for the admin payslip button
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:900i');
+
+.adminSalTxt {
+    margin-top: 2%;
+    max-width: 265px;
+}
+
+.cta {
+    display: flex;
+    padding: 1px 22px;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    color: white;
+    background: #6225E6;
+    transition: 1s;
+    box-shadow: 6px 6px 0 black;
+    transform: skewX(-15deg);
+}
+
+    .cta:focus {
+        outline: none;
+    }
+
+    .cta:hover {
+        transition: 0.5s;
+        box-shadow: 10px 10px 0 #FBC638;
+    }
+
+    .cta span:nth-child(2) {
+        transition: 0.5s;
+        margin-right: 0px;
+    }
+
+    .cta:hover span:nth-child(2) {
+        transition: 0.5s;
+        margin-right: 45px;
+    }
+
+/**************SVG****************/
+
+path.one {
+    transition: 0.4s;
+    transform: translateX(-60%);
+}
+
+path.two {
+    transition: 0.5s;
+    transform: translateX(-30%);
+}
+
+.cta:hover path.three {
+    animation: color_anim 1s infinite 0.2s;
+}
+
+.cta:hover path.one {
+    transform: translateX(0%);
+    animation: color_anim 1s infinite 0.6s;
+}
+
+.cta:hover path.two {
+    transform: translateX(0%);
+    animation: color_anim 1s infinite 0.4s;
+}
+
+#arrowAdmin {
+    margin-bottom: 10px;
+}
+
+#adminText {
+    margin-top: 7px;
+}
+/* SVG animations */
+@keyframes color_anim {
+    0% {
+        fill: white;
+    }
+
+    50% {
+        fill: #FBC638;
+    }
+
+    100% {
+        fill: white;
+    }
+}
+
+*, :after, :before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+}
+
+._jw-tpk-container {
+    position: fixed;
+    width: 250px;
+    height: 140px;
+    padding: 0;
+    background: #fff;
+    font-family: inherit;
+    font-weight: 400;
+    overflow: hidden;
+    border-radius: 3px;
+    box-sizing: border-box;
+    max-width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1rem;
+    font-size: 1rem;
+    height: 183px;
+}
+
+    ._jw-tpk-container:after {
+        content: " ";
+        display: block;
+        clear: both
+    }
+
+    ._jw-tpk-container *, ._jw-tpk-container :after, ._jw-tpk-container :before {
+        box-sizing: border-box
+    }
+
+    ._jw-tpk-container *, ._jw-tpk-container .active, ._jw-tpk-container :focus, ._jw-tpk-container :hover {
+        text-decoration: none;
+        outline: none
+    }
+
+    ._jw-tpk-container._jw-tpk-dragging {
+        opacity: .85 !important
+    }
+
+        ._jw-tpk-container._jw-tpk-dragging ._jw-tpk-header {
+            cursor: -webkit-grabbing;
+            cursor: grabbing
+        }
+
+    ._jw-tpk-container ol {
+        text-align: center;
+        list-style-type: none
+    }
+
+        ._jw-tpk-container ol > li {
+            display: inline-block
+        }
+
+            ._jw-tpk-container ol > li > a {
+                display: inline-block;
+                padding: 3px 0;
+                width: 25px;
+                color: inherit;
+                border-radius: 3px;
+                border: 1px solid transparent;
+                font-size: .875rem
+            }
+
+                ._jw-tpk-container ol > li > a:not(._jw-tpk-selected):hover {
+                    cursor: pointer;
+                    border: 1px solid #ccc;
+                    border-right: 1px solid #aaa;
+                    border-bottom: 1px solid #aaa;
+                    background: #f5f5f5;
+                    background: -webkit-linear-gradient(#e6e6e6,#f5f5f5);
+                    background: linear-gradient(#e6e6e6,#f5f5f5);
+                    box-shadow: 0 2px 3px hsla(0,0%,86%,.8)
+                }
+
+._jw-tpk-header {
+    position: relative;
+    font-weight: 600;
+    text-align: center;
+    cursor: -webkit-grab;
+    cursor: grab;
+    line-height: 1.875rem
+}
+
+    ._jw-tpk-header:after, ._jw-tpk-header:before {
+        content: "";
+        display: table
+    }
+
+    ._jw-tpk-header:after {
+        clear: both
+    }
+
+._jw-tpk-body {
+    padding: 2px 0
+}
+
+    ._jw-tpk-body:after, ._jw-tpk-body:before {
+        content: "";
+        display: table
+    }
+
+    ._jw-tpk-body:after {
+        clear: both
+    }
+
+._jw-tpk-hour {
+    width: 64.49275%;
+    float: left;
+    margin-right: 1.44928%
+}
+
+._jw-tpk-minute {
+    width: 34.05797%;
+    float: right;
+    margin-right: 0
+}
+
+._jw-tpk-dark {
+    color: #212121;
+    box-shadow: inset 0 0 0 1px #212121
+}
+
+    ._jw-tpk-dark ._jw-tpk-header, ._jw-tpk-dark ol > li > a._jw-tpk-selected {
+        color: #f5f5f5;
+        background: -webkit-linear-gradient(#212121,#545454);
+        background: linear-gradient(#212121,#545454)
+    }
+
+._jw-tpk-blue-grey {
+    color: #263238;
+    box-shadow: inset 0 0 0 1px #263238
+}
+
+    ._jw-tpk-blue-grey ._jw-tpk-header, ._jw-tpk-blue-grey ol > li > a._jw-tpk-selected {
+        color: #cfd8dc;
+        background: -webkit-linear-gradient(#263238,#4f6875);
+        background: linear-gradient(#263238,#4f6875)
+    }
+
+@media screen and (min-width:1280px) and (max-width:1590px){
+    #toRemoveOnSmallScreens, #toRemoveOnSmallScreens2 {
+        max-width: 8.333% !important;
+    }
+
+    .CssTableFullContent {
+        max-width: 83.333% !important;
+    }
+
+    table.dataTable tbody th, table.dataTable tbody td {
+        padding: 8px 7px;
+    }
+}
+
+@media screen and (min-width:1px) and (max-width:1279px) {
+    #toRemoveOnSmallScreens, #toRemoveOnSmallScreens2 {
+        max-width: 0% !important;
+    }
+
+    .CssTableFullContent {
+        width: 100% !important;
+        margin-left: 15px;
+    }
+}
+@media only screen and (min-width: 1591px) {
+    #toRemoveOnSmallScreens, #toRemoveOnSmallScreens2 {
+        max-width: 16.667% !important;
+    }
+
+    .CssTableFullContent {
+        width: 66.667% !important;
+    }
+}
+
+.row{
+    margin-left:0px;
+    margin-right:0px;
+}
+
+.cssBtnSlider {
+    color:green;
+    cursor:pointer;
+}
+
+
+.attBonusDeduct {
+    position: relative;
+    display: inline-block;
+}
+
+    .attBonusDeduct .tooltiptext {
+        visibility: hidden;
+        width: 188px;
+        border: 0;
+        background-color: darkgray;
+        color: #fff;
+        text-align: center;
+        border-radius: 15px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 100%;
+        left: 25%;
+        margin-left: -60px;
+        transition: opacity 1s;
+    }
+
+    .attBonusDeduct:hover .tooltiptext {
+        visibility: visible;
+        display: inline;
+        opacity: 1;
+    }
+            /**/
+.cssDisplayInline{
+    display:inline-block;
+}
+
+
+
+label.check {
+    cursor: pointer;
+}
+
+    label.check input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    label.check div {
+        padding: 1px 3px;
+        border: 2px solid #ff3333;
+        display: inline-block;
+        color: #ff3333;
+        border-radius: 3px;
+    }
+
+    label.check input:checked + div {
+        border-color: #ff3333;
+        background-color: #ff3333;
+        color: #fff;
+    }

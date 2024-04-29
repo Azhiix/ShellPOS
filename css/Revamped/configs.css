@@ -1,0 +1,470 @@
+﻿.img-fluid {
+    max-width: 120px; /* Adjust as needed */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.settingsBtns {
+    margin-top: 15vh;
+}
+
+.workShifts, .hierarchyManagement {
+    margin-top: 15vh;
+}
+
+.CreateModifyTemplateBtn {
+    margin-top: 5vh;
+}
+
+.companyDetails {
+    margin-top: 10vh;
+    display: none;
+}
+
+.documentsContainer {
+    display: none;
+}
+
+.cssActualLogo {
+    position: relative; /* Set the button to a relative position */
+    height: 100%; /* Take full height of the container */
+    display: flex;
+    align-items: center; /* Vertically center the image */
+    justify-content: center; /* Horizontally center the image */
+}
+
+    .cssActualLogo span {
+        position: absolute; /* Position the label absolutely */
+        bottom: 0; /* Place it at the bottom */
+        left: 50%; /* Center it horizontally */
+        transform: translateX(-50%); /* Adjust for perfect centering */
+        width: 100%; /* Take full width */
+        text-align: center; /* Center the text */
+    }
+
+.icon-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; /* This will vertically center the content */
+    height: 100%; /* or set a specific height if needed */
+}
+
+.empConfig {
+    display:none;
+    margin-top: 10vh !important;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    transform-origin: top;
+}
+
+    /* Minimized state of empConfig */
+    .empConfig.minimized {
+        transform: scaleY(0);
+        opacity: 0;
+        height: 0; /* Optional: if you want to remove the space taken by empConfig */
+    }
+
+.empDetailsSection {
+    display: none;
+    transition: opacity 0.5s ease;
+}
+
+    /* Visible state of the empDetailsSection */
+    .empDetailsSection.visible {
+        display: block;
+        opacity: 1;
+    }
+
+.changeEmployeeBtn {
+    display: block;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    margin-top: 100px;
+    width: 100%;
+}
+
+    .changeEmployeeBtn.visible {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+.addSalaryItemBtn {
+    margin-top: 12px;
+}
+
+button.btn.btn-sm.btn-flex.btn-light.btn-outline-success.fw-bolder.addSalaryItemBtn:hover {
+    background-color: #07b507 !important;
+    color: #fff;
+    border-color: #07b507;
+}
+
+/* Base card style */
+.cadre2 {
+    background-color: #fafafa; /* Light grey background */
+    border: 1px solid #eaeaea; /* Light grey border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    display: flex;
+    align-items: center;
+    border-radius: .625rem;
+    padding: 1rem;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    position: relative;
+    max-width: 350px; /* Or any other width you prefer */
+    width: 100%; /* This will ensure it's responsive and doesn't exceed the max-width */
+    margin-left: auto; /* Center the card */
+    margin-right: auto; /* Center the card */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transition for shadow and transform */
+
+}
+
+.cadre2 .icon-size {
+    width: 76px; /* Match the width of your company logo */
+    height: 76px; /* Match the height of your company logo */
+    display: flex; /* To center the content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    font-size: 3rem; /* Adjust the font size of FontAwesome icons as needed */
+    color: #d1d1d1; /* Common color for all icons */
+    justify-content: center; /* Center the icon horizontally in its container */
+    align-items: center; /* Center the icon vertically in its container */
+    margin-right: 1rem; /* Add some right margin to the icon */
+}
+
+.cadre2 .company-icon-size {
+    max-width: 76px; /* Match the width of your company logo */
+    max-height: 76px; /* Match the height of your company logo */
+    display: flex; /* To center the content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    font-size: 3rem; /* Adjust the font size of FontAwesome icons as needed */
+    color: #d1d1d1; /* Common color for all icons */
+    justify-content: center; /* Center the icon horizontally in its container */
+    align-items: center; /* Center the icon vertically in its container */
+    margin-right: 1rem; /* Add some right margin to the icon */
+}
+
+.cadre2:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
+    transform: translateY(-2px); /* Lift the card up a bit */
+    text-decoration: none; /* Ensures text isn't underlined on hover */
+}
+
+/* Section within the card */
+.cadre2__section {
+    justify-content: start;
+    flex-grow: 1;
+}
+
+
+/* Image style */
+.cadre2 img {
+    border-radius: .625rem 0 0 .625rem;
+}
+
+
+/* Chevron icon style with a circle */
+.btn-rond-nivo2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px; /* Circle size */
+    height: 32px; /* Circle size */
+    border-radius: 50%; /* Make it round */
+    background-color: #fff; /* Circle color */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Optional: add a shadow */
+    margin-left: auto; /* Align to the right */
+    margin-right: 0.5rem; /* Spacing to the right */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.btn-rond-nivo2:hover {
+    background-color: #eaeaea; /* Light grey background on hover */
+}
+
+/* Bootstrap icon within the circle */
+.btn-rond-nivo2 .bi-chevron-right {
+    font-size: 1.5rem; /* Chevron size */
+    color: #CCCCCC; /* Chevron color */
+}
+
+@media (max-width: 768px) {
+    .cadre2 {
+        /* Adjust padding and font sizes for mobile if needed */
+    }
+
+}
+
+.switch-container {
+    display: flex;
+    align-items: center; /* Aligns items vertically in the center */
+    margin-bottom: 15px; /* Space between switch rows */
+}
+
+.switch {
+    position: relative;
+    display: inline-block; /* Keep the switch element inline-block */
+    width: 60px;
+    height: 34px;
+    margin-right: 10px; /* Space between the switch and the label text */
+}
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+/* For better alignment, adjust the line-height to the height of your switches */
+.switch-label {
+    line-height: 34px;
+    user-select: none; /* Prevents text selection when clicking the label */
+}
+
+.custom-table-container {
+    max-width: 650px; /* Adjust the width as needed */
+    margin: auto;
+    padding: 2rem;
+    display: none;
+    background-color: #f8f9fa; /* Light gray background color */
+    border: 1px solid #dee2e6;
+    border-radius: 0.75rem; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Additional styles for select2 to match the Bootstrap look */
+.select2-container--default .select2-selection--single {
+    max-width: 650px;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem 1.75rem .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.select2-wrapper {
+    max-width: 650px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Custom styles for select2 */
+.select2-container .select2-selection--single {
+    height: 50px; /* Increase height */
+    border: 2px solid #ced4da; /* Thicker border */
+    border-radius: 25px; /* Rounded borders */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 48px; /* Center the text vertically */
+    padding-left: 20px; /* Padding on the left */
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 46px; /* Arrow height to fill the select height */
+    right: 20px; /* Positioning the arrow to the right */
+}
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        border-color: #888 transparent transparent transparent; /* Custom arrow color */
+        border-style: solid;
+        border-width: 8px 8px 0 8px; /* Custom arrow size */
+        height: 0;
+        left: 50%;
+        margin-left: -8px;
+        margin-top: -2px;
+        position: absolute;
+        top: 50%;
+        width: 0;
+    }
+.custom-table th, .custom-table td {
+    border: none !important;
+}
+
+.custom-table th {
+    width: 30%; /* Adjust the label width as you see fit */
+}
+
+.custom-table td {
+    width: 70%; /* Adjust the input field width as you see fit */
+}
+
+.custom-table input {
+    border-radius: 0.25rem;
+}
+
+.custom-table-row {
+    border-bottom: 1px solid #dee2e6;
+}
+
+    .custom-table-row:last-child {
+        border-bottom: none;
+    }
+
+.branch-panel-container {
+    max-width: 650px; /* Match the width of the custom-table-container */
+    margin: auto;
+}
+
+/* More specific selectors to override Bootstrap styles */
+.btn-group .btn-outline-primary {
+    color: #6c757d !important; /* Grey font color */
+    background-color: #f8f9fa !important; /* Light grey background */
+    border-color: #6c757d !important; /* Grey border */
+}
+
+    .btn-group .btn-outline-primary:hover {
+        color: #ffffff !important; /* White font color for hover */
+        background-color: #6c757d !important; /* Grey background on hover */
+    }
+
+    .btn-group .btn-outline-primary.active,
+    .btn-group .btn-outline-primary:active,
+    .btn-group .btn-check:checked + .btn-outline-primary {
+        color: #ffffff !important; /* White font color for active state */
+        background-color: #6c757d !important; /* Grey background for active state */
+        border-color: #6c757d !important; /* Grey border for active state */
+    }
+
+    /* Adjust this as needed for the focused button state */
+    .btn-group .btn-outline-primary:focus {
+        box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.5) !important; /* Grey shadow */
+    }
+
+.advlabel + .form-check {
+    display: flex;
+    align-items: center;
+}
+
+.custom-table-container {
+    margin-top: 10vh;
+}
+
+
+.side-by-side {
+    display: flex; /* Use flexbox to align child divs side by side */
+    margin-bottom: 20px; /* Add margin for spacing between sections and button */
+}
+
+.employee-section, .employer-section {
+    flex: 1; /* Each side takes up half the width of the container */
+    padding: 10px; /* Add some padding for better spacing */
+    /* Add additional styling as needed */
+    text-align: center;
+    border: 1px solid #dee2e6;
+    border-radius: 0.75rem; /* Rounded corners */
+}
+
+.center-container {
+    text-align: center; /* Center-align the button */
+    width: 100%; /* Take full width to break out of flex layout if needed */
+
+}
+
+.custom-tax-container {
+    min-width: 20vw; /* Adjust the width as needed */
+    margin: auto;
+    padding: 2rem;
+    background-color: #f8f9fa; /* Light gray background color */
+    border: 1px solid #dee2e6;
+    border-radius: 0.75rem; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.taxesDetails {
+    margin-top: 10vh;
+    display:none;
+}
+
+#lowerBoundEmployer, #upperBoundEmployer, #salaryCapEmployer {
+    width: 50%; /* Set the width to half of the container width */
+    margin: 0 auto; /* Center the input fields */
+}
+
+.disabled-input {
+    background-color: #e9ecef; /* Grayed out color if disabled */
+}
+
+.templateContainer{
+    display:none;
+}
+
+.employee-btn {
+    margin: 0.5rem; /* Adjust margin for spacing */
+    border-radius: 4px !important;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    height: 50px; /* Fixed height with optional !important */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+    .employee-btn:hover {
+        background: #fbc16a;
+    }
+
+    .employee-btn.selected {
+        background-color: #fbc16a; /* Change color when selected */
+        color: #333; /* Optional: Change text color when selected */
+    }

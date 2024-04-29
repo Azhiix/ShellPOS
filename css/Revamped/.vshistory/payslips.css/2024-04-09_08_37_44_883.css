@@ -1,0 +1,60 @@
+﻿.col-1 {
+    width: 11.1%;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-weight: 600;
+    padding-top: 10px;
+}
+
+.form-check.form-check-custom {
+    padding-left: 30%;
+}
+
+.btn-selected {
+    background-color: #50cd8929; /* Bootstrap success color */
+    color: white;
+}
+
+.searchEmployee {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px !important;
+}
+
+#payslipMonthDetails {
+    text-align: center;
+    background-color: bisque;
+}
+
+hr {
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    border: 0;
+    border-top: 1px solid #4285f461;
+}
+
+@media only screen and (max-width: 912px) {
+    .row {
+        padding: 0 !important;
+    }
+}
+
+.customLogoSize {
+    height: 150px !important;
+    margin-bottom: -30px;
+    margin-top: -30px;
+}
+
+.newpayslip {
+    page-break-before: always;
+}
+
+.heightMaxCustom{
+height: 845px;
+}

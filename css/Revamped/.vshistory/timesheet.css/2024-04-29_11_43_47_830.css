@@ -1,0 +1,257 @@
+﻿
+.stat-row {
+    display: flex;
+    justify-content: center; /* This will center the items */
+    align-items: center;
+    flex-wrap: nowrap; /* Prevents wrapping, ensuring all items are on one line */
+    width: auto; /* Adjust the width to fit the content or set to 100% to span the full width */
+    /* If .stat-row has padding or borders, include this property */
+    box-sizing: border-box;
+}
+
+
+.stat-circle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80px; /* Adjust to match the desired size */
+    height: 80px; /* Keep it equal to width for a circle shape */
+    border-radius: 50%;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: white;
+    font-size: 16px; /* Adjust based on your preference */
+    margin: 0 20px; /* Adjust horizontal spacing between circles */
+    /* The vertical margin is removed to allow for tighter packing */
+}
+
+.number {
+    font-size: 20px; /* Large number font size */
+    font-weight: bold; /* Bold font for the number */
+    line-height: 1; /* Adjust line height for better alignment */
+}
+
+.text {
+    font-size: 10px; /* Smaller text font size */
+    line-height: 1; /* Adjust line height for better alignment */
+}
+
+/* Colours for each circle based on class */
+.red {
+    background-color: rgb(227, 46, 46);
+}
+
+.gray {
+    background-color: rgb(63, 63, 63);
+}
+
+.green {
+    background-color: rgb(16, 131, 6);
+}
+
+.blue {
+    background-color: #009EF7;
+}
+
+
+
+/*The below CSS is for the table structure only*/
+body {
+    background: #f7f7f7;
+}
+
+.time-table {
+    width: 100%;
+    border-collapse: separate; /* Updated for border-radius compatibility */
+    border-spacing: 0;
+    margin: 20px 0;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; /* Rounded corners for the table */
+    overflow: hidden; /* Ensures the content does not overflow the rounded corners */
+}
+
+    .time-table th {
+        background-color: #ff8c00; /* Orange color */
+        color: white;
+        padding: 10px 15px;
+        text-align: left;
+        border: none;
+        font-size: 12px;
+        display:none;
+    }
+
+        .time-table th:first-child {
+            border-top-left-radius: 10px; /* Rounded corner for the first header cell */
+        }
+
+        .time-table th:last-child {
+            border-top-right-radius: 10px; /* Rounded corner for the last header cell */
+        }
+    /* Add styles for td if necessary */
+    .time-table td {
+        padding: 6px 20px;
+        border: 1px solid #ddd;
+    }
+
+
+/*Now we begin the css for the punch time table*/
+
+.punch-table {
+    width: 100%;
+    border-collapse: separate; /* Updated for border-radius compatibility */
+    border-spacing: 0;
+    margin: 20px 0;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; /* Rounded corners for the table */
+    overflow: hidden; /* Ensures the content does not overflow the rounded corners */
+}
+
+    .punch-table th {
+        background-color: #ff8c00; /* Orange color */
+        color: white;
+        padding: 10px 15px;
+        text-align: left;
+        border: none;
+        font-size: 12px;
+    }
+
+        .punch-table th:first-child {
+            border-top-left-radius: 10px; /* Rounded corner for the first header cell */
+        }
+
+        .punch-table th:last-child {
+            border-top-right-radius: 10px; /* Rounded corner for the last header cell */
+        }
+    /* Add styles for td if necessary */
+    .punch-table td {
+        padding: 10px 15px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+.form-control {
+    text-align: center;
+    padding: 0.4rem 0rem !important;
+}
+
+#exportToExcel{
+    cursor:pointer;
+    font-size:35px;
+}
+
+.employeenamwhite {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.symbol {
+    display: flex;
+    align-items: center;
+}
+
+#empNameTimesheet {
+    font-weight: strong;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px; /* Adjust the max-width according to your layout */
+}
+
+#empPositionTimesheet {
+    margin-left: 10px; /* Adjust spacing as needed */
+    white-space: nowrap;
+}
+
+.vlwhite {
+    display: inline-block;
+    border-left: 1px solid #fff;
+    margin: 0 10px;
+    height: 20px; /* Adjust the height to match the line height of your name and title */
+}
+
+.empDateInf {
+    display: inline-block;
+    padding-left: 10px; /* Adjust spacing as needed */
+}
+
+#commentsSection{
+    text-align:left !important;
+}
+
+
+@media (max-width: 768px) {
+    .content.flex-column {
+        flex-direction: row; /* Change to row if you want items side by side */
+        width: 100%;
+    }
+
+        .content.flex-column > * {
+            flex: 0 0 100%; /* Forces each child to take full width */
+        }
+}
+
+/* Custom CSS for modal header */
+#leavesModal .modal-header {
+    background-color: #ff9900; /* Orange background for the header */
+}
+
+/* Custom CSS for close button */
+#leavesModal .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%); /* Ensures the 'X' is white */
+}
+
+    /* Custom CSS for close button hover effect */
+    #leavesModal .btn-close:hover {
+        opacity: 0.9; /* Slightly transparent on hover for better UI */
+    }
+
+
+.btn-custom-border {
+    color: #ff9900;
+    border: 2px solid #ff9900;
+}
+
+.select2-hidden-accessible{
+    position:inherit !important;
+}
+
+/*.time-table th, .time-table td {
+    padding: 8px;*/ /* Smaller padding */
+/*}*/
+
+.hidden-column-default {
+    display: none;
+}
+
+
+/*Google maps icons*/
+#mapIcon {
+    cursor: pointer;
+    display: inline-block;
+}
+
+#mapTooltip {
+    display: none;
+    position: absolute;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for better visibility */
+    width: 400px;
+    height: 300px;
+    z-index: 1000;
+    border: 1px solid #888; /* Optional: adds a border around the map */
+}
+
+#locationDetails {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    position: absolute;
+    top: 300px;
+    width: 400px;
+    text-align: center;
+    display: none; /* Initially hidden */
+}
+.map-container {
+    transition: height 0.2s ease; /* Smooth transition for expanding and collapsing */
+}

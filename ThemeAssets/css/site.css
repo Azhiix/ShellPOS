@@ -1,0 +1,776 @@
+﻿/* Custom styles for your pages */
+/*#kt_wrapper{
+    padding-top:4%;
+}*/
+
+body{
+    background-color: #ffffff !important;
+}
+
+.kt_postauth{
+    margin-top: 100px !important;
+}
+
+@media only screen and (max-width: 912px) {
+
+    #kt_toolbar {
+        margin-bottom: 0px !important;
+        z-index: 6 !important;
+    }
+
+    #kt_content_container {
+        text-align: center !important;
+        align-content: center !important;
+        padding: 5px !important;
+    }
+
+    #kt_header_menu_mobile_toggle{
+        display: none !important;
+    }
+    .datetimeInfo{
+        display: none !important;
+    }
+
+    .col-6{
+        width: 100% !important;
+    }
+    .col-2 {
+        float: none !important;
+        display: inline;
+        text-align: center !important;
+        align-content: center !important;
+        padding: 5px !important;
+    }
+
+    .row{
+        padding: 5px !important;
+    }
+    .col-2 a{
+        padding: 5px !important;
+    }
+
+    .col-md-2{
+        padding: 5px !important;
+        text-align: center !important;
+        align-content: center !important;
+    }
+    .col-md-3{
+      padding: 5px !important;
+      text-align: center !important;
+      align-content: center;
+    }
+
+    .col-md-4{
+        padding: 5px !important;
+      }
+
+    .post{
+        margin-top: 0% !important;
+    }
+
+}
+
+@media only screen and (max-height: 1060px) {
+    body {
+        background-size: unset;
+    }
+}
+
+.cd-midtppx{
+    padding-top: 10px !important;
+}
+
+.cd-mid{
+    padding: 10% !important;
+}
+
+.hinfo{
+    color:#faad39 !important;
+}
+
+
+.rnd20{
+    border-radius: 20px !important;
+    background-color: #ebe9e9 !important
+}
+
+.empsearchbtn{
+margin-top: 40px;
+}
+.empbtn{
+   background-color:#f05b2b !important;
+}
+
+.select2-container .select2-selection {
+    border-radius: 4rem;
+  }
+
+#select2-9yv0-container{
+margin-left: 50%;
+}
+
+.navsrch{
+    border-radius: 4rem;
+}
+
+.searchinpt{
+    margin: 0 !important;
+}
+
+.prg512{
+    padding: 5px !important;
+    padding-left: 6% !important;
+    padding-right: 12% !important;
+    background-color: #FFFFFF !important;
+}
+.svgcolorg{
+    color:#07b507 !important;
+}
+.card-pad{
+    padding: 2rem 1.25rem !important;
+}
+
+.hd-info{
+    /* padding-left: 8%; */
+    padding-left: 9.5%;
+    padding-right: 22%;
+    margin-top: 15px !important;
+    z-index: 9;
+    position: fixed;
+    width: 100%;
+}
+.hdcd{
+margin-top: 45px;
+max-width: 300px;
+min-height: 115px;
+min-width: 148px;
+max-height: 115px;
+
+border: #abb9c7 !important;
+border-width: 1px !important;
+border-style: solid !important;
+
+}
+
+#kt_post{
+    margin-top: 230px !important;
+}
+
+
+.kt_postauth_reports{
+    margin-top: 50px !important;
+}
+
+
+.over-t{
+    --bs-bg-opacity: 1;
+    background-color: purple !important;
+}
+
+.over-t-ts{
+    --bs-bg-opacity: 1;
+    background-color: rgb(16, 131, 6) !important;
+}
+
+
+.cd-lateness{
+    --bs-bg-opacity: 1;
+    background-color: rgb(230, 175, 230) !important;
+}
+
+.cd-lateness-ts{
+    --bs-bg-opacity: 1;
+    background-color: rgb(63, 63, 63) !important;
+}
+
+.cd-abs{
+    --bs-bg-opacity: 1;
+    background-color: rgb(227, 46, 46) !important;
+}
+
+.cd-locallv{
+    background-color: rgb(243, 177, 62) !important;
+}
+
+.cd-sick{
+    background-color: rgb(234, 133, 26) !important;
+}
+
+
+.cd-emptotalatt{
+   height: 200px !important;
+    background-color: rgb(98, 98, 98) !important;
+}
+
+.cd-presenceatt{
+    height: 200px !important;
+    background-color: rgb(62, 110, 213) !important;
+}
+
+.cd-latenessatt{
+    height: 200px !important;
+    background-color: rgb(227, 46, 46) !important;
+}
+
+.cd-sickapprovedatt{
+    height: 200px !important;
+    background-color: rgb(234, 133, 26) !important;
+}
+
+/* Custom circular progress for attendance statistics page */
+/* check for more documentation about this plugin on https://github.com/tigrr/circle-progress*/
+.circle-progress-value {
+    stroke-width: 6px;
+    stroke: hsl(0deg 0% 100%);
+}
+
+
+.progressLocalLeaves {
+    font-size: 50px !important;
+}
+
+.progressSickLeaves {
+    font-size: 50px !important;
+}
+
+.progressLocalLeaves .circle-progress-circle {
+    stroke-width: 6px;
+    stroke: hsl(0deg 0% 0% / 40%);
+    font-size: 50px !important;
+}
+
+
+.progressSickLeaves .circle-progress-circle {
+    stroke-width: 6px;
+    stroke: hsl(0deg 0% 0% / 40%);
+    font-size: 50px !important;
+}
+
+.progressLateness .circle-progress-circle {
+    stroke-width: 6px;
+    stroke: hsl(0deg 0% 0% / 40%);
+}
+
+.progressPresence .circle-progress-circle {
+    stroke-width: 6px;
+    stroke: hsl(0deg 0% 0% / 40%);
+}
+
+.circle-progress-text {
+    fill: hsl(0deg 0% 100%);
+}
+
+/* Search Button Styling */
+.searchAttendanceBtn {
+    width: 100%;
+}
+
+/* Search Card Styling */
+.datesearchattendance {
+    padding: 5px;
+    background-color: white;
+}
+
+/*Modifying the z-index of toolbar so Datepicker does not appear behind*/
+.toolbar{
+    z-index:900;
+}
+/* Custom styles for your pages */
+
+.lp-30 {
+    padding-left:30% !important;
+}
+
+/* Custom circular progress for attendance statistics page */
+/* check for more documentation about this plugin on https://github.com/tigrr/circle-progress*/
+.circle-progress-value {
+    stroke-width: 6px;
+    stroke: hsl(0deg 0% 100%);
+}
+
+.progressAbsence .circle-progress-circle {
+    stroke-width: 6px;
+    stroke: hsl(0deg 0% 0% / 40%);
+}
+
+.progressLateness .circle-progress-circle {
+    stroke-width: 6px;
+    stroke: hsl(0deg 0% 0% / 40%);
+}
+
+.progressPresence .circle-progress-circle {
+    stroke-width: 6px;
+    stroke: hsl(0deg 0% 0% / 40%);
+}
+
+.circle-progress-text {
+    fill: hsl(0deg 0% 100%);
+}
+
+/* Search Button Styling */
+.searchAttendanceBtn {
+    width: 100%;
+}
+
+/* Search Card Styling */
+.datesearchattendance {
+    padding: 5px;
+    background-color: white;
+}
+
+
+/*Modifying the z-index of header so Datepicker does not appear behind*/
+#kt_header {
+    z-index: 10;
+}
+#kt_toolbar {
+    min-height: 100px;
+    background-color: #faad39;
+    background-image: url(../dist/assets/media/illustrations/header.jpeg);
+    background-size: cover;
+    height: 10vh;
+    border-bottom-left-radius: 20px;
+    z-index: 9;
+}
+.datepicker {
+    z-index: 999;
+}
+.datesearchattendance{
+    margin-bottom:2%;
+    border-radius:5px;
+    align-content:center;
+}
+.rowdtselect{
+    align-items:center;
+}
+
+.timetoolbar{
+    color:white;
+}
+
+    .timetoolbar h4 {
+        color: white;
+        text-align:center;
+    }
+
+.py-toolbar {
+    padding-top: 1.25rem !important;
+    padding-bottom: 0.25rem !important;
+}
+
+.py-userinfo {
+    padding-top: 1.10rem !important;
+    padding-bottom: 0.25rem !important;
+    padding-left: 0.25rem !important;
+
+}
+
+.time{
+    padding:2px;
+    font-size: 4em !important;
+    text-align: right !important;
+}
+
+#name {
+    font-size: 3em !important;
+    padding-left: 120px;
+}
+
+.input-group{
+    width: 200% !important;
+}
+
+.form-control {
+    border-radius: 0px !important;
+}
+.vl {
+    padding: 2px;
+    border-left: 1px solid rgb(255, 255, 255);
+    height:40px;
+  }
+
+  .vlblack {
+    padding: 2px;
+    border-left: 1px solid rgb(0, 0, 0);
+    height:40px;
+  }
+
+  .vlwhite {
+    padding: 2px;
+    border-left: 1px solid rgb(255, 255, 255);
+    height:40px;
+  }
+
+  .datetimeInfo{
+    display: contents;
+  }
+
+  .dateTimeContainer
+  {
+    justify-content: center !important;
+  }
+
+  .timeauth{
+    padding: 20px;
+    font-weight: 100;
+    font-size: 2em !important;
+    text-align: right !important;
+}
+
+.crudadvancebtn{
+    padding: 10px !important;
+    align-items: center;
+    border-radius: 50% !important;
+    height: 50px !important;
+    width: 50px !important;
+}
+
+.att-table-rounded thead tr th:first-child {
+    border-radius: 10px 0 0 0;
+    text-align: left;
+    align-items: left !important;
+}
+.att-table-rounded thead tr th:last-child {
+    border-radius: 0 10px 0 0;
+}
+
+.att-table-rounded thead tr th {
+    text-align: center;
+    color: white;
+    background-color: #faad39;
+}
+
+.unapprovedlvl{
+    color: white !important;
+    background-color: #161616;
+
+}
+
+.sundayrow{
+    background-color: #d4f30c;
+
+}
+
+.att-table-rounded tbody tr td:first-child {
+    text-align: left;
+    }
+
+    
+.att-table-rounded tbody tr td:last-child {
+    text-align: center;
+    }
+    
+.att-table-rounded tbody tr td {
+text-align: center;
+vertical-align: middle;
+
+}
+
+.att-table-rounded tbody tr td .form-select {
+    border-radius: 10px !important;
+    padding: 5px !important;
+    width: 120px;
+    }
+
+[data-select2-id = "select2-data-1-wlcv"]{
+    padding: 0% !important;
+    border-radius: 0% !important;
+}
+
+.advform{
+margin:auto;
+
+}
+.advborderless
+{
+    border: 0px !important;
+    border-bottom: #bababa solid 1px !important;
+}
+.advlabel
+{
+    color: #bababa !important;
+}
+.advinput{
+padding-top: 10px;
+padding-bottom: 10px;
+}
+.cheader{
+    background-color: #bababa !important;
+    margin-bottom: 10px !important;
+}
+
+.btn-attach{
+    border-radius: 15px !important;
+    background-color: #50cd89 !important;
+    color:white !important;
+    margin: 2% !important;
+}
+
+.btn-apply{
+    color:white !important;
+    margin: 2% !important;
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+    border-radius: 15px !important;
+    background-color: #f05b2b !important;
+}
+.datectrl{
+    border-radius: 10px !important;
+}
+[data-select2-id = "select2-data-1-5qka"]{
+    border-radius: 10px !important;
+}
+  
+
+.dtctrl{
+    border-radius: 10px !important;
+}
+
+.datepk{
+    border-radius: 10px !important;
+    border: none !important;
+}
+
+.iconatt {
+    margin:auto;
+    color: white;
+    min-width: 30px;
+    text-align: center;
+
+  }
+  .input-container {
+ 
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    width: 100%;
+    margin-bottom: 15px;
+    height: fit-content;
+    border: solid 1px #e4e6ef;
+    border-radius: 10px
+  }
+
+  .input-fieldatt {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: none !important;
+  }
+  .dtsearchatt{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px !important;
+  }
+
+  .badge-local{
+    min-width: 100px;
+    color:white;
+background-color: #faad39;
+  }
+
+  .badge-maternity{
+    min-width: 100px;
+    color:white;
+background-color: #fa39b0;
+  }
+
+  .badge-paternity{
+    min-width: 100px;
+    color:white;
+background-color: #5292eb;
+  }
+
+  .badge-unapproved{
+    min-width: 100px;
+    color:white;
+background-color: #fa3939;
+  }
+  .badge-medical{
+    min-width: 100px;
+    color:white;
+background-color: #15935a;
+  }
+
+  .badge-sick{
+    min-width: 100px;
+    color:white;
+    background-color: #faad39;
+  }
+
+  .btn-monthps{
+    min-width: -webkit-fill-available !important;
+    border-radius: 5.475rem !important;
+    border-color: #6d6d6d !important;
+    color: #626262 !important;
+  }
+
+  .btn-month{
+    min-width: -webkit-fill-available !important;
+    border-radius: 5.475rem !important;
+    border-color: #2d975d !important;
+    color: #2d975d !important;
+  }
+  .row-month{
+    margin-top: 10px !important;
+  }
+
+  .cd-prevnextemp
+  {
+    padding: 0 !important;
+    margin: 0% !important;
+  }
+
+.previousEmp{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    max-height: 30px;
+    background-color: #f6aa38;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+.empinf{
+    max-height: 30px;
+    background-color: #f05b2b;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+}
+.nextEmp{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    max-height:30px;
+    background-color: #f6aa38;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+.empDateInf
+{
+    margin-left: 5%;
+}
+
+.icobtn{
+    margin-bottom: 1px !important;
+    color: white;
+}
+
+.employeenamwhite{
+    color:white;
+}
+.btnprevnext
+{
+    color: white !important;
+    width: -webkit-fill-available;
+}
+
+.circle-cd
+{
+width: 185px !important;
+}
+.circle-anch
+{
+    border-radius: 80px !important;
+    min-height: 155px !important;
+}
+.commentsection{
+    border-radius: 15px !important;
+}
+
+.fs-xlarge{
+    font-size: x-large !important;
+}
+
+.cd-centre{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.p-40{
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+}
+
+.mrl-10{
+    margin-left: 2px !important;
+    margin-right: 2px !important;
+}
+
+.btn-thin{
+  padding: 2px calc(1.5rem + 1px) !important;
+}
+
+    
+#ps2Table thead{
+    display: none !important;
+    }
+    
+    .checkBT{
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+    }
+
+#prTable thead{
+display: none !important;
+}
+
+.trbbrder
+    {
+        border-bottom: solid 1px black !important;
+    }
+
+.trbrder
+    {
+        border-top:solid 1px black !important;
+        border-bottom: solid 1px black !important;
+    }
+    .m-10{
+        margin-left:5px !important;
+    }
+.addempselect{
+    border-radius: 15px !important;
+}
+.wdaddemp{
+    padding-left: 40px !important; 
+}
+
+.floatright{
+    float: right !important;
+}
+
+.docwdhg{
+    width: 10px  !important;
+    height: 10px  !important;
+}
+
+.payslipEmpDet{
+    text-align: left !important;
+}
+
+.payslipmonthdet{
+    background-color: #faad39;
+    font-weight: 800;
+}
+
+.payslipinfo{
+    font-weight: 300; 
+}

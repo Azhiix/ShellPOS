@@ -1,0 +1,91 @@
+﻿.col-1 {
+    width: 11.1%;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-weight: 600;
+    padding-top: 10px;
+}
+
+.form-check.form-check-custom {
+    padding-left: 30%;
+}
+
+.fs-xlarge {
+    font-size: 40px !important;
+    font-weight: 700;
+}
+
+.employeenamwhite {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.symbol {
+    display: flex;
+    align-items: center;
+}
+
+#empNameTimesheet {
+    font-weight: strong;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px; /* Adjust the max-width according to your layout */
+}
+
+#empPositionTimesheet {
+    margin-left: 10px; /* Adjust spacing as needed */
+    white-space: nowrap;
+}
+
+.vlwhite {
+    display: inline-block;
+    border-left: 1px solid #fff;
+    margin: 0 10px;
+    height: 20px; /* Adjust the height to match the line height of your name and title */
+}
+
+.empDateInf {
+    display: inline-block;
+    padding-left: 10px; /* Adjust spacing as needed */
+}
+
+.custom-table-container {
+    margin: auto;
+    padding: 3rem;
+    display: none;
+    background-color: #f8f9fa; /* Light gray background color */
+    border: 1px solid #dee2e6;
+    border-radius: 0.75rem; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.custom-modal-width{
+    max-width:45% !important;
+}
+
+.separator-row td {
+    border-bottom: 2px solid #000; /* Solid line as a separator */
+}
+
+.total-row td {
+    background-color: #f0f0f0; /* Light grey background for total rows */
+    font-weight: bold; /* Optional: make text bold */
+}
+
+.cssPlusBtn {
+    color: #07b507 !important;
+    height: 1.5rem !important;
+    width:1.5rem !important;
+    font-size:1.5em;
+}
+.cssPlusBtn:hover {
+    cursor:pointer;
+}

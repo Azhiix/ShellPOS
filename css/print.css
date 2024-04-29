@@ -1,0 +1,79 @@
+﻿body {
+    -webkit-print-color-adjust: exact;
+}
+
+.btnPrintEnter {
+    /*margin: auto;
+    margin-top: 22px;
+    margin-bottom: 15px;*/
+}
+
+#payslipGeneration {
+    font-size: 21px;
+    text-align: center;
+}
+
+.btnPrintFinal {
+ /*   margin: auto;
+    margin-top: 22px;
+    margin-bottom: 15px;*/
+}
+
+.logos{
+    width:25%;
+    margin:auto;
+}
+
+#compAddress{
+    font-size:20px;
+    text-align:center;
+}
+
+#managerId{
+    margin-left:170px;
+}
+
+.newpayslip {
+    width: 100%;
+    margin-top: 70px;
+}
+
+.btnGroupPrint {
+    margin-left:193px;
+}
+
+.btnPrintFinalize,.btnFixedPayslips{
+    color:white;
+}
+
+.clsFinalize {
+    margin-left: 193px;
+}
+
+@media print {
+        .pagebreak {
+            clear: both;
+            page-break-after: always;
+        }
+}
+
+.customRow {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-left: 1%;
+}
+
+.btnPrintFinal {
+    visibility:hidden;
+}
+
+.newpayslip {
+    display: none;
+    page-break-before: always;
+    page-break-after: always;
+}
+
+.alignLeft{
+    text-align:left;
+}
