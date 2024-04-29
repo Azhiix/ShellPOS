@@ -139,6 +139,8 @@
     <Content Include="css\Revamped\payroll.css" />
     <Content Include="css\Revamped\payslips.css" />
     <Content Include="css\Revamped\reports.css" />
+    <Content Include="Guidelines\DbConnectGoodPractices.txt" />
+    <Content Include="Guidelines\fix for autofill.txt" />
     <Content Include="js\Revamped\configsApprovalTemplates.js" />
     <Content Include="js\Revamped\configsTaxes.js" />
     <Content Include="js\Revamped\configsPermissionsTab.js" />
@@ -164,6 +166,14 @@
     <Content Include="css\Revamped\plugins.bundle.css" />
     <Content Include="css\Revamped\style.bundle.css" />
     <Content Include="css\styles.css" />
+    <Content Include="Guidelines\FileUploadWithoutUsingHandler.txt" />
+    <Content Include="Guidelines\Important to remember.txt" />
+    <Content Include="Guidelines\Revamped Pages.txt" />
+    <Content Include="Guidelines\Dashboard.txt" />
+    <Content Include="Guidelines\login.txt" />
+    <Content Include="Guidelines\timesheetPage.txt" />
+    <Content Include="Guidelines\to delete later.txt" />
+    <Content Include="Guidelines\To delete when deploying.txt" />
     <Content Include="js\commonAbsence.js" />
     <Content Include="css\indexonly.css" />
     <Content Include="css\print.css" />
@@ -1283,6 +1293,47 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\absencesLeft.cs" />
+    <Compile Include="DTO\clsAbsenceType.cs" />
+    <Compile Include="DTO\clsAbsLeft.cs" />
+    <Compile Include="DTO\clsAdvance.cs" />
+    <Compile Include="DTO\clsApprovalTemplate.cs" />
+    <Compile Include="DTO\clsAtt.cs" />
+    <Compile Include="DTO\clsCompanyDetails.cs" />
+    <Compile Include="DTO\clsContractType.cs" />
+    <Compile Include="DTO\clsDeductions.cs" />
+    <Compile Include="DTO\clsDepartment.cs" />
+    <Compile Include="DTO\clsDetails.cs" />
+    <Compile Include="DTO\clsDocuments.cs" />
+    <Compile Include="DTO\clsEmployee.cs" />
+    <Compile Include="DTO\clsFinalizedDetails.cs" />
+    <Compile Include="DTO\clsLeaveRequest.cs" />
+    <Compile Include="DTO\clsMultiResPayroll.cs" />
+    <Compile Include="DTO\clsMultiResult.cs" />
+    <Compile Include="DTO\clsObjCounter.cs" />
+    <Compile Include="DTO\clsPayroll.cs" />
+    <Compile Include="DTO\clsPayslip.cs" />
+    <Compile Include="DTO\clsPermissions.cs" />
+    <Compile Include="DTO\clsPrint.cs" />
+    <Compile Include="DTO\clsSalaryDetails.cs" />
+    <Compile Include="DTO\clsShiftDetails.cs" />
+    <Compile Include="DTO\clsShiftTemplateWrapper.cs" />
+    <Compile Include="DTO\clsTaxDetails.cs" />
+    <Compile Include="DTO\clsTaxesExonerationDetails.cs" />
+    <Compile Include="DTO\clsTaxRates.cs" />
+    <Compile Include="DTO\clsTaxTypes.cs" />
+    <Compile Include="DTO\clsTemplates.cs" />
+    <Compile Include="DTO\clsTimeEntry.cs" />
+    <Compile Include="DTO\ExceptionCatcher.cs" />
+    <Compile Include="DTO\GLogInfo.cs" />
+    <Compile Include="DTO\JWT.cs" />
+    <Compile Include="DTO\LeavesChanges.cs" />
+    <Compile Include="DTO\LoginResponse.cs" />
+    <Compile Include="DTO\PayslipDetail.cs" />
+    <Compile Include="DTO\PayslipItem.cs" />
+    <Compile Include="DTO\PayslipReport.cs" />
+    <Compile Include="DTO\PersonalChanges.cs" />
+    <Compile Include="DTO\refreshHelper.cs" />
     <Compile Include="login.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>login.aspx</DependentUpon>
@@ -1291,6 +1342,13 @@
       <DependentUpon>login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RevampedMaster.Master.cs">
+      <DependentUpon>RevampedMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RevampedMaster.Master.designer.cs">
+      <DependentUpon>RevampedMaster.Master</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\loginstyles\.DS_Store" />
@@ -1300,6 +1358,8 @@
     <Content Include="css\loginstyles\fonts\fonts\icomoon.woff" />
     <Content Include="css\pacifico.ttf" />
     <Content Include="DownloadHandler.ashx" />
+    <Content Include="Guidelines\How to add a new permission.txt" />
+    <Content Include="RevampedMaster.Master" />
     <Content Include="ThemeAssets\.DS_Store" />
     <Content Include="ThemeAssets\css\.DS_Store" />
     <Content Include="ThemeAssets\dist\.DS_Store" />
@@ -1406,8 +1466,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DTO\" />
+    <Folder Include="empImages\" />
     <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="zkemkeeper">
+      <Guid>{FE9DED34-E159-408E-8490-B720A5E632C7}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="js\Revamped\configsBranches.js" />
