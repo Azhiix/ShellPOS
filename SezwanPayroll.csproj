@@ -135,16 +135,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="css\Revamped\multipleAbsence.css" />
-    <Content Include="css\Revamped\payroll.css" />
-    <Content Include="css\Revamped\payslips.css" />
-    <Content Include="css\Revamped\reports.css" />
+    <Content Include="css\login.css" />
+    <Content Include="css\sales.css" />
+    <Content Include="img\Revamped\SezwanLogo.png" />
+    <Content Include="img\Revamped\ShellLogo.png" />
+    <Content Include="img\Revamped\SobanyLogo.png" />
+    <Content Include="js\login.js" />
+    <Content Include="js\reports.js" />
     <Content Include="js\Revamped\configsApprovalTemplates.js" />
     <Content Include="js\Revamped\configsTaxes.js" />
     <Content Include="js\Revamped\configsPermissionsTab.js" />
-    <Content Include="css\advances.css" />
-    <Content Include="css\bulkpay.css" />
-    <Content Include="css\empdetails.css" />
     <Content Include="css\loginstyles\bootstrap.min.css" />
     <Content Include="css\loginstyles\bootstrap\bootstrap-grid.css" />
     <Content Include="css\loginstyles\bootstrap\bootstrap-reboot.css" />
@@ -153,20 +153,7 @@
     <Content Include="css\loginstyles\owl.carousel.min.css" />
     <Content Include="css\loginstyles\style.css" />
     <Content Include="css\loginstyles\undraw_remotely_2j6y.svg" />
-    <Content Include="css\MerchandiserTimesheet.css" />
-    <Content Include="css\Revamped\addemployee.css" />
-    <Content Include="css\Revamped\attendance_New.css" />
-    <Content Include="css\Revamped\commonCss.css" />
-    <Content Include="css\Revamped\configs.css" />
-    <Content Include="css\Revamped\newMaster.css" />
-    <Content Include="css\Revamped\override.css" />
-    <Content Include="css\Revamped\timesheet.css" />
-    <Content Include="css\Revamped\plugins.bundle.css" />
-    <Content Include="css\Revamped\style.bundle.css" />
-    <Content Include="css\styles.css" />
     <Content Include="js\commonAbsence.js" />
-    <Content Include="css\indexonly.css" />
-    <Content Include="css\print.css" />
     <Content Include="img\logoSezwan.jpg" />
     <Content Include="js\Revamped\bootstrap.bundle.min.js" />
     <Content Include="js\Revamped\commonFunctions.js" />
@@ -182,8 +169,7 @@
     <Content Include="js\Revamped\plugins.bundle.js" />
     <Content Include="js\Revamped\reports.js" />
     <Content Include="js\Revamped\scripts.bundle.js" />
-    <Content Include="js\sezwanjs.js" />
-    <Content Include="js\timesheet.js" />
+    <Content Include="js\sales.js" />
     <Content Include="login.aspx" />
     <None Include="SBPCCOMM64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -191,6 +177,8 @@
     <None Include="SBXPCDLL64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="reports.aspx" />
+    <Content Include="sales.aspx" />
     <Content Include="ThemeAssets\css\components\components.css" />
     <Content Include="ThemeAssets\css\override.css" />
     <Content Include="ThemeAssets\css\plugins.css" />
@@ -1283,6 +1271,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="dbConnect.cs" />
     <Compile Include="login.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>login.aspx</DependentUpon>
@@ -1291,6 +1280,27 @@
       <DependentUpon>login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="reports.aspx.cs">
+      <DependentUpon>reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reports.aspx.designer.cs">
+      <DependentUpon>reports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="sales.aspx.cs">
+      <DependentUpon>sales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sales.aspx.designer.cs">
+      <DependentUpon>sales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Site1.Master.cs">
+      <DependentUpon>Site1.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site1.Master.designer.cs">
+      <DependentUpon>Site1.Master</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\loginstyles\.DS_Store" />
@@ -1298,7 +1308,6 @@
     <Content Include="css\loginstyles\fonts\fonts\icomoon.eot" />
     <Content Include="css\loginstyles\fonts\fonts\icomoon.ttf" />
     <Content Include="css\loginstyles\fonts\fonts\icomoon.woff" />
-    <Content Include="css\pacifico.ttf" />
     <Content Include="DownloadHandler.ashx" />
     <Content Include="ThemeAssets\.DS_Store" />
     <Content Include="ThemeAssets\css\.DS_Store" />
@@ -1398,6 +1407,7 @@
     <Content Include="ThemeAssets\lib\bootstrap\LICENSE" />
     <Content Include="ThemeAssets\lib\jquery-validation\LICENSE.md" />
     <Content Include="ThemeAssets\lib\jquery\dist\jquery.min.map" />
+    <Content Include="Site1.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

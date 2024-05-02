@@ -1,0 +1,38 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="SezwanPayroll.Site" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+       <link rel="stylesheet" href="css/Revamped/commonCss.css">
+   <link rel="stylesheet" href="ThemeAssets/css/site.css" />
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+   <link href="ThemeAssets/dist/assets/css/style.bundle.css" rel="stylesheet" />
+   <link href="ThemeAssets/dist/assets/plugins/global/plugins.bundle.css" rel="stylesheet" />
+   <link href="ThemeAssets/dist/assets/plugins/custom/dateTimePicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
+   <link href="css/Revamped/newMaster.css" rel="stylesheet" />
+   <link rel="icon" runat="server" href="<%$ AppSettings:LogoPath %>" type="image/x-icon" />
+   <link rel="shortcut icon" runat="server" href="<%$ AppSettings:LogoPath %>" type="image/x-icon" />
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+   <script src="ThemeAssets/dist/assets/plugins/global/plugins.bundle.js"></script>
+   <script src="ThemeAssets/dist/assets/js/scripts.bundle.js"></script>
+   <script src="ThemeAssets/dist/assets/plugins/custom/jCircularProgress/jquery.circle-progress.min.js"></script>
+   <script src="ThemeAssets/dist/assets/plugins/custom/dateTimePicker/dist/js/bootstrap-datepicker.js"></script>
+   <script src="ThemeAssets/js/Pages/Home/dashboardSenior.js"></script>
+   <script src="js/Revamped/general.js"></script>
+   <script src="js/Revamped/commonFunctions.js"></script>
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAxxl3e3dPbjVeQKyQgawXqAueTaCJCb8"></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>
