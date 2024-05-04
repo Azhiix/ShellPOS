@@ -79,6 +79,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -171,6 +172,7 @@
     <Content Include="js\Revamped\scripts.bundle.js" />
     <Content Include="js\sales.js" />
     <Content Include="login.aspx" />
+    <None Include="packages.config" />
     <None Include="SBPCCOMM64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

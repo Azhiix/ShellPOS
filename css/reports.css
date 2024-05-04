@@ -1,0 +1,18 @@
+﻿/* Override default styles for AG-Grid Quartz theme */
+#myGrid.ag-theme-quartz {
+    /* Change grid background color */
+    --ag-background-color: #f4f4f9;
+}
+
+.ag-theme-quartz .ag-header-cell {
+    /* Change header background color */
+    background-color: #a3a1fb;
+    color: white; /* Change header text color */
+}
+
+.ag-theme-quartz .ag-cell {
+    /* Change cell text color */
+    color: #333;
+    /* Change cell background color on hover */
+    --ag-cell-hover-color: #e3e2f3;
+}

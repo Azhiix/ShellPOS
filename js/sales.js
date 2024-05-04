@@ -13,8 +13,12 @@
         var $totalCouponCostContainer = $('#totalCouponCostContainer');
         var regulatorQuantity = $('#totalRegulatorQuantity')
         var totalRegulatorCost = $('#totalRegulatorCost')
-        var gasRefillQuantity = $('#gasRefillQuantity')
+        var gasRefillQuantity = $('#gasRefillQuantityContainer')
         var gasRefillCost = $('#totalGasRefill')
+        var gasCylinderInput = $('#gasCylinderQuantityInput')
+        var fireExinguisherInput = $('#fireExtinguisherQuantityInput')
+        var cordInput = $('#cordContainer')
+      
 
         // Hide all inputs and containers
         $subDropdownContainer.hide();
@@ -28,6 +32,12 @@
         regulatorQuantity.hide();
         gasRefillQuantity.hide();
         gasRefillCost.hide();
+        gasCylinderInput.hide();
+        fireExinguisherInput.hide();
+        cordInput.hide();
+        
+  
+
 
 
         // Clear previous options
@@ -54,6 +64,24 @@
             $subDropdownContainer.show();
             gasRefillQuantity.show();
 
+        } else if (selectedValues.includes('gasCylinder')) {
+            populateGasCylinderOptions($subDropdown);
+            $subDropdownContainer.show();
+            gasCylinderInput.show();
+
+
+
+
+        } else if (selectedValues.includes('fireExtinguisher')) {
+            populateFireExtinguisherOptions($subDropdown);
+            $subDropdownContainer.show();
+            fireExinguisherInput.show();
+        }
+
+        else if (selectedValues.includes('cords')) {
+            populateCordOptions($subDropdown);
+            $subDropdownContainer.show();
+            cordInput.show();
         }
     });
 
@@ -67,7 +95,14 @@
         populateOptions($dropdown, fuelOptions);
     }
 
-    function populateWaterOptions($dropdown) {
+    function populateCordOptions($dropdown) {
+        var cordOptions = [
+            { id: 'cord', text: 'CORD - Rs 100.00' }
+        ];
+        populateOptions($dropdown, cordOptions);
+    }
+
+    function populateWaterOptions($dropdown) { 
         var waterOptions = [
             { id: 'crystalBigRefill', text: 'WATER CRYSTAL BIG REFILL - Rs 230.00' },
             { id: 'crystalBigCylinder', text: 'WATER CRYSTAL BIG CYLINDER - Rs 200.00' },
@@ -102,7 +137,39 @@
 
         populateOptions($dropdown, gasRefillOptions);
 
+
     }
+
+
+
+    function populateGasCylinderOptions($dropdown) {
+        var popGasRefillOptions = [
+            { id: '12KG', text: '5KG - Rs 240.00' },
+            { id: '5KG', text: '12KG - Rs 100.00' },
+            {id: '12kgMetal', text: '12KG METAL - Rs 200.00' },
+
+
+            
+        ];
+        populateOptions($dropdown, popGasRefillOptions);
+
+
+
+
+
+    }
+
+
+    function populateFireExtinguisherOptions($dropdown) {
+        var fireExtinguisherOptions = [
+            { id: 'fireExtinguisher', text: 'FIRE EXTINGUISHER - Rs 150.00' }
+        ];
+        populateOptions($dropdown, fireExtinguisherOptions);
+    }
+
+   
+
+    
 
     function populateOptions($dropdown, options) {
         options.forEach(function (item) {
@@ -112,13 +179,14 @@
     }
 
     // Event listener for total calculation
-    $(document).on('change keyup', '#subCategory, #fuelQuantity, #waterQuantity, #couponQuantity', function () {
+    $(document).on('change keyup', '#subCategory, #fuelQuantity, #waterQuantity,#cordQuantity, #couponQuantity, #gasCylinderQuantity, #fireExtinguisherQuantity, #gasRefillQuantity', function () {
         updateTotals();
     });
 
+
     function updateTotals() {
         var selectedType = $('#subCategory').val();
-        var quantity = parseFloat($('#fuelQuantity').val() || $('#waterQuantity').val() || $('#couponQuantity').val()) || ($('#regulatorQuantity').val()) || $('#gasRefillQuantity').val();
+        var quantity = parseFloat($('#fuelQuantity').val() || $('#waterQuantity').val() || $('#couponQuantity').val()) || ($('#regulatorQuantity').val()) || $('#gasRefillQuantity').val() || $('#gasCylinderQuantity').val() || $('#fireExtinguisherQuantity').val() || $('#cordQuantity').val();
         console.log(quantity)
 
         if (!quantity || quantity <= 0) {
@@ -127,10 +195,16 @@
             $('#perGallonCostContainer').hide();
             $('#totalCouponCostContainer').hide();
             $('#totalRegulatorCost').hide();
+            $('#totalGasRefillCost').hide();
+            $('#totalGasCylinderCost').hide();
+            $('#totalExtinguisherContainer').hide();
+            $('#totalCordContainer').hide();
             return;
         }
 
+
         var price = parseFloat($('#subCategory option:selected').text().split(" - Rs ")[1]);
+        console.log(price.toFixed(2))
         var totalCost = price * quantity;
 
         if (selectedType.startsWith('coupon')) {
@@ -156,15 +230,45 @@
             var totalGasRefillCost = gasRefillPrice * quantity;
             $('#totalGasRefill').val(totalGasRefillCost.toFixed(2));
             $('#totalGasRefillCost').show();
-        
+
+
+        }
+        else if (selectedType.includes('gasCylinder')) {
+           
+
+            var gasCylinderPrice = parseFloat($('#subCategory option:selected').text().split(" - Rs ")[1]);
+            var quantity = parseFloat($('#gasCylinderQuantity').val());
+            var totalGasCylinderCost = gasCylinderPrice * quantity;
+            $('#totalGasCylinder').val(totalGasCylinderCost.toFixed(2));
+            $('#totalGasCylinderCost').show();
+
+        } else if (selectedType.includes('fireExtinguisher')) {
+            var fireExtinguisherPrice = parseFloat($('#subCategory option:selected').text().split(" - Rs ")[1]);
+            var quantity = parseFloat($('#fireExtinguisherQuantity').val()); 
+           var totalCost = fireExtinguisherPrice * quantity;
+            $('#extiniguisherAmount').val(totalCost.toFixed(2))
+            $('#totalExtinguisherContainer').show();
+        } else if (selectedType.includes('cords')) {
+            var cordPrice = parseFloat($('#subCategory option:selected').text().split(" - Rs ")[1]);
+            console.log(cordPrice)
+            var quantity = parseFloat($('#cordQuantity').val());
+            var totalCost = cordPrice * quantity;
+            $('#cordAmount').val(totalCost.toFixed(2))
+            $('#totalCordContainer').show();
 
 
 
-    
+
+        }
+
+
+
             
 
-        
-        } else {
+
+
+
+     else {
             $('#fuelAmount').val(totalCost.toFixed(2));
             $('#totalCostContainer').show();
         }
@@ -173,6 +277,14 @@
     
 
 })
+
+
+$('#addSelect').click(function () {
+    var newSelect = $('.js-example-basic-single:first').clone();
+    newSelect.val(""); // Reset selected value
+    newSelect.insertAfter('.js-example-basic-single:last').select2();
+    // Optionally, you can add a remove button next to each cloned select
+});
 
 
 
