@@ -27,7 +27,7 @@
 
         // Only proceed with fetch if the form is valid
         if (valid) {
-            fetch('login.aspx/ValidateUser', {
+            fetch('login.aspx/ValidateLogin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -44,16 +44,11 @@
                 throw new Error('Network response was not ok.');
             })
                 .then(data => {
-                    if (data.valid) {
-                        alert('Login successful!');
-                    } else {
+                    if (data.d == 0) {
                         alert('Login failed: Invalid credentials.');
-                        submitCount++;
-                        if (submitCount > 3) { // Disable the form after 3 failed attempts
-                            $('#exampleInputUsername1').prop('disabled', true);
-                            $('#exampleInputPassword1').prop('disabled', true);
-                            alert('You have exceeded the maximum number of login attempts. Please try again later.');
-                        }
+                    } else {
+                        alert('Login successful!');
+                        //need to redirect to the sales page
                     }
                 }).catch(error => {
                     console.error('There has been a problem with your fetch operation:', error);

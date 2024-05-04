@@ -17,18 +17,10 @@ namespace SezwanPayroll
         }
 
         [WebMethod()]
-        public bool TestDbConnection()
+        public static int ValidateLogin(string username, string password)
         {
-            DbConnect dbConnect = new DbConnect();
-            return dbConnect.TestConnection();
-           
-        }
-
-        public static void ValidateUser(string username, string password)
-        {
-            DbConnect dbConnect = new DbConnect();
-            dbConnect.Login(username, password);
-        }
+            return DbConnect.ValidateLogin(username, password);
+        }   
 
 
 

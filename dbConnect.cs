@@ -1,58 +1,45 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Configuration;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Collections.Generic;
 
 public class DbConnect
 {
     private SqlConnection conn;
 
-    public DbConnect()
+    static string connectionString = ConfigurationManager.ConnectionStrings["POS Database"].ConnectionString;
+
+
+    public static int ValidateLogin(string username, string password)
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["SezwanPOS"].ConnectionString;
-        conn = new SqlConnection(connectionString);
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+
+            connection.Open(); 
+            SqlDataReader dataReader;
+            int userId = 0;
+
+            string sql = "SELECT [RoleId] FROM UserPermissions WHERE Username = @Username AND Password = @Password";
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+
+                command.Parameters.AddWithValue("@Username", username);
+                command.Parameters.AddWithValue("@Password", password);
+
+                dataReader = command.ExecuteReader();
+
+                if (dataReader.Read()) userId = dataReader.IsDBNull(0) ? 0 : Convert.ToInt32(dataReader.GetValue(0));
+                else return 0;
+                
+                return userId;
+            }
+        }
     }
-
-    public bool TestConnection()
-    {
-        try
-        {
-            conn.Open();
-            return true;
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-        finally
-        {
-            if (conn.State == System.Data.ConnectionState.Open)
-                conn.Close();
-        }
-    }
-
-
-    public bool Login(string username, string password)
-    {
-        try
-        {
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT * FROM Users WHERE Username = @username AND Password = @password", conn);
-            cmd.Parameters.AddWithValue("@username", username);
-            cmd.Parameters.AddWithValue("@password", password);
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.Read())
-                return true;
-            else
-                return false;
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-        finally
-        {
-            if (conn.State == System.Data.ConnectionState.Open)
-                conn.Close();
-        }
-    }   
 }
+
+
+
+
+
