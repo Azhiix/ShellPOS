@@ -203,7 +203,7 @@
                     <div class="col-md-6">
                         <label for="inputMileage" class="form-label mt-2 ">Mileage </label>
                         <div class="input-group">
-                            <input type="number" class="form-control" min="0" aria-label="Amount">
+                            <input type="number" class="form-control" placeholder="100" min="0" aria-label="Amount" >
                             <div class="input-group-append">
                                 <span class="input-group-text">KM</span>
 

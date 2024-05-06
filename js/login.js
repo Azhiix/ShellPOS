@@ -44,15 +44,24 @@
                 throw new Error('Network response was not ok.');
             })
                 .then(data => {
-                    if (data.d == 0) {
-                        alert('Login failed: Invalid credentials.');
+                    let parsedData = JSON.parse(data.d);  // Ensure proper parsing of JSON string
+                    if (parsedData.Error) {
+                        alert('Login failed: ' + parsedData.Error);
                     } else {
+                        // Session storage for the data
+                        sessionStorage.setItem('userData', JSON.stringify(parsedData));
                         alert('Login successful!');
-                        //need to redirect to the sales page
+                        window.location.href = 'sales.aspx';
                     }
                 }).catch(error => {
                     console.error('There has been a problem with your fetch operation:', error);
+                    alert('Unable to login due to a network error. Please try again.');
                 });
         }
     });
 });
+
+
+
+
+
