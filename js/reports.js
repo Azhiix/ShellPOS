@@ -13,22 +13,61 @@
     columnDefs: [
         { field: "make" },
         { field: "model" },
-        { field: "price" },
-        { field: "electric" },
-        { field: "year" },   // New field
-        { field: "color" }   // New field
+        { field: "price", headerName: "Price ($)", valueFormatter: params => `$${params.value.toLocaleString()}` },
+        { field: "electric", headerName: "Is Electric?", cellRenderer: params => params.value ? 'Yes' : 'No' },
+        { field: "year" },
+        { field: "color" }
+    
+
     ]
 };
 
-// Assuming your grid initialization is properly setup to use the `gridOptions` above
+function downloadCSV() {
+    gridOptions.api.exportDataAsCsv();
+}
 
 
+//const ediv = document.getElementById('myGrid');
 
-const ediv = document.getElementById('myGrid');
+//document.addEventListener('DOMContentLoaded', function () {
+//    const eGridDiv = document.querySelector('#myGrid');
+//    new agGrid.Grid(eGridDiv, gridOptions);
 
-const gridApi = new agGrid.Grid(ediv, gridOptions);
+//    flatpickr("#dateFrom", {});
+//    flatpickr("#dateTo", {});
 
-document.addEventListener('DOMContentLoaded', function() {
-  flatpickr("#dateFrom", {});
-  flatpickr("#dateTo", {});
+//    // This ensures columns fit the grid container on initial load
+//    gridOptions.api.sizeColumnsToFit();
+//});
+
+
+//document.addEventListener('DOMContentLoaded', function() {
+//  flatpickr("#dateFrom", {});
+//  flatpickr("#dateTo", {});
+//});
+window.addEventListener('resize', function () {
+    if (gridOptions.api) { // Check if the API is available
+        gridOptions.api.sizeColumnsToFit();
+    }
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const eGridDiv = document.querySelector('#myGrid');
+    new agGrid.Grid(eGridDiv, gridOptions);
+
+    flatpickr("#dateFrom", {});
+    flatpickr("#dateTo", {});
+
+    // This ensures columns fit the grid container on initial load
+    gridOptions.api.sizeColumnsToFit();
+
+    window.addEventListener('resize', function () {
+        if (gridOptions.api) { // Check if the API is available
+            gridOptions.api.sizeColumnsToFit();
+        }
+    });
+});
+
+

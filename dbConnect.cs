@@ -51,9 +51,46 @@ public class DbConnect
         }
     }
 
+
+    public string createLogin(string username, string password)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            try
+            {
+                connection.Open();
+                string sql = "INSERT INTO UserPermissions (Username, Password) VALUES (@Username, @Password)";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
+
+                    int result = command.ExecuteNonQuery();
+                    if (result > 0)
+                        return "Success";
+                    else
+                        return "Error: No rows affected.";
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Error: " + ex.Message;
+            }
+        }
+    }
+
 }
 
 
 
 
 
+
+
+//UserID  int	Unchecked
+//Username	nvarchar(255)	Unchecked
+//Password	nvarchar(255)	Unchecked
+//RoleId	nvarchar(50)	Unchecked
+//PermissionNames	nvarchar(255)	Unchecked
+//fname	nvarchar(255)	Checked
+//		Unchecked

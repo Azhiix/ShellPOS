@@ -44,16 +44,17 @@
                 throw new Error('Network response was not ok.');
             })
                 .then(data => {
-                    let parsedData = JSON.parse(data.d);  // Ensure proper parsing of JSON string
+                    let parsedData = JSON.parse(data.d);
                     if (parsedData.Error) {
                         alert('Login failed: ' + parsedData.Error);
                     } else {
-                        // Session storage for the data
-                        sessionStorage.setItem('userData', JSON.stringify(parsedData));
+                        document.cookie = "Token=" + parsedData.Token + "; path=/";  // Store the token in a cookie
                         alert('Login successful!');
                         window.location.href = 'sales.aspx';
                     }
-                }).catch(error => {
+                })
+
+                .catch(error => {
                     console.error('There has been a problem with your fetch operation:', error);
                     alert('Unable to login due to a network error. Please try again.');
                 });

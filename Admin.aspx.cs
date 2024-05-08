@@ -3,26 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace SezwanPayroll
 {
-    public partial class reports : System.Web.UI.Page
+    public partial class Admin : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        { if (!IsPostBack)
+        {
+
             {
-                if (!IsUserAuthorized())
+                if (!IsPostBack)
                 {
-                    Response.Redirect("login.aspx");
+                    if (!IsUserAuthorized())
+                    {
+                        Response.Redirect("login.aspx");
+                    }
                 }
             }
-
-
         }
 
-        private bool IsUserAuthorized()
+        private static bool IsUserAuthorized()
         {
             var token = HttpContext.Current.Request.Cookies["Token"]?.Value;
 
@@ -32,7 +35,23 @@ namespace SezwanPayroll
             ClaimsPrincipal principal = JWT.GetPrincipal(token);
             return principal != null;
         }
+
+
+
+       
+
+        [WebMethod()]
+        public static  string validateCreateLogin(string username, string password)
+        {
+            DbConnect dbConnect = new DbConnect();
+            return dbConnect.createLogin(username, password);
+        }
+
+
+
+
+
     }
 
+
 }
- 

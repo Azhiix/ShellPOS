@@ -10,17 +10,38 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div>
-        <input type="text" id="dateFrom" placeholder="Date From">
-        <input type="text" id="dateTo" placeholder="Date To">
-        <select id="clientSelect">
-            <option value="Client1">Client 1</option>
-            <option value="Client2">Client 2</option>
-        </select>
-        <input type="text" id="vehicleRegNo" placeholder="Vehicle Registration No">
-        <input class="btn" type="submit" />
-    </div>
-    <div class="ag-theme-quartz" style="height:100vh" id="myGrid"></div>
+    <div class="container mt-4">
+    <form>
+        <div class="row g-3 align-items-center">
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="dateFrom" placeholder="Date From">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="dateTo" placeholder="Date To">
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="clientSelect">
+                    <option value="">Select Client</option>
+                    <option value="Client1">Client 1</option>
+                    <option value="Client2">Client 2</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="vehicleRegNo" placeholder="Vehicle Registration No">
+            </div>
+        </div>
+       <%-- <div class="row mt-3">
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>--%>
+    </form>
+</div>
+
+    <div class="ag-theme-quartz mt-4 mr-4 ml-4" style="height:100vh" id="myGrid"></div>
+
+    <button onclick="downloadCSV()">Download CSV</button>
+
 
     <!-- Scripts should also be included in the head or at the end of the body -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

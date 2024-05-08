@@ -172,11 +172,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin.aspx" />
     <Content Include="css\login.css" />
+    <Content Include="css\reports.css" />
     <Content Include="css\sales.css" />
     <Content Include="img\Revamped\SezwanLogo.png" />
     <Content Include="img\Revamped\ShellLogo.png" />
     <Content Include="img\Revamped\SobanyLogo.png" />
+    <Content Include="js\admin.js" />
     <Content Include="js\login.js" />
     <Content Include="js\reports.js" />
     <Content Include="js\Revamped\configsApprovalTemplates.js" />
@@ -1941,6 +1944,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin.aspx.cs">
+      <DependentUpon>Admin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin.aspx.designer.cs">
+      <DependentUpon>Admin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="clsLogin.cs" />
     <Compile Include="dbConnect.cs" />
     <Compile Include="JWT.cs" />
