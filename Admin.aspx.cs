@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Windows.Forms;
 
 namespace SezwanPayroll
 {
@@ -41,12 +42,28 @@ namespace SezwanPayroll
        
 
         [WebMethod()]
-        public static  string validateCreateLogin(string username, string password)
+        public static  string validateCreateLogin(string username, string password, string roleid)
         {
             DbConnect dbConnect = new DbConnect();
-            return dbConnect.createLogin(username, password);
+            return dbConnect.createLogin(username, password, roleid);
         }
 
+        
+        [WebMethod()]
+
+        public static string displayAllUsers()
+        {
+            
+            return DbConnect.retreiveAllUsernames();
+        }
+
+
+        public static string updateUser(string username, string password, int RoleId, string PermissionNames, string fname)
+        {
+            return DbConnect.editUser(username, password, RoleId, PermissionNames, fname);
+        
+            
+        }
 
 
 
