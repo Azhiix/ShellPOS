@@ -7,6 +7,7 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
+using SezwanPayroll.DTO;
 
 namespace SezwanPayroll
 {
@@ -39,31 +40,39 @@ namespace SezwanPayroll
 
 
 
-       
+
 
         [WebMethod()]
-        public static  string validateCreateLogin(string username, string password, string roleid)
+        public static string validateCreateLogin(string username, string password, string roleid)
         {
             DbConnect dbConnect = new DbConnect();
             return dbConnect.createLogin(username, password, roleid);
         }
 
-        
+
         [WebMethod()]
 
         public static string displayAllUsers()
         {
-            
+
             return DbConnect.retreiveAllUsernames();
         }
 
-
-        public static string updateUser(string username, string password, int RoleId, string PermissionNames, string fname)
+        [WebMethod()]
+        public static string updateUser(int userId, string username, int RoleId, string PermissionNames, string fname, string password)
         {
-            return DbConnect.editUser(username, password, RoleId, PermissionNames, fname);
-        
-            
+            // Pass the userId to the editUser method to use in the WHERE clause
+            return DbConnect.editUser(userId,username, RoleId, PermissionNames, fname, password);
         }
+
+
+        [WebMethod()]
+
+        public static List<clsLogin> retrieveAllUserInfo()
+        {
+            return DbConnect.retreiveAllUserInfo();
+        }
+
 
 
 

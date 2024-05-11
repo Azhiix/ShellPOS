@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin.aspx" />
+    <Content Include="css\admin.css" />
     <Content Include="css\login.css" />
     <Content Include="css\reports.css" />
     <Content Include="css\sales.css" />
@@ -1951,7 +1952,7 @@
     <Compile Include="Admin.aspx.designer.cs">
       <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
-    <Compile Include="clsLogin.cs" />
+    <Compile Include="DTO\clsLogin.cs" />
     <Compile Include="dbConnect.cs" />
     <Compile Include="JWT.cs" />
     <Compile Include="login.aspx.cs">
@@ -2098,7 +2099,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DTO\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>

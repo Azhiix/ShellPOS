@@ -21,7 +21,8 @@ public class DbConnect
             connection.Open();
             SqlDataReader dataReader;
 
-            string sql = "SELECT UserId, RoleId, Fname FROM UserPermissions WHERE Username = @Username AND Password = @Password";
+            // Use COLLATE to force case-sensitive comparison
+            string sql = "SELECT UserId, RoleId, Fname FROM UserPermissions WHERE Username = @Username AND Password = @Password COLLATE SQL_Latin1_General_CP1_CS_AS";
 
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
@@ -32,29 +33,25 @@ public class DbConnect
 
                 if (dataReader.Read())
                 {
-                    if (dataReader.IsDBNull(0) && dataReader.IsDBNull(1) && dataReader.IsDBNull(2))
+                    if (!dataReader.IsDBNull(0) && !dataReader.IsDBNull(1) && !dataReader.IsDBNull(2))
                     {
-                        return null;
-                    }
-                    else
-                    {
-                        clsLogin user = new clsLogin();
-                        user.UserId = Convert.ToInt32(dataReader["UserId"]);
-                        user.RoleId = Convert.ToInt32(dataReader["RoleId"]);
-                        user.Fname = dataReader["fname"].ToString();
+                        clsLogin user = new clsLogin
+                        {
+                            UserId = Convert.ToInt32(dataReader["UserId"]),
+                            RoleId = Convert.ToInt32(dataReader["RoleId"]),
+                            Fname = dataReader["fname"].ToString()
+                        };
                         return user;
                     }
                 }
-                else
-                {
-                    return null; 
-                }
+                return null;
             }
         }
     }
 
 
-    public string createLogin(string username, string password,string roleid)
+
+    public string createLogin(string username, string password, string roleid)
     {
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
@@ -82,7 +79,7 @@ public class DbConnect
             }
         }
 
-       
+
     }
 
 
@@ -111,23 +108,31 @@ public class DbConnect
 
     }
 
-    public  static string editUser(string username, string password, int RoleId, string PermissionNames, string fname) 
+    public static string editUser(int userId, string username, int RoleId, string PermissionNames, string fname, string password)
     {
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
             connection.Open();
-            
+            string sql = @"
+            UPDATE UserPermissions
+            SET 
+                RoleId = @RoleId, 
+                PermissionNames = @PermissionNames, 
+                fname = @fname,
+                Username = @Username,
+                Password = @Password
 
-          
-            string sql = "UPDATE UserPermissions SET Username = @Username, Password = @Password, RoleId = @RoleId, PermissionNames = @PermissionNames, fname = @fname WHERE Username = @Username";
+            WHERE 
+                UserID=@UserId"; //first issue
 
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
+                command.Parameters.AddWithValue("@UserID", userId);
                 command.Parameters.AddWithValue("@Username", username);
-                command.Parameters.AddWithValue("@Password", password);
                 command.Parameters.AddWithValue("@RoleId", RoleId);
                 command.Parameters.AddWithValue("@PermissionNames", PermissionNames);
                 command.Parameters.AddWithValue("@fname", fname);
+                command.Parameters.AddWithValue("@Password", password);
 
                 int result = command.ExecuteNonQuery();
                 if (result > 0)
@@ -135,17 +140,40 @@ public class DbConnect
                 else
                     return "Error: No rows affected.";
             }
-
-
-
-
-
         }
-
-
     }
 
-   
+
+
+    public static List<clsLogin> retreiveAllUserInfo()
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            List<clsLogin> userInfos = new List<clsLogin>();
+            connection.Open();
+            SqlDataReader dataReader;
+            string sql = "SELECT UserId, Username, RoleId, PermissionNames, fname FROM UserPermissions";
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                dataReader = command.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    userInfos.Add(new clsLogin
+                    {
+                        UserId = Convert.ToInt32(dataReader["UserId"]),
+                        Username = dataReader["Username"].ToString(),
+                        RoleId = Convert.ToInt32(dataReader["RoleId"]),
+                        PermissionNames = dataReader["PermissionNames"].ToString(),
+                        Fname = dataReader["fname"].ToString()
+                    });
+                }
+                return userInfos;
+            }
+        }
+    }
+
+
 
 }
 
