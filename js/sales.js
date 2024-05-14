@@ -1,294 +1,187 @@
-﻿$(document).ready(function () {
-    $('.js-example-basic-single').select2();
-
-    $('#mainDropdown .js-example-basic-single').on('change', function () {
-        var selectedValues = $(this).val();
-        var $subDropdown = $('#subCategory');
-        var $subDropdownContainer = $('#subDropdown');
-        var $fuelQuantityInput = $('#fuelQuantityInput');
-        var $waterQuantityInput = $('#waterQuantityInput');
-        var $couponQuantityInput = $('#couponQuantityInput');
-        var $waterTotalCostContainer = $('#waterTotalCostContainer');
-        var $perGallonCostContainer = $('#perGallonCostContainer');
-        var $totalCouponCostContainer = $('#totalCouponCostContainer');
-        var regulatorQuantity = $('#totalRegulatorQuantity')
-        var totalRegulatorCost = $('#totalRegulatorCost')
-        var gasRefillQuantity = $('#gasRefillQuantityContainer')
-        var gasRefillCost = $('#totalGasRefill')
-        var gasCylinderInput = $('#gasCylinderQuantityInput')
-        var fireExinguisherInput = $('#fireExtinguisherQuantityInput')
-        var cordInput = $('#cordContainer')
-      
-
-        // Hide all inputs and containers
-        $subDropdownContainer.hide();
-        $fuelQuantityInput.hide();
-        $waterQuantityInput.hide();
-        $couponQuantityInput.hide();
-        $waterTotalCostContainer.hide();
-        $perGallonCostContainer.hide();
-        $totalCouponCostContainer.hide();
-        totalRegulatorCost.hide();
-        regulatorQuantity.hide();
-        gasRefillQuantity.hide();
-        gasRefillCost.hide();
-        gasCylinderInput.hide();
-        fireExinguisherInput.hide();
-        cordInput.hide();
-        
-  
-
-
-
-        // Clear previous options
-        $subDropdown.empty();
-
-        // Populate dropdown based on selection
-        if (selectedValues.includes('fuel')) {
-            populateFuelOptions($subDropdown);
-            $subDropdownContainer.show();
-            $fuelQuantityInput.show();
-        } else if (selectedValues.includes('water')) {
-            populateWaterOptions($subDropdown);
-            $subDropdownContainer.show();
-            $waterQuantityInput.show();
-        } else if (selectedValues.includes('parking')) {
-            populateCouponOptions($subDropdown);
-            $subDropdownContainer.show();
-            $couponQuantityInput.show();
-        } else if (selectedValues.includes('regulator')) {
-            totalRegulatorCost.show();
-            regulatorQuantity.show();
-        } else if (selectedValues.includes('gasRefill')) {
-            populateGasRefillOptions($subDropdown);
-            $subDropdownContainer.show();
-            gasRefillQuantity.show();
-
-        } else if (selectedValues.includes('gasCylinder')) {
-            populateGasCylinderOptions($subDropdown);
-            $subDropdownContainer.show();
-            gasCylinderInput.show();
-
-
-
-
-        } else if (selectedValues.includes('fireExtinguisher')) {
-            populateFireExtinguisherOptions($subDropdown);
-            $subDropdownContainer.show();
-            fireExinguisherInput.show();
-        }
-
-        else if (selectedValues.includes('cords')) {
-            populateCordOptions($subDropdown);
-            $subDropdownContainer.show();
-            cordInput.show();
-        }
-    });
-
-    // Define functions to populate dropdowns
-    function populateFuelOptions($dropdown) {
-        var fuelOptions = [
-            { id: 'super', text: 'SUPER - Rs 66.20' },
-            { id: 'diesel', text: 'DIESEL - Rs 63.95' },
-            { id: 'vpower', text: 'VPOWER - Rs 76.90' }
-        ];
-        populateOptions($dropdown, fuelOptions);
-    }
-
-    function populateCordOptions($dropdown) {
-        var cordOptions = [
-            { id: 'cord', text: 'CORD - Rs 100.00' }
-        ];
-        populateOptions($dropdown, cordOptions);
-    }
-
-    function populateWaterOptions($dropdown) { 
-        var waterOptions = [
-            { id: 'crystalBigRefill', text: 'WATER CRYSTAL BIG REFILL - Rs 230.00' },
-            { id: 'crystalBigCylinder', text: 'WATER CRYSTAL BIG CYLINDER - Rs 200.00' },
-            { id: 'vitalBigRefill', text: 'WATER VITAL BIG REFILL - Rs 215.00' },
-            { id: 'vitalSmallRefill', text: 'WATER VITAL SMALL REFILL - Rs 150.00' },
-            { id: 'crystalMedium', text: 'WATER CRYSTAL MEDIUM - Rs 160.00' },
-            { id: 'crystalMediumCylinder', text: 'WATER CRYSTAL MEDIUM CYLINDER - Rs 200.00' },
-            { id: 'vitalBigCylinder', text: 'WATER VITAL BIG CYLINDER - Rs 100.00' },
-            { id: 'vitalSmallCylinder', text: 'WATER VITAL SMALL CYLINDER - Rs 100.00' }
-        ];
-        populateOptions($dropdown, waterOptions);
-    }
-
-    function populateCouponOptions($dropdown) {
-        var couponOptions = [
-            { id: 'couponVert', text: 'COUPON PARKING VERT - Rs 100.00' },
-            { id: 'couponRouge', text: 'COUPON PARKING ROUGE - Rs 200.00' },
-            { id: 'couponMaron', text: 'COUPON PARKING MARON - Rs 100.00' }
-        ];
-        populateOptions($dropdown, couponOptions);
-    }
-
-    function populateGasRefillOptions($dropdown) {
-        var gasRefillOptions = [
-            {
-                id: '12KG', text: '12KG - Rs 240.00'
-            },
-            {
-                id: '5KG', text: '5KG - Rs 100.00'
-            }
-        ]
-
-        populateOptions($dropdown, gasRefillOptions);
-
-
-    }
-
-
-
-    function populateGasCylinderOptions($dropdown) {
-        var popGasRefillOptions = [
-            { id: '12KG', text: '5KG - Rs 240.00' },
-            { id: '5KG', text: '12KG - Rs 100.00' },
-            {id: '12kgMetal', text: '12KG METAL - Rs 200.00' },
-
-
-            
-        ];
-        populateOptions($dropdown, popGasRefillOptions);
-
-
-
-
-
-    }
-
-
-    function populateFireExtinguisherOptions($dropdown) {
-        var fireExtinguisherOptions = [
-            { id: 'fireExtinguisher', text: 'FIRE EXTINGUISHER - Rs 150.00' }
-        ];
-        populateOptions($dropdown, fireExtinguisherOptions);
-    }
-
-   
-
-    
-
-    function populateOptions($dropdown, options) {
-        options.forEach(function (item) {
-            $dropdown.append(new Option(item.text, item.id));
-        });
-        $dropdown.select2();
-    }
-
-    // Event listener for total calculation
-    $(document).on('change keyup', '#subCategory, #fuelQuantity, #waterQuantity,#cordQuantity, #couponQuantity, #gasCylinderQuantity, #fireExtinguisherQuantity, #gasRefillQuantity', function () {
-        updateTotals();
-    });
-
-
-    function updateTotals() {
-        var selectedType = $('#subCategory').val();
-        var quantity = parseFloat($('#fuelQuantity').val() || $('#waterQuantity').val() || $('#couponQuantity').val()) || ($('#regulatorQuantity').val()) || $('#gasRefillQuantity').val() || $('#gasCylinderQuantity').val() || $('#fireExtinguisherQuantity').val() || $('#cordQuantity').val();
-        console.log(quantity)
-
-        if (!quantity || quantity <= 0) {
-            $('#totalCostContainer').hide();
-            $('#waterTotalCostContainer').hide();
-            $('#perGallonCostContainer').hide();
-            $('#totalCouponCostContainer').hide();
-            $('#totalRegulatorCost').hide();
-            $('#totalGasRefillCost').hide();
-            $('#totalGasCylinderCost').hide();
-            $('#totalExtinguisherContainer').hide();
-            $('#totalCordContainer').hide();
-            return;
-        }
-
-
-        var price = parseFloat($('#subCategory option:selected').text().split(" - Rs ")[1]);
-        console.log(price.toFixed(2))
-        var totalCost = price * quantity;
-
-        if (selectedType.startsWith('coupon')) {
-            $('#totalCouponAmount').val(totalCost.toFixed(2));
-            $('#totalCouponCostContainer').show();
-        } else if (selectedType.includes('WATER')) {
-            $('#waterTotalAmount').val(totalCost.toFixed(2));
-            $('#perGallonPrice').val(price.toFixed(2));
-            $('#waterTotalCostContainer').show();
-            $('#perGallonCostContainer').show();
-        } else if (selectedType.includes('regulator')) {
-
-            var regulatorPrice = 200.00;
-            var totalRegulatorCost = regulatorPrice * quantity;
-            console.log(totalRegulatorCost.toFixed(2))
-            $('#totalRegulator').val(totalRegulatorCost.toFixed(2));
-            $('#totalRegulatorCost').show();
-
-
-        }
-        else if (selectedType.includes('gasRefill')) {
-            var gasRefillPrice = parseFloat($('#subCategory option:selected').text().split(" - Rs ")[1]);
-            var totalGasRefillCost = gasRefillPrice * quantity;
-            $('#totalGasRefill').val(totalGasRefillCost.toFixed(2));
-            $('#totalGasRefillCost').show();
-
-
-        }
-        else if (selectedType.includes('gasCylinder')) {
-           
-
-            var gasCylinderPrice = parseFloat($('#subCategory option:selected').text().split(" - Rs ")[1]);
-            var quantity = parseFloat($('#gasCylinderQuantity').val());
-            var totalGasCylinderCost = gasCylinderPrice * quantity;
-            $('#totalGasCylinder').val(totalGasCylinderCost.toFixed(2));
-            $('#totalGasCylinderCost').show();
-
-        } else if (selectedType.includes('fireExtinguisher')) {
-            var fireExtinguisherPrice = parseFloat($('#subCategory option:selected').text().split(" - Rs ")[1]);
-            var quantity = parseFloat($('#fireExtinguisherQuantity').val()); 
-           var totalCost = fireExtinguisherPrice * quantity;
-            $('#extiniguisherAmount').val(totalCost.toFixed(2))
-            $('#totalExtinguisherContainer').show();
-        } else if (selectedType.includes('cords')) {
-            var cordPrice = parseFloat($('#subCategory option:selected').text().split(" - Rs ")[1]);
-            console.log(cordPrice)
-            var quantity = parseFloat($('#cordQuantity').val());
-            var totalCost = cordPrice * quantity;
-            $('#cordAmount').val(totalCost.toFixed(2))
-            $('#totalCordContainer').show();
-
-
-
-
-        }
-
-
-
-            
-
-
-
-
-     else {
-            $('#fuelAmount').val(totalCost.toFixed(2));
-            $('#totalCostContainer').show();
-        }
-    }
-
-    
-
-})
-
-
-$('#addSelect').click(function () {
-    var newSelect = $('.js-example-basic-single:first').clone();
-    newSelect.val(""); // Reset selected value
-    newSelect.insertAfter('.js-example-basic-single:last').select2();
-    // Optionally, you can add a remove button next to each cloned select
+﻿var allProducts = [];
+
+$(document).ready(function () {
+    fetchProducts();
+    attachEventListeners();
 });
 
+function fetchProducts() {
+    fetch('sales.aspx/ShowProducts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        allProducts = data.d;
+        console.log('Products fetched:', allProducts);
+        populateProductTypes();
+    })
+    .catch(error => console.error('Error fetching products:', error));
+}
+
+function populateProductTypes() {
+    const productTypes = new Set();
+    allProducts.forEach(item => productTypes.add(item.ProdTypeName));
+    $('#salesEntries').empty().append(createSaleEntryForm());
+    $('#salesEntries .clsProductType').empty().append([...productTypes].map(type => new Option(type, type)));
+    $('#salesEntries .clsProductType').select2();
+}
+
+function createSaleEntryForm() {
+    const saleCount = $('#salesEntries .saleEntry').length + 1;
+    return `
+        <div class="card mt-3 saleEntry" id="sale${saleCount}">
+            <div class="card-header" id="heading${saleCount}">
+                <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                    <div>
+                        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#collapse${saleCount}" aria-expanded="true" aria-controls="collapse${saleCount}">
+                            Sale ${saleCount} - <span id="itemSummary${saleCount}">New Item</span>: $<span id="priceSummary${saleCount}">0.00</span>
+                        </button>
+                    </div>
+                    <button type="button" class="btn btn-warning editButton" data-sale-id="${saleCount}">Edit</button>
+                </h5>
+            </div>
+            <div id="collapse${saleCount}" class="collapse show" aria-labelledby="heading${saleCount}" data-parent="#salesEntries">
+                <div class="card-body">
+                    <section class="form-container">
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+                                <div class="mt-4 mb-2">
+                                    <select class="js-example-basic-single form-control clsProductType" onchange="populateOptions('#subCategory${saleCount}', $(this).val())">
+                                        <option value="">Select Product Type</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <div class="mt-4 mb-2">
+                                    <select class="js-example-basic-single form-control clsProductItems" id="subCategory${saleCount}" onchange="updateSummary(${saleCount})">
+                                        <!-- Options for items will be dynamically loaded here -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 totalCostForm">
+                            <label for="quantityAmount${saleCount}" class="form-label mt-2">Quantity</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="quantityAmount${saleCount}" placeholder="100" min="0" aria-label="Amount" onchange="updateSummary(${saleCount})">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">L</span>
+                                </div>
+                                <input type="number" id="totalCost${saleCount}" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-center mt-2">
+                            <button type="button" class="btn btn-success saveButton" data-sale-id="${saleCount}">Save</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>`;
+}
+
+function saveSale(saleId) {
+    const productType = $(`#sale${saleId} .clsProductType`).val();
+    const item = $(`#subCategory${saleId}`).val();
+    const itemName = $(`#subCategory${saleId} option:selected`).text();
+    const quantity = $(`#quantityAmount${saleId}`).val();
+    const totalCost = calculateTotalCost($(`#subCategory${saleId} option:selected`).data('price'), quantity);
+
+    const saleData = {
+        productType: productType,
+        item: item,
+        itemName: itemName,
+        quantity: quantity,
+        totalCost: totalCost
+    };
+
+    console.log('Saving sale data:', saleData);
+    localStorage.setItem(`sale_${saleId}`, JSON.stringify(saleData));
+}
+
+function minimizeSale(saleId) {
+    $(`#collapse${saleId}`).collapse('hide');
+}
+
+function expandSale(saleId) {
+    $(`#collapse${saleId}`).collapse('show');
+}
+
+function loadSale(saleId) {
+    const saleData = JSON.parse(localStorage.getItem(`sale_${saleId}`));
+    if (saleData) {
+        console.log('Sale loaded:', saleData);
+        $(`#sale${saleId} .clsProductType`).val(saleData.productType).trigger('change');
+        $(`#subCategory${saleId}`).val(saleData.item).trigger('change');
+        $(`#quantityAmount${saleId}`).val(saleData.quantity);
+        $(`#totalCost${saleId}`).val(saleData.totalCost);
+    } else {
+        console.log('No data found for sale ID:', saleId);
+    }
+}
+
+function attachEventListeners() {
+    $('body').on('click', '#addItemButton', function () {
+        $('#salesEntries').append(createSaleEntryForm());
+        $('.js-example-basic-single').select2();
+    });
+
+    $('body').on('click', '.saveButton', function () {
+        const saleId = $(this).data('sale-id');
+        const productType = $(`#sale${saleId} .clsProductType`).val();
+        const quantity = $(`#quantityAmount${saleId}`).val();
+        const totalCost = calculateTotalCost($(`#subCategory${saleId} option:selected`).data('price'), quantity);
+        $(`#itemSummary${saleId}`).text(productType);
+        $(`#priceSummary${saleId}`).text(totalCost.toFixed(2));
+        $(`#totalCost${saleId}`).val(totalCost);
+        saveSale(saleId);
+        minimizeSale(saleId);
+    });
+
+    $('body').on('click', '.editButton', function () {
+        const saleId = $(this).data('sale-id');
+        console.log('Edit button clicked for sale ID:', saleId);
+        loadSale(saleId);
+        expandSale(saleId);
+    });
+
+    $('body').on('change', '.clsProductType', function () {
+        const saleId = $(this).closest('.saleEntry').attr('id').replace('sale', '');
+        populateOptions(`#subCategory${saleId}`, $(this).val());
+    });
+
+    $('body').on('change', '.clsProductItems', function () {
+        const saleId = $(this).closest('.saleEntry').attr('id').replace('sale', '');
+        updateSummary(saleId);
+    });
+
+    $('body').on('input change', '.quantityAmount', function () {
+        const saleId = $(this).closest('.saleEntry').attr('id').replace('sale', '');
+        updateSummary(saleId);
+    });
 
 
+}
 
+function populateOptions(subDropdownSelector, category) {
+    const $dropdown = $(subDropdownSelector);
+    const options = allProducts.filter(product => product.ProdTypeName.toLowerCase() === category.toLowerCase());
+    $dropdown.empty();
+    options.forEach(item => {
+        const option = new Option(`${item.ItemName} - Rs ${item.UnitPrice}`, item.ItemId);
+        $(option).data('price', item.UnitPrice);
+        $dropdown.append(option);
+    });
+    $dropdown.select2();
+}
 
+function updateSummary(saleId) {
+    const $selectedOption = $(`#subCategory${saleId} option:selected`);
+    const quantity = parseFloat($(`#quantityAmount${saleId}`).val()) || 0;
+    const price = parseFloat($selectedOption.data('price')) || 0;
+    const totalCost = quantity * price;
+    $(`#totalCost${saleId}`).val(totalCost.toFixed(2)).toggle(totalCost > 0);
+}
 
-
+function calculateTotalCost(price, quantity) {
+    return price * quantity;
+}

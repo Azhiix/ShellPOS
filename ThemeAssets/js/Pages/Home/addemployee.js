@@ -30,9 +30,9 @@ var addempjs = function () {
                         var listContractTypes = lstDeptBranchesContracts.d.lstContractTypes
                         var listBranches = lstDeptBranchesContracts.d.lstBranches
 
-                        // Loop through each item in the returned data
+                      
                         $.each(listDepartments, function (index, item) {
-                            // Append new options
+                     
                             deptSelect.append(new Option(item.department_name, item.id));
                         });
 
@@ -44,7 +44,7 @@ var addempjs = function () {
                             branchSelect.append(new Option(item.companyName, item.id))
                         })
 
-                        // Refresh the Select2 widget
+                   
                         deptSelect.select2();
                         contractSelect.select2();
                         branchSelect.select2();
@@ -60,7 +60,7 @@ var addempjs = function () {
 
 }();
 
-// Call main function init
+
 addempjs.init();
 addempjs.initDeptBranchesContracts();
 

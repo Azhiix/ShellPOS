@@ -1954,6 +1954,7 @@
     </Compile>
     <Compile Include="DTO\clsLogin.cs" />
     <Compile Include="dbConnect.cs" />
+    <Compile Include="DTO\clsProducts.cs" />
     <Compile Include="JWT.cs" />
     <Compile Include="login.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>

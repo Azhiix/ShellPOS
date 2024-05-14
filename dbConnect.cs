@@ -33,6 +33,7 @@ public class DbConnect
 
                 if (dataReader.Read())
                 {
+
                     if (!dataReader.IsDBNull(0) && !dataReader.IsDBNull(1) && !dataReader.IsDBNull(2))
                     {
                         clsLogin user = new clsLogin
@@ -170,12 +171,63 @@ public class DbConnect
                 }
                 return userInfos;
             }
+
+            
+
+
+        }
+
+
+
+        //returning all products and their relevant info
+
+       
+
+    }
+
+    public static List<clsProducts> DisplayAllProducts()
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            List<clsProducts> products = new List<clsProducts>();
+            connection.Open();
+
+            SqlDataReader dataReader;
+
+            string sql = "SELECT pi.ItemId, pi.ItemName, pi.UnitPrice, p.ProdTypeId, p.ProdTypeName " +
+                         "FROM ProductItems pi " +
+                         "JOIN Products p ON pi.ProdTypeId = p.ProdTypeId ";
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                dataReader = command.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    products.Add(new clsProducts
+                    {
+                        ItemId = Convert.ToInt32(dataReader["ItemId"]),
+                        ItemName = dataReader["ItemName"].ToString(),
+                        UnitPrice = Convert.ToDecimal(dataReader["UnitPrice"]),
+                        ProdTypeId = Convert.ToInt32(dataReader["ProdTypeId"]),
+                        ProdTypeName = dataReader["ProdTypeName"].ToString()
+                    });
+                }
+                dataReader.Close();
+            }
+            return products;  
         }
     }
 
 
 
+
+
 }
+
+
+
+
+
 
 
 

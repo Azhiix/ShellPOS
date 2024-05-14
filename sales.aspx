@@ -1,9 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site1.Master" CodeBehind="sales.aspx.cs" Inherits="SezwanPayroll.sales" %>
 
-
-
-
-
 <asp:Content ID="ContentHead" ContentPlaceHolderID="head" runat="server">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,234 +8,59 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="css/admin.css">
     <title>Document</title>
 </asp:Content>
 
-
-
-
-
 <asp:Content ID="ContentBody" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <body>
-        <div class=" container full-height">
-            <form class="row g-3">
-                <div class="col-md-9">
-                    <div class="mt-4">
-                        <select class="form-select" id="clientSelect">
-                            <option value="disabled selected">Client</option>
-                            <option value="Luke Curtis">Luke Curtis</option>
-                            <option value="Jemma Coetzee">Jemma Coetzee</option>
-                            <option value="Cameron Curtis">Cameron Curtis</option>
-                        </select>
-                    </div>
+    <div class="container full-height">
+        <!-- Client Information Section -->
+        <div class="col-md-9">
+            <div class="mt-4">
+                <select class="form-select" id="clientSelect">
+                    <option value="disabled selected">Client</option>
+                    <option value="Luke Curtis">Luke Curtis</option>
+                    <option value="Jemma Coetzee">Jemma Coetzee</option>
+                    <option value="Cameron Curtis">Cameron Curtis</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-12">
+            <label for="inputDriversName" class="form-label">Drivers Name</label>
+            <input type="text" class="form-control" id="inputDriversName" placeholder="John Doe">
+        </div>
+        <div class="col-12">
+            <label for="Car Registration No." class="form-label mt-2">Car Registration No.</label>
+            <input type="text" class="form-control" id="Car Registration No." placeholder="SL292">
+        </div>
+        <div class="col-md-6">
+            <label for="inputMileage" class="form-label mt-2">Mileage</label>
+            <div class="input-group">
+                <input type="number" class="form-control" placeholder="100" min="0" aria-label="Amount">
+                <div class="input-group-append">
+                    <span class="input-group-text">KM</span>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 col-12">
-                        <div class="mt-4 mb-2" id="mainDropdown">
-                            <select class="js-example-basic-single form-control">
-                                <option value="" disabled selected>Item Type</option>
-                                <option value="fuel">Fuel</option>
-                                <option value="gas">Gas</option>
-                                <option value="water">Water</option>
-                                <option value="parking">Parking Coupons</option>
-                                <option value="regulators">Regulators</option>
-                                <option value="cords">Cords</option>
-                                <option value="gasStand">Gas Stand</option>
-                                <option value="oil">Oil</option>
-                                <option value="gasRefill">Gas Refill</option>
-                                <option value="gasCylinder">Gas Cylinder</option>
-                                <option value="fireExtinguisher">Fire Extinguisher</option>
-                                <option value="ice">Ice</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="mt-4 mb-2" id="subDropdown" style="display: none;">
-                            <select class="js-example-basic-single form-control" id="subCategory">
-
-                                <!-- Options for fuel types will be dynamically loaded here -->
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row align-items-center">
-                        <div class="col-md-6 col-12">
-                            <div class="mt-4 mb-2" id="fuelQuantityInput" style="display: none;">
-                                <input type="number" class="form-control" id="fuelQuantity" placeholder="Enter quantity in liters">
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-12">
-                            <div id="totalCostContainer" style="display: none;"
-                                class="input-group mb-3">
-                                <laebl for="totalCost" class="form-label mt-2">Total Cost</laebl>
-                                <span class="input-group-text">Rs</span>
-                                <input type="text" id="fuelAmount" class="form-control" aria-label="Total cost" readonly>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-6 col-12">
-                            <div id="waterQuantityInput" style="display: none;">
-                                <label for="waterQuantity" class="form-label">Enter quantity in gallons</label>
-                                <input type="number" class="form-control" id="waterQuantity" placeholder="Number of gallons">
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-12">
-                            <div id="waterTotalCostContainer" style="display: none;" class="input-group mb-3">
-                                <span class="input-group-text">Total Cost: Rs</span>
-                                <input type="text" id="waterTotalAmount" class="form-control" aria-label="Total cost" readonly>
-                            </div>
-                            <div id="perGallonCostContainer" style="display: none;" class="input-group mb-3">
-                                <span class="input-group-text">Price per Gallon: Rs</span>
-                                <input type="text" id="perGallonPrice" class="form-control" aria-label="Per gallon price" readonly>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="mt-4 mb-2" id="couponQuantityInput" style="display: none;">
-                            <label for="couponQuantity" class="form-label">Enter quantity of coupons</label>
-                            <input type="number" class="form-control" id="couponQuantity" placeholder="Number of coupons">
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div id="totalCouponCostContainer" style="display: none;" class="input-group mb-3">
-                            <span class="input-group-text">Total Cost: Rs</span>
-                            <input type="text" id="totalCouponAmount" class="form-control" aria-label="Total cost" readonly>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-6 col-12">
-                        <div class="mt-4 mb-2" id="totalRegulatorQuantity" style="display: none;">
-                            <label for="regulatorQuantity" class="form-label">Enter quantity of Regulators</label>
-                            <input type="number" class="form-control" id="regulatorQuantity" placeholder="Number of Regulators">
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div id="totalRegulatorCost" style="display: none;" class="input-group mb-3">
-                            <span class="input-group-text">Total Cost: Rs</span>
-                            <input type="text" id="totalRegulator" class="form-control" aria-label="Total cost" readonly>
-                        </div>
-                    </div>
-
-
-
-                    <div class="col-md-6 col-12">
-                        <div class="mt-4 mb-2" id="gasRefillQuantityContainer" style="display: none;">
-                            <label for="gasRefillQuantity" class="form-label">Enter quantity of Gas Refills</label>
-                            <input type="number" class="form-control" id="gasRefillQuantity" placeholder="Number of Gas Refills">
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div id="totalGasRefillCost" style="display: none;" class="input-group mb-3">
-                            <span class="input-group-text">Total Cost: Rs</span>
-                            <input type="text" id="gasRefillAmount" class="form-control" aria-label="Total cost for gas refill" readonly>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-6 col-12">
-                        <div class="mt-4 mb-2" id="gasCylinderQuantityInput" style="display: none;">
-                            <input type="number" class="form-control" id="gasCylinderQuantity" placeholder="Enter number of cylinders">
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div id="totalCylinderCostContainer" style="display: none;"
-                            class="input-group mb-3">
-                            <laebl for="totalCost" class="form-label mt-2">Total Cost</laebl>
-                            <span class="input-group-text">Rs</span>
-                            <input type="text" id="cylinderAmount" class="form-control" aria-label="Total cost" readonly>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-6 col-12">
-                        <div class="mt-4 mb-2" id="fireExtinguisherQuantityInput" style="display: none;">
-                            <input type="number" class="form-control" id="fireExtinguisherQuantity" placeholder="Enter number of Fire Extinguishers">
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div id="totalExtinguisherContainer" style="display: none;"
-                            class="input-group mb-3">
-                            <labl for="totalCost" class="form-label mt-2">Total Cost</labl>
-                            <span class="input-group-text">Rs</span>
-                            <input type="text" id="extiniguisherAmount" class="form-control" aria-label="Total cost" readonly>
-                        </div>
-                    </div>
-
-
-
-                    <div class="col-md-6 col-12">
-                        <div class="mt-4 mb-2" id="cordContainer" style="display:none">
-                            <input type="number" class="form-control" id="cordQuantity" placeholder="Enter number of Cords">
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div id="totalCordContainer" style="display: none;"
-                            class="input-group mb-3">
-                            <labl for="totalCost" class="form-label mt-2">Total Cost</labl>
-                            <span class="input-group-text">Rs</span>
-                            <input type="text" id="cordAmount" class="form-control" aria-label="Total cost" readonly>
-                        </div>
-                    </div>
-
-
-
-
-
-
-
-
-
-                    <div class="col-12">
-                        <label for="inputDriversName" class="form-label">Drivers Name</label>
-                        <input type="text" class="form-control" id="inputDriversName" placeholder="John Doe">
-                    </div>
-                    <div class="col-12">
-                        <label for="Car Registration No." class="form-label mt-2">Car Registration No.</label>
-                        <input type="text" class="form-control" id="Car Registration No." placeholder="SL292">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="inputMileage" class="form-label mt-2 ">Mileage </label>
-                        <div class="input-group">
-                            <input type="number" class="form-control" placeholder="100" min="0" aria-label="Amount" >
-                            <div class="input-group-append">
-                                <span class="input-group-text">KM</span>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-3 col-12">
-                        <button type="button" id="addItemButton" class="btn btn-info w-100">Add Another Item</button>
-
-                    </div>
-
-
-
-                    <div class="col-12 d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary w-50 mt-2">Save and Print</button>
-                    </div>
-            </form>
+            </div>
         </div>
 
+        <!-- Sales Entries Section -->
+        <div id="salesEntries"></div>
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- Add Another Item and Save Button -->
+        <div class="mt-3 col-12">
+            <button type="button" id="addItemButton" class="btn btn-info w-100">Add Another Item</button>
+        </div>
+        <div class="col-12 d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary w-50 mt-2">Save and Print</button>
+        </div>
+    </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="js/sales.js"></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-
-
-        <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>--%>
-
-
-
-        <script src="js/sales.js"></script>
-
-    </body>
-
+   
+       
 </asp:Content>
-
