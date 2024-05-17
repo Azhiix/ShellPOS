@@ -10,37 +10,40 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="container mt-4">
-    <form>
-        <div class="row g-3 align-items-center">
-            <div class="col-md-3">
-                <input type="text" class="form-control" id="dateFrom" placeholder="Date From">
-            </div>
-            <div class="col-md-3">
-                <input type="text" class="form-control" id="dateTo" placeholder="Date To">
-            </div>
-            <div class="col-md-3">
-                <select class="form-select" id="clientSelect">
-                    <option value="">Select Client</option>
-                    <option value="Client1">Client 1</option>
-                    <option value="Client2">Client 2</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <input type="text" class="form-control" id="vehicleRegNo" placeholder="Vehicle Registration No">
-            </div>
+    
+        <div class="container mt-4">
+   <form>
+    <div class="row g-3 align-items-center">
+        <div class="col-md-3">
+            <input type="text" class="form-control" id="dateFrom" placeholder="Date From">
         </div>
-       <%-- <div class="row mt-3">
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>--%>
-    </form>
+        <div class="col-md-3">
+            <input type="text" class="form-control" id="dateTo" placeholder="Date To">
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" id="clientSelect">
+                <option value="">Select Client</option>
+                <option value="Client1">Client 1</option>
+                <option value="Client2">Client 2</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" id="vehicleRegNo" placeholder="Vehicle Registration No">
+        </div>
+    </div>
+    <button id="getSales" type="button" class="btn btn-primary mt-3">Fetch Data</button>
+</form>
+
 </div>
 
-    <div class="ag-theme-quartz mt-4 mr-4 ml-4" style="height:100vh" id="myGrid"></div>
+    <div class="ag-theme-quartz mt-4 mr-4 ml-4" style="height:100vh" id="salesGrid"></div>
 
-    <button onclick="downloadCSV()">Download CSV</button>
+    <button onclick="downloadcsv()">download csv</button>
+
+
+
+ 
+
 
 
     <!-- Scripts should also be included in the head or at the end of the body -->
@@ -49,5 +52,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ag-grid/31.3.1/ag-grid-community.min.js" integrity="sha512-pyep0b8pFXiMbcaxISZ03VOCbUVoUal2G9uFWCrjAJsSO/koeng2k2/6oLOq+2DUbAER3uC/YVB5GSISuTWYLQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" integrity="sha512-RCgrAvvoLpP7KVgTkTctrUdv7C6t7Un3p1iaoPr1++3pybCyCsCZZN7QEHMZTcJTmcJ7jzexTO+eFpHk4OCFAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script src="js/reports.js"></script>
 </asp:Content>

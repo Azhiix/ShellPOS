@@ -13,7 +13,7 @@
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Add A User <i class="fas fa-user-plus"></i>
         </button>
-        <div class="dropdown-menu p-4" aria-labelledby="dropdownMenuButton">
+        <div class="dropdown-menu p-4 w-100 min-h-100" aria-labelledby="dropdownMenuButton">
             <form id="registrationForm">
                 <div class="form-group">
                     <label for="username">Username:</label>
@@ -34,7 +34,7 @@
 
 
     <div class="dropdown mt-4">
-        <button class="btn btn-primary view-users dropdown-toggle" type="button" id="userdropdownmenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-primary view-users dropdown-toggle w-50 mx-auto text-center" type="button" id="userdropdownmenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             View All Users<i class="fas fa-user-plus"></i>
         </button>
 
@@ -74,6 +74,11 @@
             </div>
             <button type="button" class="btn btn-primary mt-3" id="editBtn">Edit User</button>
         </div>
+
+
+         <button class="btn btn-primary dropdown-toggle mt-4" type="button" id="productDropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+     View All Products <i class="fa-solid fa-money-bill"></i>
+ </button>
 
 
 

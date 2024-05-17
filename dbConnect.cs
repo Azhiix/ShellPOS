@@ -172,7 +172,7 @@ public class DbConnect
                 return userInfos;
             }
 
-            
+
 
 
         }
@@ -181,7 +181,7 @@ public class DbConnect
 
         //returning all products and their relevant info
 
-       
+
 
     }
 
@@ -214,15 +214,98 @@ public class DbConnect
                 }
                 dataReader.Close();
             }
-            return products;  
+            return products;
         }
     }
 
 
 
+    public static List<clsSales> RecordSales(string dateFrom, string dateTo, string client, string vehicleRegNo)
+    {
+        List<clsSales> sales = new List<clsSales>();
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+         
+            string sql = @"
+            SELECT
+                s.SaleId,
+                s.ClientId,
+                c.Name AS ClientName,
+                s.SaleDate,
+                s.TotalCost,
+                s.DriverName,
+                s.CarRegNo
+            FROM Sales s
+            JOIN Clients c ON s.ClientId = c.ClientID
+            WHERE 1=1"; 
+
+           
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            if (!string.IsNullOrEmpty(dateFrom))
+            {
+                sql += " AND s.SaleDate >= @DateFrom";
+                parameters.Add(new SqlParameter("@DateFrom", dateFrom));
+            }
+
+            if (!string.IsNullOrEmpty(dateTo))
+            {
+                sql += " AND s.SaleDate <= @DateTo";
+                parameters.Add(new SqlParameter("@DateTo", dateTo));
+            }
+
+            if (!string.IsNullOrEmpty(client))
+            {
+                sql += " AND c.Name = @Client";
+                parameters.Add(new SqlParameter("@Client", client));
+            }
+
+            if (!string.IsNullOrEmpty(vehicleRegNo))
+            {
+                sql += " AND s.CarRegNo = @VehicleRegNo";
+                parameters.Add(new SqlParameter("@VehicleRegNo", vehicleRegNo));
+            }
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                // Add parameters to the command
+                foreach (var parameter in parameters)
+                {
+                    command.Parameters.Add(parameter);
+                }
+
+                using (SqlDataReader dataReader = command.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        sales.Add(new clsSales
+                        {
+                            SaleId = Convert.ToInt32(dataReader["SaleId"]),
+                            ClientId = Convert.ToInt32(dataReader["ClientId"]),
+                            ClientName = dataReader["ClientName"].ToString(),
+                            SaleDate = Convert.ToDateTime(dataReader["SaleDate"]),
+                            TotalCost = Convert.ToDecimal(dataReader["TotalCost"]),
+                            DriverName = dataReader["DriverName"].ToString(),
+                            CarRegNo = dataReader["CarRegNo"].ToString()
+                        });
+                    }
+                }
+            }
+        }
+
+
+
+
+        return sales;
+    }
 
 
 }
+
+
 
 
 

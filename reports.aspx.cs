@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SezwanPayroll.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -32,7 +34,24 @@ namespace SezwanPayroll
             ClaimsPrincipal principal = JWT.GetPrincipal(token);
             return principal != null;
         }
+
+
+        [WebMethod()]
+        public static List<clsSales> ShowSales(string dateFrom, string dateTo, string client, string vehicleRegNo)
+        {
+            
+            List<clsSales> sales = DbConnect.RecordSales(dateFrom,dateTo,client,vehicleRegNo);
+
+            return sales;
+
+        }
     }
 
 }
- 
+
+//const payload = {
+//            dateFrom: dateFrom,
+//            dateTo: dateTo,
+//            client: client,
+//            vehicleRegNo: vehicleRegNo
+//        //};

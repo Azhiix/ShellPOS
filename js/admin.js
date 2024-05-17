@@ -74,7 +74,7 @@
         });
     });
 
-    // Change event handler for user selection
+    
     $('#userSelect').change(function () {
         var selectedOption = $(this).find('option:selected');
         $('#roleId').val(selectedOption.data('roleid'))
