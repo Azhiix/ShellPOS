@@ -5,44 +5,51 @@
     <link rel="stylesheet" href="css/reports.css" />
     <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
     <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css" integrity="sha512-MQXduO8IQnJVq1qmySpN87QQkiR1bZHtorbJBD0tzy7/0U9+YIC93QWHeGTEoojMVHWWNkoCp8V6OzVSYrX0oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    
-        <div class="container mt-4">
-   <form>
-    <div class="row g-3 align-items-center">
-        <div class="col-md-3">
-            <input type="text" class="form-control" id="dateFrom" placeholder="Date From">
-        </div>
-        <div class="col-md-3">
-            <input type="text" class="form-control" id="dateTo" placeholder="Date To">
-        </div>
-        <div class="col-md-3">
-            <select class="form-select" id="clientSelect">
-                <option value="">Select Client</option>
-                <option value="Client1">Client 1</option>
-                <option value="Client2">Client 2</option>
-            </select>
-        </div>
-        <div class="col-md-3">
-            <input type="text" class="form-control" id="vehicleRegNo" placeholder="Vehicle Registration No">
-        </div>
+
+    <div class="container mt-4">
+        <form>
+            <div class="row g-3 align-items-center">
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="dateFrom" placeholder="Date From">
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="dateTo" placeholder="Date To">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" id="clientSelect">
+                     
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="vehicleRegNo" placeholder="Vehicle Registration No">
+                </div>
+            </div>
+
+            <section class="d-flex justify-content-between">
+                <button id="getSales" type="button" class="btn btn-primary mt-3">Fetch Data</button>
+
+                <button id="downloadCSV" onclick="downloadToCSV()" class="btn btn-success mt-3">Download CSV</button>
+
+            </section>
+
+
+      
+
+
+
+        </form>
+
     </div>
-    <button id="getSales" type="button" class="btn btn-primary mt-3">Fetch Data</button>
-</form>
-
-</div>
-
-    <div class="ag-theme-quartz mt-4 mr-4 ml-4" style="height:100vh" id="salesGrid"></div>
-
-    <button onclick="downloadcsv()">download csv</button>
+    <div class="ag-theme-quartz mt-4 mx-auto" style="height: 100vh;" id="salesGrid"></div>
 
 
 
- 
+
 
 
 

@@ -1,37 +1,6 @@
-﻿
+﻿document.addEventListener('DOMContentLoaded', function () {
+    $('#salesGrid').hide();
 
-
-//retreiving the username from the JWt Token, remember to add to a shared JS file later on
-
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
-
-function extractUsernameFromToken() {
-    const cookieName = 'Token';
-    const token = getCookie(cookieName);
-    if (token) {
-        try {
-            const decodedToken = jwt_decode(token);
-            const username = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
-            console.log(`Username: ${username}`);
-
-            return username;
-           
-        } catch (e) {
-            console.error('Error decoding token:', e);
-        }
-    } else {
-        console.error('Token not found in the cookie.');
-    }
-}
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    extractUsernameFromToken()
     // Initialize date pickers
     flatpickr("#dateFrom", {
         dateFormat: "Y-m-d",
@@ -55,7 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
             { field: "VehicleRegNo", headerName: "Vehicle Reg No" },
             { field: "TotalCost", headerName: "Amount" },
             { field: "SaleId", headerName: "SaleId" },
-            {field: "Username", headerName: "Username"}
+            { field: "Username", headerName: "Username" },
+          
         ],
         rowData: [],
         onGridReady: function (params) {
@@ -73,30 +43,68 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
+    // Fetch and populate the client dropdown
+    fetch('reports.aspx/ShowClients', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    }).then(response => response.json())
+        .then(data => {
+            console.log('The data is', data);
+            const clientSelect = document.getElementById('clientSelect');
+            const optionEl = `<option value="">Select Client</option>
+            ${data.d.map(client => `<option value="${client.ClientID}">${client.Name}</option>`).join('')}`;
+            clientSelect.innerHTML = optionEl;
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+
     document.getElementById('getSales').addEventListener('click', function (e) {
         e.preventDefault();
+        $('#salesGrid').show();
 
         // Capture input values
         const dateFrom = document.getElementById('dateFrom').value;
         const dateTo = document.getElementById('dateTo').value;
-        const client = document.getElementById('clientSelect').value;
+        const client = document.getElementById('clientSelect').value; // Ensure correct ID is used
         const vehicleRegNo = document.getElementById('vehicleRegNo').value;
-        const username = extractUsernameFromToken();
-        console.log(username)
+        const clientId = document.getElementById('clientSelect').value;
 
         // Create a payload with the captured values
         const payload = {
             dateFrom: dateFrom,
             dateTo: dateTo,
-            client: client,
             vehicleRegNo: vehicleRegNo,
-
-
+            clientId: clientId
         };
 
-        console.log(payload);
+        console.log('The Payload is', payload);
 
-        // Make the fetch request with the payload
+        function parseDate(dateString) {
+            const jsonDateMatch = dateString.match(/\/Date\((\d+)\)\//);
+            if (jsonDateMatch) {
+                const timestamp = parseInt(jsonDateMatch[1], 10);
+                const date = new Date(timestamp);
+                const year = date.getUTCFullYear();
+                const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+                const day = String(date.getUTCDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            const date = new Date(dateString);
+            if (!isNaN(date)) {
+                const year = date.getUTCFullYear();
+                const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+                const day = String(date.getUTCDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            } else {
+                console.error('Invalid date format', dateString);
+                return null;
+            }
+        }
+
         fetch('reports.aspx/ShowSales', {
             method: 'POST',
             headers: {
@@ -113,44 +121,46 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 console.log("The data is", data);
 
-                // Clear the existing rowData
                 salesGridOptions.rowData = [];
 
-                // Loop through the data and add it to the grid
-                // Loop through the data and add it to the grid
                 data.d.forEach(sale => {
-                    console.log('Sale is', sale)
-                    // Extract the timestamp and convert it to an ISO string, then take the date part
-                    const timestamp = parseInt(sale.SaleDate.match(/\d+/)[0]); // Get the timestamp from the /Date(...) format
-                    const saleDate = new Date(timestamp).toISOString().split('T')[0]; // Convert to ISO string and split to get only the date part
+                    const formattedDate = parseDate(sale.SaleDate);
+                    if (formattedDate) {
+                        const formattedSale = {
+                            SaleDate: formattedDate,
+                            ClientName: sale.ClientName,
+                            DriverName: sale.DriverName,
+                            VehicleRegNo: sale.CarRegNo,
+                            TotalCost: sale.TotalCost,
+                            SaleId: sale.SaleId,
+                            Username: sale.Username,
+                            ClientID: sale.ClientId
 
-                    const formattedSale = {
-                        SaleDate: saleDate, // Already formatted as YYYY-MM-DD
-
-                        ClientName: sale.ClientName,
-                        DriverName: sale.DriverName,
-                        VehicleRegNo: sale.CarRegNo,
-                        TotalCost: sale.TotalCost,
-                        SaleId: sale.SaleId,
-                        Username: username
-                        
-                    };
-                    salesGridOptions.rowData.push(formattedSale);
-                    
-                    console.log(formattedSale)
-
+                        };
+                        salesGridOptions.rowData.push(formattedSale);
+                    } else {
+                        console.error('Invalid date format', sale.SaleDate);
+                    }
                 });
 
-                
-                // Refresh the grid with new data
                 gridApi.setRowData(salesGridOptions.rowData);
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
-
-
-
-    })
-
+    });
 });
+
+const CSVDownloadButton = document.getElementById('downloadCSV');
+CSVDownloadButton.addEventListener('click', function (e) {
+    e.preventDefault();
+    const params = {
+        fileName: 'sales.csv',
+        columnKeys: ['SaleDate', 'ClientName', 'DriverName', 'VehicleRegNo', 'TotalCost', 'SaleId', 'Username', ],
+        processCellCallback: function (params) {
+            return params.value;
+        }
+    };
+    gridApi.exportDataAsCsv(params);
+});
+

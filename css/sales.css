@@ -114,6 +114,7 @@
 
     .printWindow, .printWindow * {
         visibility: visible; /* Make the printWindow and its children visible */
+      
     }
 
     .printWindow {
@@ -166,3 +167,51 @@ td {
         display: inline-block;
         width: 48%;
     }
+
+
+
+
+#addItemButton {
+    background-color: #f6aa38;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    width: 100%;
+}
+
+.saveAndPrint{
+    background-color: #f6aa38;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    width: 100%;
+}
+
+
+.saveAndPrint:hover {
+    background-color: #f6aa38;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    width: 100%;
+}
+
+
+.form-inline {
+    display: flex;         /* Ensures that children (label and select) are in a flex row */
+    justify-content: flex-start; /* Aligns children to the start of the parent */
+    align-items: center;   /* Aligns children vertically in the center */
+    width: 100%;           /* Takes full width of the parent */
+}
+
+.form-label {
+    margin-right: 1rem;    /* Provides space between label and select field */
+}
+
+

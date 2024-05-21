@@ -1,29 +1,30 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Web;
-using System.Web.Services;
+using System;
 
-namespace SezwanPayroll
+namespace SezwanPayroll.DTO
 {
+
+
+
     public class JWT
     {
         private static readonly string secretKey = "pbRCLIbbr3wOhDXOrNSB9AY-Gzy9CDqUuDkh_qjFpNQ";
 
-        public static string GenerateJwtToken(string username, int roleId)
+        public static string GenerateJwtToken(string username, int roleId, int userId)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, username),
-        new Claim("role_id", roleId.ToString())  // Store role ID as a claim
-    };
+        {
+            new Claim(ClaimTypes.Name, username),
+            new Claim("role_id", roleId.ToString()),
+            new Claim("User_Id", userId.ToString())
+        };
 
             var token = new JwtSecurityToken(
                 issuer: "Sezwan Technologies Ltd",
@@ -35,10 +36,6 @@ namespace SezwanPayroll
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
-
-
-
 
         public static ClaimsPrincipal GetPrincipal(string token)
         {
@@ -61,17 +58,12 @@ namespace SezwanPayroll
                 var principal = tokenHandler.ValidateToken(token, parameters, out securityToken);
                 return principal;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine("Token validation failed: " + ex.Message);
                 return null;
             }
         }
     }
+
 }
-
-
-
-
-
-
-//

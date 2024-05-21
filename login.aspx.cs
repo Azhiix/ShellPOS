@@ -36,7 +36,7 @@ namespace SezwanPayroll
 
             if (user != null)
             {
-                string token = JWT.GenerateJwtToken(username, user.RoleId);  // Generate JWT token
+                string token = DTO.JWT.GenerateJwtToken(username, user.RoleId, user.UserId);  // Generate JWT token
                 return new JavaScriptSerializer().Serialize(new
                 {
                     User = user,

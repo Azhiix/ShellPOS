@@ -1952,11 +1952,13 @@
     <Compile Include="Admin.aspx.designer.cs">
       <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DTO\clsClient.cs" />
     <Compile Include="DTO\clsLogin.cs" />
     <Compile Include="dbConnect.cs" />
     <Compile Include="DTO\clsProducts.cs" />
     <Compile Include="DTO\clsSales.cs" />
-    <Compile Include="JWT.cs" />
+    <Compile Include="DTO\clsSalesData.cs" />
+    <Compile Include="DTO\JWT.cs" />
     <Compile Include="login.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>login.aspx</DependentUpon>

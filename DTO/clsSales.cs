@@ -10,10 +10,12 @@ namespace SezwanPayroll.DTO
         public int SaleId { get; set; }
         public int ClientId { get; set; }
         public string ClientName { get; set; }
-        public DateTime SaleDate { get; set; }
+        public string SaleDate { get; set; }
         public decimal TotalCost { get; set; }
         public string DriverName { get; set; }
         public string CarRegNo { get; set; }
+
+        public string Username { get; set;}
     }
 
 

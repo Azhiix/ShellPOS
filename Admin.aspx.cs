@@ -34,7 +34,7 @@ namespace SezwanPayroll
             if (string.IsNullOrEmpty(token))
                 return false;
 
-            ClaimsPrincipal principal = JWT.GetPrincipal(token);
+            ClaimsPrincipal principal = DTO.JWT.GetPrincipal(token);
             return principal != null;
         }
 

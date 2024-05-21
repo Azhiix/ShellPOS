@@ -31,16 +31,25 @@ namespace SezwanPayroll
             if (string.IsNullOrEmpty(token))
                 return false;
 
-            ClaimsPrincipal principal = JWT.GetPrincipal(token);
+            ClaimsPrincipal principal = DTO.JWT.GetPrincipal(token);
             return principal != null;
         }
 
 
         [WebMethod()]
-        public static List<clsSales> ShowSales(string dateFrom, string dateTo, string client, string vehicleRegNo)
+
+        public static List<clsClient> ShowClients()
+        {
+            List<clsClient> clients = DbConnect.DisplayAllClients();
+            return clients;
+        }
+
+
+        [WebMethod()]
+        public static List<clsSales> ShowSales(string dateFrom, string dateTo, string clientId, string vehicleRegNo)
         {
             
-            List<clsSales> sales = DbConnect.RecordSales(dateFrom,dateTo,client,vehicleRegNo);
+            List<clsSales> sales = DbConnect.RecordSales(dateFrom,dateTo, clientId, vehicleRegNo);
 
             return sales;
 
