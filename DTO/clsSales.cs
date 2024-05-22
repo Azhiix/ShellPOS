@@ -14,8 +14,17 @@ namespace SezwanPayroll.DTO
         public decimal TotalCost { get; set; }
         public string DriverName { get; set; }
         public string CarRegNo { get; set; }
+        public string Username { get; set; }
+        public List<clsSaleItem> SaleItems { get; set; }
+    }
 
-        public string Username { get; set;}
+    public class clsSaleItem
+    {
+        public int SaleItemId { get; set; }
+        public int ItemId { get; set; }
+        public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal TotalCost { get; set; }
     }
 
 

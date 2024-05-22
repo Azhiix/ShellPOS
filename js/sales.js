@@ -169,7 +169,7 @@ function createSaleEntryForm(productType = '') {
                         <div class="input-group">
                             <input type="number" class="form-control quantityAmount" id="quantityAmount${saleCount}" placeholder="100" min="0" aria-label="Amount" onchange="updateSummary(${saleCount})">
                             <div class="input-group-append">
-                                <span class="input-group-text">L</span>
+                                <span class="input-group-text ml-2">Price</span>
                             </div>
                             <input type="number" id="totalCost${saleCount}" class="form-control" disabled />
                         </div>
@@ -258,7 +258,7 @@ function attachEventListeners() {
         newProductTypeSelect.change();
     });
 
-    $(document).on('click', '.saveButton', function () {
+    $(document).on('click', '.saveButton', '.saveAndPrint', function () {
         const saleId = $(this).data('sale-id');
         console.log(`Save button clicked for sale ID: ${saleId}`);
         const productType = $(`#sale${saleId} .clsProductType`).val();
@@ -299,8 +299,8 @@ function attachEventListeners() {
         determineTotalCostForAllSales();
     });
 
-    $(document).on('click', '.saveAndPrint', function (e) {
-        e.preventDefault();
+    $(document).on('click', '.saveAndPrint', function () {
+       
         console.log('Save and Print button clicked.');
         printAllSales();
         determineTotalCostForAllSales();
@@ -459,8 +459,7 @@ function collectSalesData() {
     $('.saleEntry').each(function () {
         var $saleEntry = $(this);
         const itemName = $saleEntry.data('itemName');
-
-        console.log('Item Name:', itemName);
+        const itemId = $saleEntry.data('item');
 
         var priceMatch = itemName.match(/Rs\s(\d+\.\d+|\d+)/);
         var price = priceMatch ? parseFloat(priceMatch[1]) : null;
@@ -474,7 +473,7 @@ function collectSalesData() {
         var name = itemName.split(/\s*-\s*/)[0];
         var saleData = {
             productType: $saleEntry.data('productType'),
-            item: $saleEntry.data('item'),
+            ItemId: itemId,
             itemName: name,
             quantity: $saleEntry.data('quantity'),
             totalItemCost: $saleEntry.data('totalCost'),
@@ -497,6 +496,7 @@ function collectSalesData() {
 
     return { salesData, clientInfo };
 }
+
 
 function printSalesData() {
     const { salesData, clientInfo } = collectSalesData();

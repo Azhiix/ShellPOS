@@ -211,6 +211,7 @@
     <Content Include="js\Revamped\reports.js" />
     <Content Include="js\Revamped\scripts.bundle.js" />
     <Content Include="js\sales.js" />
+    <Content Include="js\ThemeAssets\JQuery\jquery.js" />
     <Content Include="login.aspx" />
     <None Include="packages.config" />
     <Content Include="packages\IdentityModel.6.0.0\.signature.p7s" />
@@ -2103,6 +2104,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="js\ThemeAssets\Bootstrap\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>

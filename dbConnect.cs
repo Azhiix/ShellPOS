@@ -8,6 +8,7 @@ using System.EnterpriseServices;
 using System.Security.Cryptography.X509Certificates;
 using SezwanPayroll;
 using System.Web.Script.Serialization;
+using System.Linq;
 
 public class DbConnect
 {
@@ -221,7 +222,6 @@ public class DbConnect
     }
 
 
-
     public static List<clsSales> RecordSales(string dateFrom, string dateTo, string clientId, string vehicleRegNo)
     {
         List<clsSales> sales = new List<clsSales>();
@@ -231,31 +231,37 @@ public class DbConnect
             connection.Open();
 
             string sql = @"
-        SELECT
-            s.SaleId,
-            s.ClientId,
-            c.Name AS ClientName,
-            s.SaleDate,
-            s.TotalCost,
-            s.DriverName,
-            s.CarRegNo,
-            u.Username
-        FROM Sales s
-        JOIN Clients c ON s.ClientId = c.ClientID
-        JOIN UserPermissions u ON s.UserId = u.UserID
-        WHERE 1=1";
+SELECT
+    s.SaleId,
+    s.ClientId,
+    c.Name AS ClientName,
+    s.SaleDate,
+    s.TotalCost,
+    s.DriverName,
+    s.CarRegNo,
+    u.Username,
+    si.SaleItemId,
+    si.ItemId,
+    si.Quantity,
+    si.UnitPrice,
+    si.TotalCost AS ItemTotalCost
+FROM Sales s
+JOIN Clients c ON s.ClientId = c.ClientID
+JOIN UserPermissions u ON s.UserId = u.UserID
+JOIN SaleItems si ON s.SaleId = si.SaleId
+WHERE 1=1";
 
             List<SqlParameter> parameters = new List<SqlParameter>();
 
             if (!string.IsNullOrEmpty(dateFrom))
             {
-                sql += " AND s.SaleDate >= @DateFrom";
+                sql += " AND TRY_CONVERT(DATE, s.SaleDate, 101) >= TRY_CONVERT(DATE, @DateFrom, 101)";
                 parameters.Add(new SqlParameter("@DateFrom", dateFrom));
             }
 
             if (!string.IsNullOrEmpty(dateTo))
             {
-                sql += " AND s.SaleDate <= @DateTo";
+                sql += " AND TRY_CONVERT(DATE, s.SaleDate, 101) <= TRY_CONVERT(DATE, @DateTo, 101)";
                 parameters.Add(new SqlParameter("@DateTo", dateTo));
             }
 
@@ -273,7 +279,6 @@ public class DbConnect
 
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
-                // Add parameters to the command
                 foreach (var parameter in parameters)
                 {
                     command.Parameters.Add(parameter);
@@ -283,18 +288,37 @@ public class DbConnect
                 {
                     while (dataReader.Read())
                     {
-                        sales.Add(new clsSales
+                        var saleId = Convert.ToInt32(dataReader["SaleId"]);
+                        var sale = sales.FirstOrDefault(s => s.SaleId == saleId);
+
+                        if (sale == null)
                         {
-                            SaleId = Convert.ToInt32(dataReader["SaleId"]),
-                            ClientId = Convert.ToInt32(dataReader["ClientId"]),
-                            ClientName = dataReader["ClientName"].ToString(),
-                            //SaleDate should be a string
-                            SaleDate = dataReader["SaleDate"].ToString(),
-                            TotalCost = Convert.ToDecimal(dataReader["TotalCost"]),
-                            DriverName = dataReader["DriverName"].ToString(),
-                            CarRegNo = dataReader["CarRegNo"].ToString(),
-                            Username = dataReader["Username"].ToString()
-                        });
+                            sale = new clsSales
+                            {
+                                SaleId = saleId,
+                                ClientId = Convert.ToInt32(dataReader["ClientId"]),
+                                ClientName = dataReader["ClientName"].ToString(),
+                                SaleDate = Convert.ToDateTime(dataReader["SaleDate"]).ToString("MM/dd/yyyy"),
+                                TotalCost = Convert.ToDecimal(dataReader["TotalCost"]),
+                                DriverName = dataReader["DriverName"].ToString(),
+                                CarRegNo = dataReader["CarRegNo"].ToString(),
+                                Username = dataReader["Username"].ToString(),
+                                SaleItems = new List<clsSaleItem>()
+                            };
+
+                            sales.Add(sale);
+                        }
+
+                        clsSaleItem saleItem = new clsSaleItem
+                        {
+                            SaleItemId = Convert.ToInt32(dataReader["SaleItemId"]),
+                            ItemId = Convert.ToInt32(dataReader["ItemId"]),
+                            Quantity = Convert.ToInt32(dataReader["Quantity"]),
+                            UnitPrice = Convert.ToDecimal(dataReader["UnitPrice"]),
+                            TotalCost = Convert.ToDecimal(dataReader["ItemTotalCost"])
+                        };
+
+                        sale.SaleItems.Add(saleItem);
                     }
                 }
             }
@@ -302,6 +326,11 @@ public class DbConnect
 
         return sales;
     }
+
+
+
+
+
 
 
 
@@ -362,18 +391,11 @@ public class DbConnect
 
                 // Convert necessary fields to the correct types and validate lengths
                 int clientId = Convert.ToInt32(clientInfo["ClientId"]);
-                string saleDate = clientInfo["date"]; // SaleDate is treated as a string
+                string saleDate = clientInfo["date"];
                 decimal totalCost = Convert.ToDecimal(clientInfo["totalCost"]);
                 string driverName = clientInfo["driverName"];
                 string carRegNo = clientInfo["carRegNo"];
                 int userId = Convert.ToInt32(clientInfo["userId"]);
-
-                // Log lengths and values
-                Console.WriteLine($"DriverName (length {driverName.Length}): {driverName}");
-                Console.WriteLine($"CarRegNo (length {carRegNo.Length}): {carRegNo}");
-                Console.WriteLine($"SaleDate (length {saleDate.Length}): {saleDate}");
-                Console.WriteLine($"TotalCost: {totalCost}");
-                Console.WriteLine($"UserId: {userId}");
 
                 // Ensure lengths do not exceed the maximum allowed lengths
                 if (driverName.Length > 255)
@@ -390,7 +412,6 @@ public class DbConnect
                 if (saleDate.Length > 10)
                 {
                     saleDate = saleDate.Substring(0, 10);
-                    Console.WriteLine($"Truncated SaleDate: {saleDate}");
                 }
 
                 // Insert Sales data and get the SaleId
@@ -401,23 +422,13 @@ public class DbConnect
 
                 SqlCommand saleCmd = new SqlCommand(sqlInsertQuery, connection, transaction);
                 saleCmd.Parameters.AddWithValue("@ClientId", clientId);
-                saleCmd.Parameters.AddWithValue("@SaleDate", saleDate); // Use saleDate as string
+                saleCmd.Parameters.AddWithValue("@SaleDate", saleDate);
                 saleCmd.Parameters.AddWithValue("@TotalCost", totalCost);
                 saleCmd.Parameters.AddWithValue("@DriverName", driverName);
                 saleCmd.Parameters.AddWithValue("@CarRegNo", carRegNo);
                 saleCmd.Parameters.AddWithValue("@UserId", userId);
 
                 int saleId = Convert.ToInt32(saleCmd.ExecuteScalar());
-
-                salesData.Add(new clsSalesData
-                {
-                    ClientId = clientId,
-                    Date = saleDate, // Use saleDate as string
-                    TotalCost = totalCost,
-                    DriverName = driverName,
-                    CarRegNo = carRegNo,
-                    Username = userId.ToString()
-                });
 
                 // Insert SalesItems data
                 string sqlInsertItemsQuery = @"
@@ -426,29 +437,6 @@ public class DbConnect
 
                 foreach (var item in salesDataList)
                 {
-                    // Log lengths and values for SalesItems
-                    Console.WriteLine($"SaleId: {saleId}");
-                    Console.WriteLine($"ItemId: {item.ItemId}");
-                    Console.WriteLine($"Quantity: {item.Quantity}");
-                    Console.WriteLine($"UnitPrice: {item.UnitPrice}");
-                    Console.WriteLine($"TotalItemCost: {item.TotalItemCost}");
-
-                    // Check data types and lengths
-                    if (item.Quantity < 0 || item.Quantity > int.MaxValue)
-                    {
-                        throw new Exception("Quantity is out of range.");
-                    }
-
-                    if (item.UnitPrice < 0 || item.UnitPrice > (decimal)Math.Pow(10, 10))
-                    {
-                        throw new Exception("UnitPrice is out of range.");
-                    }
-
-                    if (item.TotalItemCost < 0 || item.TotalItemCost > (decimal)Math.Pow(10, 10))
-                    {
-                        throw new Exception("TotalItemCost is out of range.");
-                    }
-
                     SqlCommand saleItemCmd = new SqlCommand(sqlInsertItemsQuery, connection, transaction);
                     saleItemCmd.Parameters.AddWithValue("@SaleId", saleId);
                     saleItemCmd.Parameters.AddWithValue("@ItemId", item.ItemId);
@@ -472,8 +460,6 @@ public class DbConnect
             }
         }
     }
-
-
 
 
 

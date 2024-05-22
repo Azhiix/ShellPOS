@@ -50,7 +50,7 @@
                         alert('Login failed: ' + parsedData.Error);
                     } else {
                         document.cookie = "Token=" + parsedData.Token + "; path=/";  // Store the token in a cookie
-                        alert('Login successful!');
+                     
                        window.location.href = 'sales.aspx';
                     }
                 })

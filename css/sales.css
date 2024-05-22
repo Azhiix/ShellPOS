@@ -127,6 +127,8 @@
         padding: 0;
         font-size: 12px; /* Smaller font size for compactness */
     }
+
+    
 }
 
 
@@ -164,9 +166,9 @@ td {
 }
 
     .inline-fields span {
-        display: inline-block;
-        width: 48%;
-    }
+    display: inline-block;
+    margin-right: 20px;
+}
 
 
 
@@ -215,3 +217,111 @@ td {
 }
 
 
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.full-height {
+    min-height: 100vh;
+}
+
+.shadow-sm {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Client Information Section */
+.client-info {
+    background-color: #fff;
+}
+
+    .client-info .form-label {
+        font-weight: bold;
+        color: #343a40;
+    }
+
+    .client-info .form-control,
+    .client-info .form-select {
+        border-radius: 0.25rem;
+    }
+
+/* Sales Entries Section */
+#salesEntries {
+    
+    border-radius: 0.25rem;
+    padding: 1rem;
+}
+
+/* Centered Total Sales Cost */
+#totalSalesCosts {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+/* Buttons */
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: #fff;
+}
+
+    .btn-info:hover {
+        background-color: #138496;
+        border-color: #117a8b;
+    }
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+/* Receipt Section */
+.printWindow .receipt {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1.5rem;
+}
+
+.printWindow h2,
+.printWindow h3,
+.printWindow h4 {
+    margin-bottom: 0.5rem;
+}
+
+.printWindow p {
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.printWindow .inline-fields {
+    display: flex;
+    justify-content: space-between;
+}
+
+    .printWindow .inline-fields span {
+        display: block;
+        width: 48%;
+    }
+
+.printWindow .table {
+    margin-bottom: 1rem;
+}
+
+    .printWindow .table th,
+    .printWindow .table td {
+        padding: 0.5rem;
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .printWindow .table th {
+        border-bottom: 2px solid #dee2e6;
+    }

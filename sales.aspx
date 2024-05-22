@@ -16,61 +16,60 @@
 <asp:Content ID="ContentBody" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container full-height">
         <!-- Client Information Section -->
-<div class="client-info border p-4 mb-3">
-    <div class="row mb-3">
-        <div class="col-4">
-            <label for="clientSelect" class="form-label">Select Client:</label>
-        </div>
-        <div class="col-8">
-            <select class="form-select" id="clientSelect">
-                <option value="" disabled selected>Choose...</option>
-            </select>
-        </div>
-    </div>
+        <div class="client-info border p-4 mb-3 shadow-sm rounded">
+            <div class="row mb-3">
+                <div class="col-4">
+                    <label for="clientSelect" class="form-label">Select Client:</label>
+                </div>
+                <div class="col-8">
+                    <select class="form-select" id="clientSelect">
+                        <option value="" disabled selected>Choose...</option>
+                    </select>
+                </div>
+            </div>
 
-    <div class="row mb-3">
-        <div class="col-4">
-            <label for="vehicleRegSelect" class="form-label car-registration">Car Registration No.:</label>
-        </div>
-        <div class="col-8">
-            <select class="form-select" id="vehicleRegSelect">
-                <option value="" disabled selected>Choose...</option>
-            </select>
-        </div>
-    </div>
+            <div class="row mb-3">
+                <div class="col-4">
+                    <label for="vehicleRegSelect" class="form-label car-registration">Car Registration No.:</label>
+                </div>
+                <div class="col-8">
+                    <select class="form-select" id="vehicleRegSelect">
+                        <option value="" disabled selected>Choose...</option>
+                    </select>
+                </div>
+            </div>
 
-    <div class="row mb-3">
-        <div class="col-4">
-            <label for="inputDriversName" class="form-label">Driver's Name:</label>
-        </div>
-        <div class="col-8">
-            <input type="text" class="form-control" id="inputDriversName" placeholder="John Doe">
-        </div>
-    </div>
+            <div class="row mb-3">
+                <div class="col-4">
+                    <label for="inputDriversName" class="form-label">Driver's Name:</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control" id="inputDriversName" placeholder="John Doe" disabled>
+                </div>
+            </div>
 
-    <div class="row">
-        <div class="col-4">
-            <label for="inputMileage" class="form-label">Mileage:</label>
-        </div>
-        <div class="col-8">
-            <div class="input-group">
-                <input type="number" class="form-control inputMileage" placeholder="100" min="0" aria-label="Amount">
-                <span class="input-group-text">KM</span>
+            <div class="row">
+                <div class="col-4">
+                    <label for="inputMileage" class="form-label">Mileage:</label>
+                </div>
+                <div class="col-8">
+                    <div class="input-group">
+                        <input type="number" class="form-control inputMileage" placeholder="100" min="0" aria-label="Amount">
+                        <span class="input-group-text">KM</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-    
         <!-- Sales Entries Section -->
         <div id="salesEntries" class="mb-3"></div>
-    
+
         <!-- Centered Total Sales Cost -->
         <div class="text-center mb-3">
             <label for="totalSalesCosts" class="form-label">The total cost is:</label>
             <input type="number" id="totalSalesCosts" class="form-control w-50 mx-auto" disabled placeholder="Total Cost">
         </div>
-    
+
         <!-- Add Another Item and Save Button -->
         <div class="row">
             <div class="col-12 mb-2">
@@ -81,11 +80,10 @@
             </div>
         </div>
     </div>
-    
 
     <!-- Receipt Section (Hidden for Printing) -->
-    <div class="printWindow d-none text-center">
-        <div class="receipt">
+    <div class="printWindow text-center d-none">
+        <div class="receipt p-3 shadow-sm rounded">
             <h2>Barin Co. Ltd</h2>
             <h3>Shell Ebene</h3>
             <p>
@@ -110,7 +108,7 @@
                         <td id="clientValue"></td>
                     </tr>
                     <tr>
-                        <td>Drivers Name</td>
+                        <td>Driver's Name</td>
                         <td id="driverNamePrint"></td>
                     </tr>
                     <tr>
@@ -121,6 +119,7 @@
                             </div>
                         </td>
                     </tr>
+
                     <tr>
                         <td>Inv #</td>
                         <td>1</td>
@@ -148,10 +147,10 @@
                     </tr>
                 </tbody>
             </table>
-            <p>
+            <h2 class="">
                 ******Thank you for your visit. See you again******<br>
                 Goods once sold cannot be exchanged nor returned.
-            </p>
+            </h2>
         </div>
     </div>
 
@@ -163,6 +162,4 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script src="js/sales.js"></script>
-
 </asp:Content>
-

@@ -4,7 +4,7 @@
     align-items: center;
     height: 100vh !important;
     margin: 0;
-    background-color: #f4f4f4 !important;
+    background-color: #ffffff !important;
     /* Light grey background */
     font-family: Arial, sans-serif !important;
     /* Improved typography */
@@ -46,4 +46,9 @@
 
 .form-check-label {
     vertical-align: middle;
+}
+
+
+img {
+  background-color: #f4f4f4;
 }

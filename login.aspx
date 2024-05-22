@@ -16,7 +16,7 @@
         <div class="row justify-content-center">
             <div class="col-9 col-lg-6">
                 <div class="text-center mb-3">
-                    <img src="img\Revamped\ShellLogo.png" alt="Random Unsplash Image" width="300" height="225">
+                    <img src="img\Revamped\Shell.svg" alt="Random Unsplash Image" width="250" height="185" class="text-center bg-white">
                 </div>
                 <form id="loginForm">
                     <div class="form-group">
