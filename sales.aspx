@@ -22,7 +22,7 @@
                     <label for="clientSelect" class="form-label">Select Client:</label>
                 </div>
                 <div class="col-8">
-                    <select class="form-select" id="clientSelect">
+                    <select class="form-select" id="clientSelect" required>
                         <option value="" disabled selected>Choose...</option>
                     </select>
                 </div>
@@ -33,7 +33,7 @@
                     <label for="vehicleRegSelect" class="form-label car-registration">Car Registration No.:</label>
                 </div>
                 <div class="col-8">
-                    <select class="form-select" id="vehicleRegSelect">
+                    <select class="form-select" id="vehicleRegSelect" required>
                         <option value="" disabled selected>Choose...</option>
                     </select>
                 </div>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-8">
                     <div class="input-group">
-                        <input type="number" class="form-control inputMileage" placeholder="100" min="0" aria-label="Amount">
+                        <input type="number" class="form-control inputMileage" placeholder="100" min="0" aria-label="Amount" required>
                         <span class="input-group-text">KM</span>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                 </tbody>
             </table>
             <h2 class="">
-                ******Thank you for your visit. See you again******<br>
+                ******Thank you for your visit. See you again******<br/>
                 Goods once sold cannot be exchanged nor returned.
             </h2>
         </div>

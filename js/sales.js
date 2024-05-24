@@ -114,9 +114,13 @@ function populateProductTypes() {
     const productTypeSelect = $('#salesEntries .clsProductType').first();
     productTypes.forEach(type => {
         
-        productTypeSelect.append(new Option(type, type));
+        productTypeSelect.append(new Option(type, type)); //dding product type option: Fuel
+      
+        console.log('Adding product type option:', type);
     });
-    productTypeSelect.select2();
+    
+ 
+
     
 }
 
@@ -128,14 +132,17 @@ function removeSale(saleId) {
 
 function createSaleEntryForm(productType = '') {
     const saleCount = $('#salesEntries .saleEntry').length + 1;
-    console.log(`Creating sale entry form ${saleCount}`);
+
+
+
     return `
+    
     <div class="card mt-3 saleEntry" id="sale${saleCount}">
         <div class="card-header" id="heading${saleCount}">
             <h5 class="mb-0 d-flex justify-content-between align-items-center">
                 <div>
                     <button class="btn btn-link" onclick="event.preventDefault(); toggleCollapse('${saleCount}');" data-bs-toggle="collapse" data-bs-target="#collapse${saleCount}" aria-expanded="true" aria-controls="collapse${saleCount}">
-                        Sale ${saleCount} - <span id="itemSummary${saleCount}">New Item</span>: $<span id="priceSummary${saleCount}">0.00</span>
+                        Sale ${saleCount} - <span id="itemSummary${saleCount}">New Item</span>: Rs<span id="priceSummary${saleCount}">0.00</span>
                     </button>
                 </div>
                
@@ -165,16 +172,18 @@ function createSaleEntryForm(productType = '') {
                         </div>
                     </div>
                     <div class="col-md-6 totalCostForm">
+                
+                    
                         <label for="quantityAmount${saleCount}" class="form-label mt-2">Quantity</label>
                         <div class="input-group">
-                            <input type="number" class="form-control quantityAmount" id="quantityAmount${saleCount}" placeholder="100" min="0" aria-label="Amount" onchange="updateSummary(${saleCount})">
+                            <input type="number" class="form-control quantityAmount" id="quantityAmount${saleCount}" oninput="updateSummary(${saleCount})" />
                             <div class="input-group-append">
-                                <span class="input-group-text ml-2">Price</span>
+                                <span class="input-group-text ml-3">Price</span>
                             </div>
                             <input type="number" id="totalCost${saleCount}" class="form-control" disabled />
                         </div>
                     </div>
-                    <div class="col-12 d-flex justify-content-center mt-2">
+                    <div class="col-12 d-flex justify-content-center mt-4">
                         <button type="button" class="btn btn-success saveButton" data-sale-id="${saleCount}">Save</button>
                     </div>
                 </section>
@@ -182,6 +191,9 @@ function createSaleEntryForm(productType = '') {
         </div>
     </div>`;
 }
+
+
+
 
 function saveSale(saleId) {
     const productType = $(`#sale${saleId} .clsProductType`).val();
@@ -210,7 +222,7 @@ function saveSale(saleId) {
 
 function minimizeSale(saleId) {
     $(`#collapse${saleId}`).collapse('hide');
-}
+}F
 
 function expandSale(saleId) {
     $(`#collapse${saleId}`).collapse('show');
@@ -283,6 +295,7 @@ function attachEventListeners() {
         const saleId = $(this).closest('.saleEntry').attr('id').replace('sale', '');
         console.log(`Product type changed for sale ID: ${saleId}, new value: ${$(this).val()}`);
         populateOptions(`#subCategory${saleId}`, $(this).val());
+        
     });
 
     $(document).on('change', '.clsProductItems', function () {
@@ -564,7 +577,7 @@ function addDriverAndCarInfo() {
   
     $('#driverNamePrint').text(driverName);
     $('#carRegNoPrint').text(carRegNo);
-    $('#mileagePrint').text(mileage); // here i want to add km to the mileage 
+    $('#mileagePrint').text(mileage);
     $('#mileagePrint').append(' km');
 
 }

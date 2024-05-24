@@ -49,3 +49,26 @@
 /* Styling for container and form padding */
 
 
+/* Custom AG Grid Theme */
+.ag-theme-custom {
+    --ag-header-background-color: #f1c40f;
+    --ag-header-foreground-color: #ffffff;
+    --ag-odd-row-background-color: #fff9e6;
+    --ag-even-row-background-color: #ffecd4;
+    --ag-font-family: Arial, sans-serif;
+    --ag-cell-horizontal-border: 1px solid #f39c12;
+    --ag-header-cell-horizontal-border: 1px solid #f39c12;
+    --ag-cell-horizontal-border-color: #f39c12;
+    --ag-header-cell-horizontal-border-color: #f39c12;
+    --ag-alpine-active-color: #e67e22;
+    --ag-alpine-hover-color: #d35400;
+}
+
+    /* Detail grid customization */
+    .ag-theme-custom .ag-detail-grid {
+        --ag-header-background-color: #e67e22;
+        --ag-header-foreground-color: #ffffff;
+        --ag-odd-row-background-color: #ffe6cc;
+        --ag-even-row-background-color: #ffd1b3;
+        --ag-cell-horizontal-border: 1px solid #e67e22;
+    }

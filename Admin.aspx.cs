@@ -75,6 +75,13 @@ namespace SezwanPayroll
 
 
 
+        [WebMethod]
+      public static List<clsProducts> retrieveAllProducts()
+        {
+
+            return DbConnect.displayProducts();
+        }
+
 
 
     }

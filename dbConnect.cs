@@ -9,6 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 using SezwanPayroll;
 using System.Web.Script.Serialization;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 
 public class DbConnect
 {
@@ -242,6 +243,7 @@ SELECT
     u.Username,
     si.SaleItemId,
     si.ItemId,
+    p.ItemName,
     si.Quantity,
     si.UnitPrice,
     si.TotalCost AS ItemTotalCost
@@ -249,6 +251,7 @@ FROM Sales s
 JOIN Clients c ON s.ClientId = c.ClientID
 JOIN UserPermissions u ON s.UserId = u.UserID
 JOIN SaleItems si ON s.SaleId = si.SaleId
+JOIN ProductItems p ON si.ItemId = p.ItemId
 WHERE 1=1";
 
             List<SqlParameter> parameters = new List<SqlParameter>();
@@ -313,6 +316,7 @@ WHERE 1=1";
                         {
                             SaleItemId = Convert.ToInt32(dataReader["SaleItemId"]),
                             ItemId = Convert.ToInt32(dataReader["ItemId"]),
+                            ItemName = dataReader["ItemName"].ToString(),
                             Quantity = Convert.ToInt32(dataReader["Quantity"]),
                             UnitPrice = Convert.ToDecimal(dataReader["UnitPrice"]),
                             TotalCost = Convert.ToDecimal(dataReader["ItemTotalCost"])
@@ -326,6 +330,7 @@ WHERE 1=1";
 
         return sales;
     }
+
 
 
 
@@ -414,11 +419,14 @@ WHERE 1=1";
                     saleDate = saleDate.Substring(0, 10);
                 }
 
+                // Clean the date string to remove any extra characters
+                saleDate = saleDate.Split(',')[0].Trim();
+
                 // Insert Sales data and get the SaleId
                 string sqlInsertQuery = @"
-                INSERT INTO Sales (ClientId, SaleDate, TotalCost, DriverName, CarRegNo, UserId) 
-                VALUES (@ClientId, @SaleDate, @TotalCost, @DriverName, @CarRegNo, @UserId);
-                SELECT SCOPE_IDENTITY()";
+            INSERT INTO Sales (ClientId, SaleDate, TotalCost, DriverName, CarRegNo, UserId) 
+            VALUES (@ClientId, @SaleDate, @TotalCost, @DriverName, @CarRegNo, @UserId);
+            SELECT SCOPE_IDENTITY()";
 
                 SqlCommand saleCmd = new SqlCommand(sqlInsertQuery, connection, transaction);
                 saleCmd.Parameters.AddWithValue("@ClientId", clientId);
@@ -428,12 +436,17 @@ WHERE 1=1";
                 saleCmd.Parameters.AddWithValue("@CarRegNo", carRegNo);
                 saleCmd.Parameters.AddWithValue("@UserId", userId);
 
-                int saleId = Convert.ToInt32(saleCmd.ExecuteScalar());
+                object result = saleCmd.ExecuteScalar();
+
+                if (result == null || !int.TryParse(result.ToString(), out int saleId))
+                {
+                    throw new Exception("Failed to retrieve SaleId.");
+                }
 
                 // Insert SalesItems data
                 string sqlInsertItemsQuery = @"
-                INSERT INTO SaleItems (SaleId, ItemId, Quantity, UnitPrice, TotalCost) 
-                VALUES (@SaleId, @ItemId, @Quantity, @UnitPrice, @TotalCost)";
+            INSERT INTO SaleItems (SaleId, ItemId, Quantity, UnitPrice, TotalCost) 
+            VALUES (@SaleId, @ItemId, @Quantity, @UnitPrice, @TotalCost)";
 
                 foreach (var item in salesDataList)
                 {
@@ -461,6 +474,42 @@ WHERE 1=1";
         }
     }
 
+
+
+public static List<clsProducts> displayProducts() 
+{
+        List<clsProducts> products = new List<clsProducts>();
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string sql = "SELECT * FROM ProductItems";
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                using (SqlDataReader dataReader = command.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        clsProducts product = new clsProducts
+                        {
+                            ItemId = Convert.ToInt32(dataReader["ItemId"]),
+                            ItemName = dataReader["ItemName"].ToString(),
+                            UnitPrice = Convert.ToDecimal(dataReader["UnitPrice"]),
+                            ProdTypeId = Convert.ToInt32(dataReader["ProdTypeId"])
+                        };
+
+                        products.Add(product);
+                    }
+                }
+            }
+
+            return products;
+        }
+
+
+    }
 
 
 }

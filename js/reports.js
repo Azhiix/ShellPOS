@@ -17,16 +17,18 @@
 
     // Define the column definitions and grid options
     const salesGridOptions = {
+        domLayout: 'autoHeight',
         columnDefs: [
+            { field: "SaleId", headerName: "SaleId" },
             { field: "SaleDate", headerName: "Date" },
             { field: "ClientName", headerName: "Client Name" },
             { field: "DriverName", headerName: "Driver" },
             { field: "VehicleRegNo", headerName: "Vehicle Reg No" },
             { field: "TotalCost", headerName: "Amount" },
-            { field: "SaleId", headerName: "SaleId" },
-            { field: "Username", headerName: "Username" },
-            { field: "SaleItemId", headerName: "Sale Item Id" },
-            { field: "ItemId", headerName: "Item Id" },
+            { field: "Agent", headerName: "Agent" },
+            /*{ field: "SaleItemId", headerName: "Sale Item Id" },*/
+            // { field: "ItemId", headerName: "Item Id" },
+            {field: "ItemName", headerName: "Item Name"},
             { field: "Quantity", headerName: "Quantity" },
             { field: "UnitPrice", headerName: "Unit Price" },
             { field: "ItemTotalCost", headerName: "Item Total Cost" }
@@ -72,10 +74,10 @@
         // Capture input values
         const dateFrom = document.getElementById('dateFrom').value;
         const dateTo = document.getElementById('dateTo').value;
-        const clientId = document.getElementById('clientSelect').value; // Ensure correct ID is used
+        const clientId = document.getElementById('clientSelect').value; 
         const vehicleRegNo = document.getElementById('vehicleRegNo').value;
 
-        // Create a payload with the captured values
+     
         const payload = {
             dateFrom: dateFrom,
             dateTo: dateTo,
@@ -121,15 +123,16 @@
                     if (formattedDate) {
                         sale.SaleItems.forEach(item => {
                             const formattedSale = {
+                                SaleId: sale.SaleId,
                                 SaleDate: formattedDate,
                                 ClientName: sale.ClientName,
                                 DriverName: sale.DriverName,
                                 VehicleRegNo: sale.CarRegNo,
                                 TotalCost: sale.TotalCost,
-                                SaleId: sale.SaleId,
-                                Username: sale.Username,
-                                SaleItemId: item.SaleItemId,
-                                ItemId: item.ItemId,
+                                Agent: sale.Username,
+                             /*   SaleItemId: item.SaleItemId,*/
+                                // ItemId: item.ItemId,
+                                ItemName: item.ItemName,
                                 Quantity: item.Quantity,
                                 UnitPrice: item.UnitPrice,
                                 ItemTotalCost: item.TotalCost
@@ -153,7 +156,7 @@
         e.preventDefault();
         const params = {
             fileName: 'sales.csv',
-            columnKeys: ['SaleDate', 'ClientName', 'DriverName', 'VehicleRegNo', 'TotalCost', 'SaleId', 'Username', 'SaleItemId', 'ItemId', 'Quantity', 'UnitPrice', 'ItemTotalCost'], // Include SaleItemId and other item fields
+            columnKeys: ['SaleDate', 'ClientName', 'DriverName', 'VehicleRegNo', 'TotalCost', 'SaleId', 'Username', 'SaleItemId', 'ItemId',ItemName,  'Quantity', 'UnitPrice', 'ItemTotalCost'], // Include SaleItemId and other item fields
             processCellCallback: function (params) {
                 return params.value;
             }
@@ -161,3 +164,4 @@
         gridApi.exportDataAsCsv(params);
     });
 });
+
