@@ -1,17 +1,9 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using SezwanPayroll.DTO;
-using System;
-using System.Collections.Generic;
-using System.EnterpriseServices.Internal;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
+﻿using System;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
-using System.Web.UI.WebControls;
+using SezwanPayroll.DTO;
 
 namespace SezwanPayroll
 {
@@ -22,13 +14,6 @@ namespace SezwanPayroll
 
         }
 
-
-
-
-
-
-
-
         [WebMethod]
         public static string ValidateLogin(string username, string password)
         {
@@ -37,6 +22,7 @@ namespace SezwanPayroll
             if (user != null)
             {
                 string token = DTO.JWT.GenerateJwtToken(username, user.RoleId, user.UserId);  // Generate JWT token
+                HttpContext.Current.Response.Cookies.Add(new HttpCookie("Token", token) { HttpOnly = true, Path = "/" });
                 return new JavaScriptSerializer().Serialize(new
                 {
                     User = user,
@@ -48,10 +34,5 @@ namespace SezwanPayroll
                 return new JavaScriptSerializer().Serialize(new { Error = "Authentication failed" });
             }
         }
-
-
-
-
     }
-
 }

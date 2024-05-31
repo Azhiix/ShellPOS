@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reports.aspx.cs" Inherits="SezwanPayroll.reports" MasterPageFile="~/Site1.master" %>
+﻿<%@ Page Language="C#" Title="Reports" AutoEventWireup="true" CodeBehind="reports.aspx.cs" Inherits="SezwanPayroll.reports" MasterPageFile="~/Site1.master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <!-- Add head specific content here, like linking CSS or JS files -->
@@ -33,7 +33,7 @@
             <section class="d-flex justify-content-between">
                 <button id="getSales" type="button" class="btn btn-primary mt-3">Fetch Data</button>
 
-                <button id="downloadCSV" onclick="downloadToCSV()" class="btn btn-success mt-3">Download CSV</button>
+                <button id="downloadCSV"  class="btn btn-success mt-3">Download CSV</button>
 
             </section>
 
@@ -45,7 +45,7 @@
         </form>
 
     </div>
-    <div class="ag-theme-quartz mt-4 mx-auto" style="height: 100vh;" id="salesGrid"></div>
+    <div class="ag-theme-quartz mt-4 text-center w-100" style="height: 100vh;" id="salesGrid"></div>
 
 
 

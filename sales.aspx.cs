@@ -7,24 +7,18 @@ using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using IdentityModel;
 using SezwanPayroll;
 using SezwanPayroll.DTO;
 
-
-
 namespace SezwanPayroll
 {
-    public partial class sales : System.Web.UI.Page
+    public partial class sales : AuthenticatedPage // Inherit from AuthenticatedPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                if (!IsUserAuthorized())
-                {
-                    Response.Redirect("login.aspx");
-                }
+                // Page load logic here, if needed
             }
         }
 
@@ -84,7 +78,6 @@ namespace SezwanPayroll
             return clients;
         }
 
-
         [WebMethod]
         public static List<clsProducts> ShowProducts()
         {
@@ -113,9 +106,18 @@ namespace SezwanPayroll
         public static List<clsSalesData> AddSales(string salesJson, string clientInfoJson)
         {
             var context = HttpContext.Current;
+            var authHeader = context.Request.Headers["Authorization"];
+
+            System.Diagnostics.Debug.WriteLine("Authorization header: " + authHeader); // Log the header
+
+            if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+                throw new UnauthorizedAccessException("Authorization header is missing or invalid");
+
+            var token = authHeader.Substring("Bearer ".Length).Trim();
+            System.Diagnostics.Debug.WriteLine("Token received: " + token); // Log the token
+
             var page = new sales();
-            var token = context.Request.Headers["Authorization"]?.Substring("Bearer ".Length).Trim();
-            string userId = page.GetUserId(token);
+            string userId = page.GetUserId(token); // Validate token and get user ID
 
             if (string.IsNullOrEmpty(userId))
                 throw new UnauthorizedAccessException("Invalid token");
@@ -130,12 +132,5 @@ namespace SezwanPayroll
             // Call the CreateSalesData method with the updated JSON strings
             return DbConnect.CreateSalesData(salesJson, updatedClientInfoJson);
         }
-
-
     }
-
-
 }
-
-
-

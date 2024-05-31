@@ -4,50 +4,37 @@
     overflow-x: hidden;
 }
 
-
-* Adjusting the overall container of the Select2 box */ .select2-container--default .select2-selection--multiple {
+/* Adjusting the overall container of the Select2 box */
+.select2-container--default .select2-selection--multiple {
     min-height: 40px;
-    /* Minimum height */
     padding: 0.375rem 0.75rem;
-    /* Bootstrap padding */
     border: 1px solid #ced4da;
-    /* Bootstrap border style */
     border-radius: 0.25rem;
-    /* Bootstrap border radius */
 }
 
-/* Style for each selected item in the dropdown */
-.select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background-color: #007bff;
-    /* Bootstrap primary color */
-    color: white;
-    padding: 0 10px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    border: none;
-    /* Remove borders from tags */
-}
+    /* Style for each selected item in the dropdown */
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #007bff;
+        color: white;
+        padding: 0 10px;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        border: none;
+    }
 
 /* Style the dropdown to include a scroll when too many items are selected */
 .select2-container--default .select2-selection--multiple {
     max-height: 100px;
-    /* Maximum height before scroll */
     overflow-y: auto;
-    /* Enable vertical scrollbar if needed */
 }
 
 /* Adjusting the search input field within the dropdown */
 .select2-container--default .select2-search--inline .select2-search__field {
     margin-top: 5px;
-    /* Align it with the selected items */
     padding: 0;
-    /* Reduce padding to fit better */
     line-height: normal;
-    /* Adjust line height */
     width: 100%;
-    /* Full width to avoid overflow */
 }
-
 
 .select2-container--default .select2-selection--single {
     border: 1px solid #ced4da;
@@ -82,39 +69,20 @@
 }
 
 @media print {
-  /*  body * {
-        display: none !important;
-    }
-
-    .printWindow, .printWindow * {
-        display: block !important;
-    }
-
-    .printWindow {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }*/
-}
-
-
-@media print {
     @page {
-        margin: 0; /* Remove default margins to remove headers/footers */
+        margin: 0;
     }
 
     body {
-        margin: 1cm; /* Add margin to the printed content */
+        margin: 1cm;
     }
 
         body * {
-            visibility: hidden; /* Hide all elements by default */
+            visibility: hidden;
         }
 
     .printWindow, .printWindow * {
-        visibility: visible; /* Make the printWindow and its children visible */
-      
+        visibility: visible;
     }
 
     .printWindow {
@@ -125,39 +93,38 @@
         height: 100%;
         margin: 0;
         padding: 0;
-        font-size: 12px; /* Smaller font size for compactness */
+        font-size: 20px; /* Increase font size for better readability */
+        font-weight: bold; /* Make text bold */
     }
-
-    
 }
 
-
-
-
-
 #printSection td {
-    padding: 0 3px; 
+    padding: 10px 5px; /* Increase padding for better readability */
 }
 
 #printSection tr {
-    margin: 0; 
+    margin: 0;
 }
-
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
-    font-size: 18px;
+    font-size: 20px; /* Increase font size */
     text-align: left;
 }
 
 table, th, td {
     border: 1px solid #ddd;
+    padding: 15px; /* Increase padding for more space inside cells */
 }
 
 td {
-    padding: 12px;
+    padding: 15px; /* Increase padding for more space inside cells */
+}
+
+tr {
+    margin-bottom: 15px; /* Add margin between rows */
 }
 
 .inline-fields {
@@ -166,60 +133,39 @@ td {
 }
 
     .inline-fields span {
-    display: inline-block;
-    margin-right: 20px;
-}
+        display: inline-block;
+        margin-right: 20px;
+    }
 
-
-
-
-#addItemButton {
+#addItemButton, .saveAndPrint {
     background-color: #f6aa38;
     color: #fff;
     border: none;
-    padding: 10px 20px;
+    padding: 15px 20px; /* Increase padding for touch interfaces */
     margin: 10px 0;
     cursor: pointer;
     width: 100%;
+    font-size: 18px; /* Increase font size for readability */
 }
 
-.saveAndPrint{
-    background-color: #f6aa38;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    margin: 10px 0;
-    cursor: pointer;
-    width: 100%;
-}
-
-
-.saveAndPrint:hover {
-    background-color: #f6aa38;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    margin: 10px 0;
-    cursor: pointer;
-    width: 100%;
-}
-
+    .saveAndPrint:hover {
+        background-color: #e69530;
+    }
 
 .form-inline {
-    display: flex;         /* Ensures that children (label and select) are in a flex row */
-    justify-content: flex-start; /* Aligns children to the start of the parent */
-    align-items: center;   /* Aligns children vertically in the center */
-    width: 100%;           /* Takes full width of the parent */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
 }
 
 .form-label {
-    margin-right: 1rem;    /* Provides space between label and select field */
+    margin-right: 1rem;
 }
 
-
-/* General Styles */
 body {
     font-family: 'Poppins', sans-serif;
+    font-size: 18px; /* Larger font size for readability */
 }
 
 .full-height {
@@ -230,7 +176,6 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Client Information Section */
 .client-info {
     background-color: #fff;
 }
@@ -245,20 +190,16 @@ body {
         border-radius: 0.25rem;
     }
 
-/* Sales Entries Section */
 #salesEntries {
-    
     border-radius: 0.25rem;
     padding: 1rem;
 }
 
-/* Centered Total Sales Cost */
 #totalSalesCosts {
     font-size: 1.25rem;
     font-weight: bold;
 }
 
-/* Buttons */
 .btn-info {
     background-color: #17a2b8;
     border-color: #17a2b8;
@@ -281,7 +222,6 @@ body {
         border-color: #004085;
     }
 
-/* Receipt Section */
 .printWindow .receipt {
     background-color: #fff;
     border: 1px solid #dee2e6;
@@ -293,17 +233,20 @@ body {
 .printWindow h3,
 .printWindow h4 {
     margin-bottom: 0.5rem;
+    font-size: 35px; /* Adjusted font size */
+    font-weight: bold; /* Make text bold */
 }
 
 .printWindow p {
     margin-bottom: 1rem;
-    font-size: 0.875rem;
+    font-size: 25px; /* Increase font size */
     color: #6c757d;
 }
 
 .printWindow .inline-fields {
     display: flex;
     justify-content: space-between;
+    font-size: 25px; /* Increase font size */
 }
 
     .printWindow .inline-fields span {
@@ -317,9 +260,11 @@ body {
 
     .printWindow .table th,
     .printWindow .table td {
-        padding: 0.5rem;
+        padding: 15px; /* Increase padding for more space inside cells */
         vertical-align: middle;
         border-top: 1px solid #dee2e6;
+        font-size: 25px; /* Increase font size */
+        font-weight: bold; /* Make text bold */
     }
 
     .printWindow .table th {

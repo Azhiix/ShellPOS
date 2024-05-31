@@ -72,3 +72,9 @@
         --ag-even-row-background-color: #ffd1b3;
         --ag-cell-horizontal-border: 1px solid #e67e22;
     }
+
+
+    #salesGrid {
+        min-height: 500px; 
+        min-width: 500px;;/* Adjust this value as needed */
+    }

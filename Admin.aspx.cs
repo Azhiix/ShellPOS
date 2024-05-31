@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SezwanPayroll.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -6,8 +7,6 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Windows.Forms;
-using SezwanPayroll.DTO;
 
 namespace SezwanPayroll
 {
@@ -15,14 +14,14 @@ namespace SezwanPayroll
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
             {
-                if (!IsPostBack)
+                if (!IsUserAuthorized())
                 {
-                    if (!IsUserAuthorized())
-                    {
-                        Response.Redirect("login.aspx");
-                    }
+                    // Use ClientScript to register a startup script that shows an alert and redirects to the login page
+                    string script = "window.location='summary.aspx';";
+                    ClientScript.RegisterStartupScript(this.GetType(), "redirect", script, true);
+
                 }
             }
         }
@@ -35,26 +34,27 @@ namespace SezwanPayroll
                 return false;
 
             ClaimsPrincipal principal = DTO.JWT.GetPrincipal(token);
-            return principal != null;
+            if (principal == null)
+                return false;
+
+            // Check if the user has the RoleId of 2
+            var roleIdClaim = principal.Claims.FirstOrDefault(c => c.Type == "role_id");
+            if (roleIdClaim == null || roleIdClaim.Value != "2")
+                return false;
+
+            return true;
         }
 
-
-
-
-
         [WebMethod()]
-        public static string validateCreateLogin(string username, string password, string roleid)
+        public static string validateCreateLogin(string username, string password, string roleid, string fname, string permissionNames)
         {
             DbConnect dbConnect = new DbConnect();
-            return dbConnect.createLogin(username, password, roleid);
+            return dbConnect.createLogin(username, password, roleid, fname, permissionNames);
         }
 
-
         [WebMethod()]
-
         public static string displayAllUsers()
         {
-
             return DbConnect.retreiveAllUsernames();
         }
 
@@ -62,29 +62,25 @@ namespace SezwanPayroll
         public static string updateUser(int userId, string username, int RoleId, string PermissionNames, string fname, string password)
         {
             // Pass the userId to the editUser method to use in the WHERE clause
-            return DbConnect.editUser(userId,username, RoleId, PermissionNames, fname, password);
+            return DbConnect.editUser(userId, username, RoleId, PermissionNames, fname, password);
         }
 
-
         [WebMethod()]
-
         public static List<clsLogin> retrieveAllUserInfo()
         {
             return DbConnect.retreiveAllUserInfo();
         }
 
-
-
         [WebMethod]
-      public static List<clsProducts> retrieveAllProducts()
+        public static List<clsProducts> retrieveAllProducts()
         {
-
             return DbConnect.displayProducts();
         }
 
-
-
+        [WebMethod()]
+        public static List<clsProducts> updateProducts(int itemId, string itemName, decimal unitPrice)
+        {
+            return DbConnect.UpdateProducts(itemId, itemName, unitPrice);
+        }
     }
-
-
 }

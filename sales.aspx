@@ -1,9 +1,12 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site1.Master" CodeBehind="sales.aspx.cs" Inherits="SezwanPayroll.sales" %>
+﻿<%@ Page Language="C#" Title="Sales" AutoEventWireup="true" MasterPageFile="~/Site1.Master" CodeBehind="sales.aspx.cs" Inherits="SezwanPayroll.sales" %>
 
 <asp:Content ID="ContentHead" ContentPlaceHolderID="head" runat="server">
     <meta charset="UTF-8">
+    <title>Sales</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+   
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
@@ -22,7 +25,7 @@
                     <label for="clientSelect" class="form-label">Select Client:</label>
                 </div>
                 <div class="col-8">
-                    <select class="form-select" id="clientSelect" required>
+                    <select class="form-select" id="clientSelect" >
                         <option value="" disabled selected>Choose...</option>
                     </select>
                 </div>
@@ -33,20 +36,23 @@
                     <label for="vehicleRegSelect" class="form-label car-registration">Car Registration No.:</label>
                 </div>
                 <div class="col-8">
-                    <select class="form-select" id="vehicleRegSelect" required>
-                        <option value="" disabled selected>Choose...</option>
-                    </select>
-                </div>
+    <select class="form-select" id="vehicleRegSelect" >
+        <option value="" disabled selected>Choose...</option>
+    </select>
+</div>
+
             </div>
 
-            <div class="row mb-3">
-                <div class="col-4">
-                    <label for="inputDriversName" class="form-label">Driver's Name:</label>
-                </div>
-                <div class="col-8">
-                    <input type="text" class="form-control" id="inputDriversName" placeholder="John Doe" disabled>
-                </div>
+         <div class="row mb-3">
+            <div class="col-4">
+                <label for="driversNameSelect" class="form-label">Driver's Name:</label>
             </div>
+            <div class="col-8">
+                <select class="form-select" id="driversNameSelect" >
+                    <option value="" disabled selected>Choose...</option>
+                </select>
+            </div>
+        </div>
 
             <div class="row">
                 <div class="col-4">
@@ -54,7 +60,7 @@
                 </div>
                 <div class="col-8">
                     <div class="input-group">
-                        <input type="number" class="form-control inputMileage" placeholder="100" min="0" aria-label="Amount" required>
+                        <input type="number" class="form-control inputMileage" placeholder="100" min="0" aria-label="Amount" >
                         <span class="input-group-text">KM</span>
                     </div>
                 </div>
@@ -76,10 +82,12 @@
                 <button type="button" id="addItemButton" class="btn btn-info w-100">Add Another Item</button>
             </div>
             <div class="col-12 text-center">
-                <button type="submit" class="btn btn-primary w-50 saveAndPrint">Save and Print</button>
+                <button type="button" class="btn btn-primary w-50 saveAndPrint">Save and Print</button>
             </div>
         </div>
     </div>
+
+   
 
     <!-- Receipt Section (Hidden for Printing) -->
     <div class="printWindow text-center d-none">
@@ -147,7 +155,7 @@
                     </tr>
                 </tbody>
             </table>
-            <h2 class="">
+            <h2 class="mt-3 ">
                 ******Thank you for your visit. See you again******<br/>
                 Goods once sold cannot be exchanged nor returned.
             </h2>
@@ -158,6 +166,7 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.11.0/sweetalert2.min.js" integrity="sha512-Wi5Ms24b10EBwWI9JxF03xaAXdwg9nF51qFUDND/Vhibyqbelri3QqLL+cXCgNYGEgokr+GA2zaoYaypaSDHLg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>

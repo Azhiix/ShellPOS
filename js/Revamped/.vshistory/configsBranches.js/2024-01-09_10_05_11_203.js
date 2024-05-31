@@ -1,5 +1,0 @@
-﻿var configsBranches = function () {
-    return {
-
-    }
-}

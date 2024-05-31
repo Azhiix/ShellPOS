@@ -177,11 +177,14 @@
     <Content Include="css\login.css" />
     <Content Include="css\reports.css" />
     <Content Include="css\sales.css" />
+    <Content Include="css\summary.css" />
+    <Content Include="iisstart.htm" />
     <Content Include="img\Revamped\SezwanLogo.png" />
     <Content Include="img\Revamped\ShellLogo.png" />
     <Content Include="img\Revamped\SobanyLogo.png" />
     <Content Include="js\admin.js" />
     <Content Include="js\login.js" />
+    <Content Include="js\master.js" />
     <Content Include="js\reports.js" />
     <Content Include="js\Revamped\configsApprovalTemplates.js" />
     <Content Include="js\Revamped\configsTaxes.js" />
@@ -211,6 +214,7 @@
     <Content Include="js\Revamped\reports.js" />
     <Content Include="js\Revamped\scripts.bundle.js" />
     <Content Include="js\sales.js" />
+    <Content Include="js\summary.js" />
     <Content Include="js\ThemeAssets\JQuery\jquery.js" />
     <Content Include="login.aspx" />
     <None Include="packages.config" />
@@ -854,6 +858,7 @@
     <Content Include="packages\System.ValueTuple.4.5.0\version.txt" />
     <Content Include="reports.aspx" />
     <Content Include="sales.aspx" />
+    <Content Include="summary.aspx" />
     <Content Include="ThemeAssets\css\components\components.css" />
     <Content Include="ThemeAssets\css\override.css" />
     <Content Include="ThemeAssets\css\plugins.css" />
@@ -1953,6 +1958,9 @@
     <Compile Include="Admin.aspx.designer.cs">
       <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DTO\AuthPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="DTO\clsClient.cs" />
     <Compile Include="DTO\clsLogin.cs" />
     <Compile Include="dbConnect.cs" />
@@ -1960,6 +1968,9 @@
     <Compile Include="DTO\clsSales.cs" />
     <Compile Include="DTO\clsSalesData.cs" />
     <Compile Include="DTO\JWT.cs" />
+    <Compile Include="DTO\Logout.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="login.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>login.aspx</DependentUpon>
@@ -1988,6 +1999,13 @@
     </Compile>
     <Compile Include="Site1.Master.designer.cs">
       <DependentUpon>Site1.Master</DependentUpon>
+    </Compile>
+    <Compile Include="summary.aspx.cs">
+      <DependentUpon>summary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="summary.aspx.designer.cs">
+      <DependentUpon>summary.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

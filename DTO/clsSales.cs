@@ -15,6 +15,8 @@ namespace SezwanPayroll.DTO
         public string DriverName { get; set; }
         public string CarRegNo { get; set; }
         public string Username { get; set; }
+
+        public int Mileage { get; set; }
         public List<clsSaleItem> SaleItems { get; set; }
     }
 

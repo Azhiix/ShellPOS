@@ -10,6 +10,8 @@ using SezwanPayroll;
 using System.Web.Script.Serialization;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class DbConnect
 {
@@ -33,6 +35,9 @@ public class DbConnect
                 command.Parameters.AddWithValue("@Username", username);
                 command.Parameters.AddWithValue("@Password", password);
 
+                Console.WriteLine($"Executing login check for Username: {username} and Password: {password}");
+
+
                 dataReader = command.ExecuteReader();
 
                 if (dataReader.Read())
@@ -44,7 +49,7 @@ public class DbConnect
                         {
                             UserId = Convert.ToInt32(dataReader["UserId"]),
                             RoleId = Convert.ToInt32(dataReader["RoleId"]),
-                            Fname = dataReader["fname"].ToString()
+                            Fname = ""
                         };
                         return user;
                     }
@@ -54,21 +59,31 @@ public class DbConnect
         }
     }
 
+//    UserID int Unchecked
+//Username nvarchar(255)   Unchecked
+//Password    varchar(255)    Checked
+//RoleId  nvarchar(50)    Unchecked
+//PermissionNames nvarchar(255)   Checked
+//fname   nvarchar(255)   Checked
+//        Unchecked
 
 
-    public string createLogin(string username, string password, string roleid)
+
+    public string createLogin(string username, string password, string roleid, string fname, string permissionNames)
     {
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
             try
             {
                 connection.Open();
-                string sql = "INSERT INTO UserPermissions (Username, Password, RoleId) VALUES (@Username, @Password, @RoleId)";
+                string sql = "INSERT INTO UserPermissions (Username, Password, RoleId, fname, permissionNames) VALUES (@Username, @Password, @RoleId, @fname, @permissionNames)";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@Username", username);
                     command.Parameters.AddWithValue("@Password", password);
                     command.Parameters.AddWithValue("@RoleId", roleid);
+                    command.Parameters.AddWithValue("@fname", fname);
+                    command.Parameters.AddWithValue("@permissionNames", permissionNames);
 
 
                     int result = command.ExecuteNonQuery();
@@ -341,41 +356,43 @@ WHERE 1=1";
 
 
 
-    public static List<clsClient> DisplayAllClients()
+public static List<clsClient> DisplayAllClients()
+{
+    using (SqlConnection connection = new SqlConnection(connectionString))
     {
-        using (SqlConnection connection = new SqlConnection(connectionString))
+        List<clsClient> clients = new List<clsClient>();
+        connection.Open();
+
+        SqlDataReader dataReader;
+        
+        // Using STRING_AGG to concatenate the RegistrationNo and DriverName
+        string sql = "SELECT c.ClientID, c.Name, c.ContactInfo, c.Address, " +
+                     "STRING_AGG(v.RegistrationNo, ', ') AS RegistrationNos, " +
+                     "STRING_AGG(v.DriverName, ', ') AS DriverNames " +
+                     "FROM Clients c " +
+                     "JOIN Vehicles v ON c.ClientID = v.ClientID " +
+                     "GROUP BY c.ClientID, c.Name, c.ContactInfo, c.Address";
+
+        using (SqlCommand command = new SqlCommand(sql, connection))
         {
-            List<clsClient> clients = new List<clsClient>();
-            connection.Open();
-
-            SqlDataReader dataReader;
-            //lets create a join, using the ClientId in the vehicles table to get the RegistrationNo
-
-            string sql = "SELECT c.ClientID, c.Name, c.ContactInfo, c.Address, v.RegistrationNo, v.DriverName " +
-                           "FROM Clients c " +
-                           "JOIN Vehicles v ON c.ClientID = v.ClientID";
-
-            using (SqlCommand command = new SqlCommand(sql, connection))
+            dataReader = command.ExecuteReader();
+            while (dataReader.Read())
             {
-                dataReader = command.ExecuteReader();
-                while (dataReader.Read())
+                clients.Add(new clsClient
                 {
-                    clients.Add(new clsClient
-                    {
-
-                        Name = dataReader["Name"].ToString(),
-                        ClientID = Convert.ToInt32(dataReader["ClientID"]),
-                        RegistrationNo = dataReader["RegistrationNo"].ToString(),
-                        DriverName = dataReader["DriverName"].ToString(),
-
-
-                    });
-                }
-                dataReader.Close();
+                    ClientID = Convert.ToInt32(dataReader["ClientID"]),
+                    Name = dataReader["Name"].ToString(),
+                    ContactInfo = dataReader["ContactInfo"].ToString(),
+                    Address = dataReader["Address"].ToString(),
+                    RegistrationNo = dataReader["RegistrationNos"].ToString(),
+                    DriverName = dataReader["DriverNames"].ToString(),
+                });
             }
-            return clients;
+            dataReader.Close();
         }
+        return clients;
     }
+}
 
 
 
@@ -510,6 +527,140 @@ public static List<clsProducts> displayProducts()
 
 
     }
+
+
+
+
+
+    public static List<clsProducts> UpdateProducts(int itemId, string itemName, decimal unitPrice)
+    {
+        List<clsProducts> products = new List<clsProducts>();
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            // Update the product
+            string updateSql = "UPDATE ProductItems SET ItemName = @ItemName, UnitPrice = @UnitPrice WHERE ItemId = @ItemId";
+            using (SqlCommand updateCommand = new SqlCommand(updateSql, connection))
+            {
+                updateCommand.Parameters.AddWithValue("@ItemId", itemId);
+                updateCommand.Parameters.AddWithValue("@ItemName", itemName);
+                updateCommand.Parameters.AddWithValue("@UnitPrice", unitPrice);
+                updateCommand.ExecuteNonQuery();  // Executes the update operation
+            }
+
+            // Optionally, retrieve the updated product to confirm the changes
+            string selectSql = "SELECT ItemId, ItemName, UnitPrice, ProdTypeId FROM ProductItems WHERE ItemId = @ItemId";
+            using (SqlCommand selectCommand = new SqlCommand(selectSql, connection))
+            {
+                selectCommand.Parameters.AddWithValue("@ItemId", itemId);
+                using (SqlDataReader dataReader = selectCommand.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        products.Add(new clsProducts
+                        {
+                            ItemId = Convert.ToInt32(dataReader["ItemId"]),
+                            ItemName = dataReader["ItemName"].ToString(),
+                            UnitPrice = Convert.ToDecimal(dataReader["UnitPrice"]),
+                            ProdTypeId = Convert.ToInt32(dataReader["ProdTypeId"])
+                        });
+                    }
+                }
+            }
+        }
+
+        return products;  
+    }
+
+
+
+
+    // The Summary Page 
+
+    public static List<clsSales> DisplaySalesInfo(string determineCurrentDate, int currentUserId)
+    {
+        List<clsSales> sales = new List<clsSales>();
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string sql = @"
+            SELECT
+                s.SaleId,
+                s.ClientId,
+                c.Name AS ClientName,
+                s.SaleDate,
+                s.TotalCost,
+                s.DriverName,
+                s.CarRegNo,
+                u.Username,
+                si.SaleItemId,
+                si.ItemId,
+                p.ItemName,
+                si.Quantity,
+                si.UnitPrice,
+                si.TotalCost AS ItemTotalCost
+            FROM Sales s
+            JOIN Clients c ON s.ClientId = c.ClientID
+            JOIN UserPermissions u ON s.UserId = u.UserID
+            JOIN SaleItems si ON s.SaleId = si.SaleId
+            JOIN ProductItems p ON si.ItemId = p.ItemId
+            
+            WHERE s.SaleDate = @SaleDate AND s.UserId = @UserId";
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@SaleDate", determineCurrentDate);
+                command.Parameters.AddWithValue("@UserId", currentUserId);
+
+                using (SqlDataReader dataReader = command.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        var saleId = Convert.ToInt32(dataReader["SaleId"]);
+                        var sale = sales.FirstOrDefault(s => s.SaleId == saleId);
+
+                        if (sale == null)
+                        {
+                            sale = new clsSales
+                            {
+                                SaleId = saleId,
+                                ClientId = Convert.ToInt32(dataReader["ClientId"]),
+                                ClientName = dataReader["ClientName"].ToString(),
+                                SaleDate = Convert.ToDateTime(dataReader["SaleDate"]).ToString("MM/dd/yyyy"),
+                                TotalCost = Convert.ToDecimal(dataReader["TotalCost"]),
+                                DriverName = dataReader["DriverName"].ToString(),
+                                CarRegNo = dataReader["CarRegNo"].ToString(),
+                                Username = dataReader["Username"].ToString(),
+                               
+                                SaleItems = new List<clsSaleItem>()
+                            };
+
+                            sales.Add(sale);
+                        }
+
+                        clsSaleItem saleItem = new clsSaleItem
+                        {
+                            SaleItemId = Convert.ToInt32(dataReader["SaleItemId"]),
+                            ItemId = Convert.ToInt32(dataReader["ItemId"]),
+                            ItemName = dataReader["ItemName"].ToString(),
+                            Quantity = Convert.ToInt32(dataReader["Quantity"]),
+                            UnitPrice = Convert.ToDecimal(dataReader["UnitPrice"]),
+                            TotalCost = Convert.ToDecimal(dataReader["ItemTotalCost"])
+                        };
+
+                        sale.SaleItems.Add(saleItem);
+                    }
+                }
+            }
+        }
+
+        return sales;
+    }
+
+
 
 
 }

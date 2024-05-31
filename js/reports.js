@@ -1,8 +1,19 @@
-﻿document.addEventListener('DOMContentLoaded', function () {
+﻿
+
+document.addEventListener('DOMContentLoaded', function () {
     $('#salesGrid').hide();
+
+
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+
+    today = mm + '-' + dd + '-' + yyyy;
 
     // Initialize date pickers
     flatpickr("#dateFrom", {
+        defaultDate: today,
         dateFormat: "m-d-Y",
         onChange: function (selectedDates, dateStr, instance) {
             flatpickr("#dateTo", {
@@ -19,7 +30,7 @@
     const salesGridOptions = {
         domLayout: 'autoHeight',
         columnDefs: [
-            { field: "SaleId", headerName: "SaleId" },
+            { field: "SaleId", headerName: "SaleId", width:'50px', resizeable: true   }, 
             { field: "SaleDate", headerName: "Date" },
             { field: "ClientName", headerName: "Client Name" },
             { field: "DriverName", headerName: "Driver" },
@@ -156,7 +167,7 @@
         e.preventDefault();
         const params = {
             fileName: 'sales.csv',
-            columnKeys: ['SaleDate', 'ClientName', 'DriverName', 'VehicleRegNo', 'TotalCost', 'SaleId', 'Username', 'SaleItemId', 'ItemId',ItemName,  'Quantity', 'UnitPrice', 'ItemTotalCost'], // Include SaleItemId and other item fields
+            columnKeys: ['SaleDate', 'ClientName', 'DriverName', 'VehicleRegNo', 'TotalCost', 'SaleId', 'Username', 'SaleItemId', 'ItemId','Quantity', 'UnitPrice', 'ItemTotalCost'], // Include SaleItemId and other item fields
             processCellCallback: function (params) {
                 return params.value;
             }

@@ -27,6 +27,8 @@
 
         // Only proceed with fetch if the form is valid
         if (valid) {
+            console.log("Sending username: " + username + " and password: " + password);
+
             fetch('login.aspx/ValidateLogin', {
                 method: 'POST',
                 headers: {
