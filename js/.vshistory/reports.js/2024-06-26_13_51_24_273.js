@@ -1,0 +1,229 @@
+﻿document.addEventListener('DOMContentLoaded', function () {
+    // Ensure the sales grid is hidden initially
+    $('#salesGrid').hide();
+    let gridApi;
+
+    // Get today's date
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+
+    today = mm + '-' + dd + '-' + yyyy;
+
+    // Initialize flatpickr date pickers
+    flatpickr("#dateFrom", {
+        defaultDate: today,
+        dateFormat: "m-d-Y",
+        onChange: function (selectedDates, dateStr, instance) {
+            flatpickr("#dateTo", {
+                minDate: dateStr,
+                dateFormat: "m-d-Y",
+            });
+        }
+    });
+
+    flatpickr("#dateTo", {
+        dateFormat: "m-d-Y",
+    });
+
+    // Define the grid options
+    const salesGridOptions = {
+        domLayout: 'autoHeight',
+        columnDefs: [
+            { field: "SaleId", headerName: "SaleId", width: 50, resizable: true },
+            { field: "SaleDate", headerName: "Date" },
+            { field: "ClientName", headerName: "Client Name" },
+            { field: "DriverName", headerName: "Driver" },
+            { field: "VehicleRegNo", headerName: "Vehicle Reg No" },
+            { field: "TotalCost", headerName: "Amount" },
+            { field: "Agent", headerName: "Agent" },
+            { field: "ItemName", headerName: "Item Name" },
+            { field: "Quantity", headerName: "Quantity" },
+            { field: "UnitPrice", headerName: "Unit Price" },
+            { field: "ItemTotalCost", headerName: "Item Total Cost" }
+        ],
+        rowData: [],
+        onGridReady: function (params) {
+            gridApi = params.api;
+            params.api.sizeColumnsToFit();
+        }
+    };
+
+    // Create the sales grid
+    const salesGridElement = document.querySelector('#salesGrid');
+    if (salesGridElement) {
+        agGrid.createGrid(salesGridElement, salesGridOptions);
+    } else {
+        console.error('salesGrid element not found in the DOM.');
+        return;
+    }
+
+    // Fetch client data
+    fetch('reports.aspx/ShowClients', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    }).then(response => response.json())
+        .then(data => {
+            const clientSelect = document.getElementById('clientSelect');
+            if (clientSelect) {
+                const optionEl = `<option value="">Select Client</option>
+                    ${data.d.map(client => `<option value="${client.ClientID}">${client.Name}</option>`).join('')}`;
+                clientSelect.innerHTML = optionEl;
+            } else {
+                console.error('clientSelect element not found in the DOM.');
+            }
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+
+    // Handle get sales button click
+    document.getElementById('getSales').addEventListener('click', function (e) {
+        e.preventDefault();
+        $('#salesGrid').show();
+
+        const dateFrom = document.getElementById('dateFrom').value;
+        const dateTo = document.getElementById('dateTo').value;
+        const clientId = document.getElementById('clientSelect').value;
+        const vehicleRegNo = document.getElementById('vehicleRegNo').value;
+
+        const payload = {
+            dateFrom: dateFrom,
+            dateTo: dateTo,
+            clientId: clientId,
+            vehicleRegNo: vehicleRegNo
+        };
+
+        // Function to parse and format dates
+        function parseDate(dateString) {
+            const [month, day, year] = dateString.split('-');
+            const date = new Date(`${year}-${month}-${day}`);
+            if (!isNaN(date)) {
+                const formattedMonth = String(date.getMonth() + 1).padStart(2, '0');
+                const formattedDay = String(date.getDate()).padStart(2, '0');
+                const formattedYear = date.getFullYear();
+                return `${formattedMonth}-${formattedDay}-${formattedYear}`;
+            } else {
+                console.error('Invalid date format', dateString);
+                return null;
+            }
+        }
+
+        // Fetch sales data
+        fetch('reports.aspx/ShowSales', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            body: JSON.stringify(payload)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                salesGridOptions.rowData = [];
+
+                data.d.forEach(sale => {
+                    const formattedDate = parseDate(sale.SaleDate);
+                    if (formattedDate) {
+                        sale.SaleItems.forEach(item => {
+                            const formattedSale = {
+                                SaleId: sale.SaleId,
+                                SaleDate: formattedDate,
+                                ClientName: sale.ClientName,
+                                DriverName: sale.DriverName,
+                                VehicleRegNo: sale.CarRegNo,
+                                TotalCost: sale.TotalCost,
+                                Agent: sale.Username,
+                                ItemName: item.ItemName,
+                                Quantity: item.Quantity,
+                                UnitPrice: item.UnitPrice,
+                                ItemTotalCost: item.TotalCost
+                            };
+                            salesGridOptions.rowData.push(formattedSale);
+                        });
+                    } else {
+                        console.error('Invalid date format', sale.SaleDate);
+                    }
+                });
+
+                gridApi.setRowData(salesGridOptions.rowData);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    });
+
+    // Handle CSV download
+    const CSVDownloadButton = document.getElementById('downloadCSV');
+    if (CSVDownloadButton) {
+        CSVDownloadButton.addEventListener('click', function (e) {
+            e.preventDefault();
+            const params = {
+                fileName: 'sales.csv',
+                columnKeys: ['SaleDate', 'ClientName', 'DriverName', 'VehicleRegNo', 'TotalCost', 'SaleId', 'Username', 'ItemName', 'Quantity', 'UnitPrice', 'ItemTotalCost'],
+                processCellCallback: function (params) {
+                    return params.value;
+                }
+            };
+            gridApi.exportDataAsCsv(params);
+        });
+    } else {
+        console.error('CSVDownloadButton element not found in the DOM.');
+    }
+
+    // Handle PDF generation
+    const generatePDFButton = document.getElementById('generatePDF');
+    if (generatePDFButton) {
+        generatePDFButton.addEventListener('click', function () {
+            const rowData = [];
+            gridApi.forEachNode(node => rowData.push(node.data));
+
+            const doc = new jsPDF.jsPDF();
+
+            let y = 10;
+            doc.setFontSize(12);
+            doc.text("Sales Report", 10, y);
+            y += 10;
+
+            rowData.forEach((row, index) => {
+                doc.text(`Sale ID: ${row.SaleId}`, 10, y);
+                y += 10;
+                doc.text(`Date: ${row.SaleDate}`, 10, y);
+                y += 10;
+                doc.text(`Client Name: ${row.ClientName}`, 10, y);
+                y += 10;
+                doc.text(`Driver Name: ${row.DriverName}`, 10, y);
+                y += 10;
+                doc.text(`Vehicle Reg No: ${row.VehicleRegNo}`, 10, y);
+                y += 10;
+                doc.text(`Total Cost: ${row.TotalCost}`, 10, y);
+                y += 10;
+                doc.text(`Agent: ${row.Agent}`, 10, y);
+                y += 10;
+                doc.text(`Item Name: ${row.ItemName}`, 10, y);
+                y += 10;
+                doc.text(`Quantity: ${row.Quantity}`, 10, y);
+                y += 10;
+                doc.text(`Unit Price: ${row.UnitPrice}`, 10, y);
+                y += 10;
+                doc.text(`Item Total Cost: ${row.ItemTotalCost}`, 10, y);
+                y += 20;
+                if (y > 280) {
+                    doc.addPage();
+                    y = 10;
+                }
+            });
+
+            doc.save("sales_report.pdf");
+        });
+    } else {
+        console.error('generatePDF element not found in the DOM.');
+    }
+});

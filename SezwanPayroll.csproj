@@ -184,7 +184,6 @@
     <Content Include="img\Revamped\SobanyLogo.png" />
     <Content Include="js\admin.js" />
     <Content Include="js\login.js" />
-    <Content Include="js\master.js" />
     <Content Include="js\reports.js" />
     <Content Include="js\Revamped\configsApprovalTemplates.js" />
     <Content Include="js\Revamped\configsTaxes.js" />
@@ -1958,9 +1957,6 @@
     <Compile Include="Admin.aspx.designer.cs">
       <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DTO\AuthPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="DTO\clsClient.cs" />
     <Compile Include="DTO\clsLogin.cs" />
     <Compile Include="dbConnect.cs" />
@@ -1968,9 +1964,6 @@
     <Compile Include="DTO\clsSales.cs" />
     <Compile Include="DTO\clsSalesData.cs" />
     <Compile Include="DTO\JWT.cs" />
-    <Compile Include="DTO\Logout.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="login.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>login.aspx</DependentUpon>

@@ -1,0 +1,5 @@
+﻿var configsPermissionsTab = function () {
+    return {
+
+    }
+}

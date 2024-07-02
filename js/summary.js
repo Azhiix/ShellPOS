@@ -60,12 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 itemsHtml += `
                     <tr>
                         <td>${item.ItemName}</td>
-                        <td class='quantity'>${item.Quantity}</td>
+                        <td>${item.Quantity}</td>
                         <td>${item.UnitPrice}</td>
-                        <td class='totalInternalCost'>${item.TotalCost}</td>
+                        <td>${item.TotalCost}</td>
                     </tr>
                 `;
-                console.log('The items HTML is:', itemsHtml);
             });
         } else {
             itemsHtml = '<tr><td colspan="4">No items found for this sale</td></tr>';
@@ -184,4 +183,3 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error fetching sales data:', error);
         });
 });
-

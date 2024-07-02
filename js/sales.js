@@ -1,11 +1,12 @@
 ﻿
-function triggerPageRefresh(){
+
+function triggerPageRefresh() {
     customSwal.fire({
         title: 'Success!',
         text: 'Sale succesfully saved.',
         icon: 'success',
         confirmButtonText: 'OK'
-        
+
     });
 
     setTimeout(() => {
@@ -66,154 +67,186 @@ function validateSale(saleId) {
     return true;
 }
 
-        $(document).ready(function () {
-            // Initialize the select2 dropdowns
-            $('.js-example-basic-single').select2();
-            
-            fetchProducts().then(() => {
-            
-                attachEventListeners();
-                extractUsernameFromToken();
-            });
+$(document).ready(function () {
+    // Initialize the select2 dropdowns
+    $('.js-example-basic-single').select2();
+    $('#vehicleRegSelect').select2({
+        placeholder: "Choose...",
+        tags: true,
+        tokenSeparators: [',', ' ']
+    });
+    $('#vehicleRegSelect').select2({
+        placeholder: "Choose...",
+        tags: true,
+        tokenSeparators: [',', ' ']
+    });
 
-            // Prevent form submission on Enter key for specific input fields
-            preventFormSubmissionOnEnter();
+    $('#driversNameSelect').select2({
+        placeholder: "Choose...",
+        tags: true,
+        tokenSeparators: [',', ' ']
+    });
 
-            fetchClientsAndVehicleReg();
+
+
+
+    fetchProducts().then(() => {
+
+        attachEventListeners();
+        extractUsernameFromToken();
+    });
+
+    // Prevent form submission on Enter key for specific input fields
+    preventFormSubmissionOnEnter();
+
+    fetchClientsAndVehicleReg();
+});
+
+let clientsAndVehicleReg = [];
+
+function fetchClientsAndVehicleReg() {
+    // Assuming the token is stored in a cookie named 'token'
+    const token = document.cookie.split('; ').find(row => row.startsWith('Token=')).split('=')[1];
+    console.log('Token:', token)
+
+    return fetch('sales.aspx/ShowClients', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    })
+        .then(response => {
+            console.log('Token:', token);
+
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.d) {
+                clientsAndVehicleReg = data.d;
+                populateClientAndVehicleRegDropdown();
+            } else {
+                throw new Error('Unexpected response structure');
+            }
+        })
+        .catch(error => console.error('Error fetching clients and vehicle registration numbers:', error));
+}
+
+function populateClientAndVehicleRegDropdown() {
+    const clientSelect = $('#clientSelect')
+        ;
+    clientsAndVehicleReg.forEach(item => {
+        clientSelect.append(new Option(item.Name, item.ClientID));
+    });
+
+    clientSelect.on('change', function () {
+        const clientId = $(this).val();
+        const client = clientsAndVehicleReg.find(item => item.ClientID == clientId);
+
+        // Populate the vehicle registration numbers
+        const vehicleRegSelect = $('#vehicleRegSelect');
+        vehicleRegSelect.empty();
+        vehicleRegSelect.append('<option value="" disabled selected>Choose...</option>');
+
+        const registrationNumbers = client.RegistrationNo.split(', ');
+        registrationNumbers.forEach(regNo => {
+            vehicleRegSelect.append(new Option(regNo, regNo));
         });
 
-        let clientsAndVehicleReg = [];
+        // Reinitialize Select2 for the vehicle registration field
+        vehicleRegSelect.select2({
+            placeholder: "Choose...",
+            tags: true,
+            tokenSeparators: [',', ' ']
+        });
 
-        function fetchClientsAndVehicleReg() {
-            // Assuming the token is stored in a cookie named 'token'
-            const token = document.cookie.split('; ').find(row => row.startsWith('Token=')).split('=')[1];
-            console.log('Token:', token)
 
-            return fetch('sales.aspx/ShowClients', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                }
-            })
-                .then(response => {
-                    console.log('Token:', token);
+        const driversNameSelect = $('#driversNameSelect');
+        driversNameSelect.empty();
+        driversNameSelect.append('<option value="" disabled selected>Choose...</option>');
 
-                    if (!response.ok) {
-                        throw new Error(`Network response was not ok: ${response.statusText}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data && data.d) {
-                        clientsAndVehicleReg = data.d;
-                        populateClientAndVehicleRegDropdown();
-                    } else {
-                        throw new Error('Unexpected response structure');
-                    }
-                })
-                .catch(error => console.error('Error fetching clients and vehicle registration numbers:', error));
+        const driverNames = client.DriverName.split(', ');
+        driverNames.forEach(driverName => {
+            driversNameSelect.append(new Option(driverName, driverName));
+        });
+
+        // Reinitialize Select2 for the driver's name field
+        driversNameSelect.select2({
+            placeholder: "Choose...",
+            tags: true,
+            tokenSeparators: [',', ' ']
+        });
+
+      
+    });
+}
+
+
+
+
+
+
+function fetchProducts() {
+    const token = document.cookie.split('; ').find(row => row.startsWith('Token=')).split('=')[1];
+    
+
+    return fetch('sales.aspx/ShowProducts', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+
         }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.d) {
+                allProducts = data.d;
 
-        function populateClientAndVehicleRegDropdown() {
-            const clientSelect = $('#clientSelect');
-            clientsAndVehicleReg.forEach(item => {
-                clientSelect.append(new Option(item.Name, item.ClientID));
-            });
-
-            clientSelect.on('change', function () {
-                const clientId = $(this).val();
-                const client = clientsAndVehicleReg.find(item => item.ClientID == clientId);
-
-                // Populate the vehicle registration numbers
-                const vehicleRegSelect = $('#vehicleRegSelect');
-                vehicleRegSelect.empty();
-                vehicleRegSelect.append('<option value="" disabled selected>Choose...</option>');
-
-                const registrationNumbers = client.RegistrationNo.split(', ');
-                registrationNumbers.forEach(regNo => {
-                    vehicleRegSelect.append(new Option(regNo, regNo));
-                });
-
-                // Populate the driver's names
-                const driversNameSelect = $('#driversNameSelect');
-                driversNameSelect.empty();
-                driversNameSelect.append('<option value="" disabled selected>Choose...</option>');
-
-                const driverNames = client.DriverName.split(', ');
-                driverNames.forEach(driverName => {
-                    driversNameSelect.append(new Option(driverName, driverName));
-                });
-
-                console.log('Client selected:', client);
-                console.log('Registration numbers:', registrationNumbers);
-                console.log('Driver names:', driverNames);
-            });
-        }
-
-
-
-
-
-
-        function fetchProducts() {
-            const token = document.cookie.split('; ').find(row => row.startsWith('Token=')).split('=')[1];
-            console.log('Token:', token);
+                populateProductTypes();
+            } else {
+                throw new Error('Unexpected response structure');
+            }
+        })
         
-            return fetch('sales.aspx/ShowProducts', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token,
+}
 
-                }
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Network response was not ok: ${response.statusText}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.d) {
-                        allProducts = data.d;
-                    
-                        populateProductTypes();
-                    } else {
-                        throw new Error('Unexpected response structure');
-                    }
-                })
-                .catch(error => console.error('Error fetching products:', error));
-        }
+function populateProductTypes() {
+    const productTypes = new Set();
+    allProducts.forEach(item => productTypes.add(item.ProdTypeName));
 
-        function populateProductTypes() {
-            const productTypes = new Set();
-            allProducts.forEach(item => productTypes.add(item.ProdTypeName));
-        
-            $('#salesEntries').empty().append(createSaleEntryForm());
-            const productTypeSelect = $('#salesEntries .clsProductType').first();
-            productTypes.forEach(type => {
-                
-                productTypeSelect.append(new Option(type, type)); //dding product type option: Fuel
-            
-                console.log('Adding product type option:', type);
-            
-            });
-            
-        
+    $('#salesEntries').empty().append(createSaleEntryForm());
+    const productTypeSelect = $('#salesEntries .clsProductType').first();
+    productTypes.forEach(type => {
 
-            
-        }
+        productTypeSelect.append(new Option(type, type)); //dding product type option: Fuel
 
-        function removeSale(saleId) {
-            console.log(`Removing sale ID: ${saleId}`);
-            $(`#sale${saleId}`).remove();
-            determineTotalCostForAllSales();
-        }
+       
 
-        function createSaleEntryForm(productType = '') {
-        const saleCount = $('#salesEntries .saleEntry').length + 1;
-            return `
+    });
+
+
+
+
+}
+
+function removeSale(saleId) {
+   
+    $(`#sale${saleId}`).remove();
+    determineTotalCostForAllSales();
+}
+
+function createSaleEntryForm(productType = '') {
+    const saleCount = $('#salesEntries .saleEntry').length + 1;
+    return `
             <div class="card mt-3 saleEntry" id="sale${saleCount}">
                 <div class="card-header" id="heading${saleCount}">
                     <h5 class="mb-0 d-flex justify-content-between align-items-center">
@@ -263,309 +296,311 @@ function validateSale(saleId) {
                     </div>
                 </div>
             </div>`;
-        }
+}
+
+
+
+
+
+
+function saveSale(saleId) {
+    const productType = $(`#sale${saleId} .clsProductType`).val();
+    const item = $(`#subCategory${saleId}`).val();
+    const itemName = $(`#subCategory${saleId} option:selected`).text();
+    const quantity = $(`#quantityAmount${saleId}`).val();
+    const totalCost = calculateTotalCost($(`#subCategory${saleId} option:selected`).data('price'), quantity);
+
+    const saleData = {
+        productType: productType,
+        item: item,
+        itemName: itemName,
+        quantity: quantity,
+        totalCost: totalCost
+    };
+
+   
+
+    const $saleEntry = $(`#sale${saleId}`);
+    $saleEntry.data('productType', productType);
+    $saleEntry.data('item', item);
+    $saleEntry.data('itemName', itemName);
+    $saleEntry.data('quantity', quantity);
+    $saleEntry.data('totalCost', totalCost);
+}
+
+function minimizeSale(saleId) {
+    $(`#collapse${saleId}`).collapse('hide');
+}
+
+function expandSale(saleId) {
+    $(`#collapse${saleId}`).collapse('show');
+}
+
+function loadSale(saleId) {
+    const $saleEntry = $(`#sale${saleId}`);
+    const saleData = {
+        productType: $saleEntry.data('productType'),
+        item: $saleEntry.data('item'),
+        itemName: $saleEntry.data('itemName'),
+        quantity: $saleEntry.data('quantity'),
+        totalCost: $saleEntry.data('totalCost')
+    };
+
+    if (saleData.productType) {
+      
+        $(`#sale${saleId} .clsProductType`).val(saleData.productType).trigger('change');
+        $(`#subCategory${saleId}`).val(saleData.item).trigger('change');
+        $(`#quantityAmount${saleId}`).val(saleData.quantity);
+        $(`#totalCost${saleId}`).val(saleData.totalCost);
+    } else {
+       
+    }
+}
+
+function attachEventListeners() {
+    $(document).on('click', '#addItemButton', function () {
+
+        $('#salesEntries').append(createSaleEntryForm());
+        $('.js-example-basic-single').select2();
+        const newProductTypeSelect = $('#salesEntries .clsProductType').last();
+       
+
+        const productTypes = new Set();
+        allProducts.forEach(item => productTypes.add(item.ProdTypeName));
+       
+
+        productTypes.forEach(type => {
+            
+            newProductTypeSelect.append(new Option(type, type));
+        });
+
+        newProductTypeSelect.select2();
+       
+        newProductTypeSelect.change();
+    });
+
+    $(document).on('click', '.saveButton', function () {
+        const saleId = $(this).data('sale-id');
+       
+        if (!validateSale(saleId)) return;
+
+
+
+        const productType = $(`#sale${saleId} .clsProductType`).val();
+        const quantity = $(`#quantityAmount${saleId}`).val();
+        const totalCost = calculateTotalCost($(`#subCategory${saleId} option:selected`).data('price'), quantity);
+        $(`#itemSummary${saleId}`).text(productType);
+        $(`#priceSummary${saleId}`).text(totalCost.toFixed(2));
+        $(`#totalCost${saleId}`).val(totalCost);
+        saveSale(saleId);
+        minimizeSale(saleId);
+        determineTotalCostForAllSales();
+
+    });
+
+    //$(document).on('click', '.editButton', function () {
+    //    const saleId = $(this).data('sale-id');
+    //    console.log('Edit button clicked for sale ID:', saleId);
+    //    loadSale(saleId);
+    //    expandSale(saleId);
+    //});
+
+    $(document).on('change', '.clsProductType', function () {
+        const saleId = $(this).closest('.saleEntry').attr('id').replace('sale', '');
+
         
+        printAllSales();
+        determineTotalCostForAllSales();
+        removeAllSales();
 
 
+    });
+
+    $(document).on('change', '.clsProductItems', function () {
+        const saleId = $(this).closest('.saleEntry').attr('id').replace('sale', '');
+        
+        updateSummary(saleId);
+        determineTotalCostForAllSales();
+    });
+
+    $(document).on('input change', '.quantityAmount', function () {
+        const saleId = $(this).closest('.saleEntry').attr('id').replace('sale', '');
+        console.log(`Quantity changed for sale ID: ${saleId}, new value: ${$(this).val()}`);
+        updateSummary(saleId);
+        determineTotalCostForAllSales();
+    });
+
+    $(document).on('click', '.saveAndPrint', function () {
+        validateSalesData()
+
+        
+        printAllSales();
+        determineTotalCostForAllSales();
+
+        removeAllSales();
+        triggerPageRefresh()
+
+    });
+
+    $(document).on('click', '.reloadSale', function () {
+       
+
+        reloadPreviousSales();
 
 
-
-        function saveSale(saleId) {
-            const productType = $(`#sale${saleId} .clsProductType`).val();
-            const item = $(`#subCategory${saleId}`).val();
-            const itemName = $(`#subCategory${saleId} option:selected`).text();
-            const quantity = $(`#quantityAmount${saleId}`).val();
-            const totalCost = calculateTotalCost($(`#subCategory${saleId} option:selected`).data('price'), quantity);
-
-            const saleData = {
-                productType: productType,
-                item: item,
-                itemName: itemName,
-                quantity: quantity,
-                totalCost: totalCost
-            };
-
-            console.log('Saving sale data:', saleData);
-
-            const $saleEntry = $(`#sale${saleId}`);
-            $saleEntry.data('productType', productType);
-            $saleEntry.data('item', item);
-            $saleEntry.data('itemName', itemName);
-            $saleEntry.data('quantity', quantity);
-            $saleEntry.data('totalCost', totalCost);
-        }
-
-        function minimizeSale(saleId) {
-            $(`#collapse${saleId}`).collapse('hide');
-        }
-
-        function expandSale(saleId) {
-            $(`#collapse${saleId}`).collapse('show');
-        }
-
-        function loadSale(saleId) {
-            const $saleEntry = $(`#sale${saleId}`);
-            const saleData = {
-                productType: $saleEntry.data('productType'),
-                item: $saleEntry.data('item'),
-                itemName: $saleEntry.data('itemName'),
-                quantity: $saleEntry.data('quantity'),
-                totalCost: $saleEntry.data('totalCost')
-            };
-
-            if (saleData.productType) {
-                console.log('Sale loaded:', saleData);
-                $(`#sale${saleId} .clsProductType`).val(saleData.productType).trigger('change');
-                $(`#subCategory${saleId}`).val(saleData.item).trigger('change');
-                $(`#quantityAmount${saleId}`).val(saleData.quantity);
-                $(`#totalCost${saleId}`).val(saleData.totalCost);
-            } else {
-                console.log('No data found for sale ID:', saleId);
-            }
-        }
-
-        function attachEventListeners() {
-            $(document).on('click', '#addItemButton', function () {
-               
-                $('#salesEntries').append(createSaleEntryForm());
-                $('.js-example-basic-single').select2();
-                const newProductTypeSelect = $('#salesEntries .clsProductType').last();
-                console.log('New product type select created:', newProductTypeSelect);
-
-                const productTypes = new Set();
-                allProducts.forEach(item => productTypes.add(item.ProdTypeName));
-                console.log('Unique product types for new select:', productTypes);
-
-                productTypes.forEach(type => {
-                    console.log('Adding product type option to new select:', type);
-                    newProductTypeSelect.append(new Option(type, type));
-                });
-
-                newProductTypeSelect.select2();
-                console.log('New product type dropdown populated.');
-                newProductTypeSelect.change();
-            });
-
-            $(document).on('click', '.saveButton', function () {
-                const saleId = $(this).data('sale-id');
-                console.log(`Save button clicked for sale ID: ${saleId}`);
-                if(!validateSale(saleId)) return;
+    });
 
 
-               
-                const productType = $(`#sale${saleId} .clsProductType`).val();
-                const quantity = $(`#quantityAmount${saleId}`).val();
-                const totalCost = calculateTotalCost($(`#subCategory${saleId} option:selected`).data('price'), quantity);
-                $(`#itemSummary${saleId}`).text(productType);
-                $(`#priceSummary${saleId}`).text(totalCost.toFixed(2));
-                $(`#totalCost${saleId}`).val(totalCost);
-                saveSale(saleId);
-                minimizeSale(saleId);
-                determineTotalCostForAllSales();
-              
-            });
-
-            //$(document).on('click', '.editButton', function () {
-            //    const saleId = $(this).data('sale-id');
-            //    console.log('Edit button clicked for sale ID:', saleId);
-            //    loadSale(saleId);
-            //    expandSale(saleId);
-            //});
-
-            $(document).on('change', '.clsProductType', function () {
-                const saleId = $(this).closest('.saleEntry').attr('id').replace('sale', '');
-               
-                    console.log('Save and Print button clicked.');
-                    printAllSales();
-                    determineTotalCostForAllSales();
-                    removeAllSales();
-                
-                
-            });
-
-            $(document).on('change', '.clsProductItems', function () {
-                const saleId = $(this).closest('.saleEntry').attr('id').replace('sale', '');
-                console.log(`Product item changed for sale ID: ${saleId}, new value: ${$(this).val()}`);
-                updateSummary(saleId);
-                determineTotalCostForAllSales();
-            });
-
-            $(document).on('input change', '.quantityAmount', function () {
-                const saleId = $(this).closest('.saleEntry').attr('id').replace('sale', '');
-                console.log(`Quantity changed for sale ID: ${saleId}, new value: ${$(this).val()}`);
-                updateSummary(saleId);
-                determineTotalCostForAllSales();
-            });
-
-            $(document).on('click', '.saveAndPrint', function () {
-                validateSalesData()
-            
-                console.log('Save and Print button clicked.');
-                printAllSales();
-                determineTotalCostForAllSales();
-                
-                removeAllSales();
-                triggerPageRefresh()
-                
-            });
-
-            $(document).on('click', '.reloadSale', function () {
-                console.log('Reload Sales Button Clicked.');
-
-                reloadPreviousSales();
-                
-            
-            });
-
-
-        }
+}
 function preventFormSubmissionOnEnter() {
     $(document).on('keydown', 'input, select', function (e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            console.log('Enter key pressed, default form submission prevented.');
+
         }
+    })
+}
+
+function populateOptions(subDropdownSelector, category) {
+   
+    const $dropdown = $(subDropdownSelector);
+    const options = allProducts.filter(product => product.ProdTypeName.toLowerCase() === category.toLowerCase());
+    
+    $dropdown.empty();
+    options.forEach(item => {
+        const option = new Option(`${item.ItemName} - Rs ${item.UnitPrice}`, item.ItemId);
+        $(option).data('price', item.UnitPrice);
+       
+        $dropdown.append(option);
     });
+    $dropdown.select2();
+   
+}
+
+function updateSummary(saleId) {
+    const $selectedOption = $(`#subCategory${saleId} option:selected`);
+    const quantity = parseFloat($(`#quantityAmount${saleId}`).val()) || 0;
+    const price = parseFloat($selectedOption.data('price')) || 0;
+    const totalCost = quantity * price;
+   
+    $(`#totalCost${saleId}`).val(totalCost.toFixed(2)).toggle(totalCost > 0);
+}
+
+function removeAllSales() {
+    console.log('Remove all sales');
+    $('.saleEntry').each(function () {
+        const $saleEntry = $(this);
+        $saleEntry.removeData('productType');
+        $saleEntry.removeData('item');
+        $saleEntry.removeData('itemName');
+        $saleEntry.removeData('quantity');
+        $saleEntry.removeData('totalCost');
+    });
+    console.log('All sales have been removed.');
+}
+
+
+function calculateTotalCost(price, quantity) {
+    return price * quantity;
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+function extractUsernameFromToken() {
+    const cookieName = 'Token';
+    const token = getCookie(cookieName);
+    console.log('Token:', token)
+    if (token) {
+        try {
+            const decodedToken = jwt_decode(token);
+            const username = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+            console.log(`Username: ${username}`);
+            document.getElementById('usernameValue').innerText = username;
+        } catch (e) {
+            console.error('Error decoding token:', e);
         }
+    } else {
+        console.error('Token not found in the cookie.');
+    }
+}
 
-        function populateOptions(subDropdownSelector, category) {
-            console.log(`Populating options for category: ${category} in dropdown: ${subDropdownSelector}`);
-            const $dropdown = $(subDropdownSelector);
-            const options = allProducts.filter(product => product.ProdTypeName.toLowerCase() === category.toLowerCase());
-            console.log('Filtered options:', options);
-            $dropdown.empty();
-            options.forEach(item => {
-                const option = new Option(`${item.ItemName} - Rs ${item.UnitPrice}`, item.ItemId);
-                $(option).data('price', item.UnitPrice);
-                console.log('Adding item option:', option);
-                $dropdown.append(option);
-            });
-            $dropdown.select2();
-            console.log('Options populated.');
-        }
+function printAllSales() {
 
-        function updateSummary(saleId) {
-            const $selectedOption = $(`#subCategory${saleId} option:selected`);
-            const quantity = parseFloat($(`#quantityAmount${saleId}`).val()) || 0;
-            const price = parseFloat($selectedOption.data('price')) || 0;
-            const totalCost = quantity * price;
-            console.log(`Updating summary for sale ID: ${saleId}, quantity: ${quantity}, price: ${price}, total cost: ${totalCost}`);
-            $(`#totalCost${saleId}`).val(totalCost.toFixed(2)).toggle(totalCost > 0);
-        }
+    console.log('Print all sales');
 
-        function removeAllSales() {
-            console.log('Remove all sales');
-            $('.saleEntry').each(function () {
-                const $saleEntry = $(this);
-                $saleEntry.removeData('productType');
-                $saleEntry.removeData('item');
-                $saleEntry.removeData('itemName');
-                $saleEntry.removeData('quantity');
-                $saleEntry.removeData('totalCost');
-            });
-            console.log('All sales have been removed.');
-        }
+    // Clear the table before adding new rows
+    $("#SalesAndTotalCosts").empty();
+
+    let totalCost = 0;
+
+    $('.saleEntry').each(function () {
+        const $saleEntry = $(this);
+        const saleData = {
+            productType: $saleEntry.data('productType'),
+            item: $saleEntry.data('item'),
+            itemName: $saleEntry.data('itemName'),
+            quantity: $saleEntry.data('quantity'),
+            totalCost: $saleEntry.data('totalCost')
+        };
+        console.log('Sale:', saleData);
 
 
-        function calculateTotalCost(price, quantity) {
-            return price * quantity;
-        }
+        const match = saleData.itemName.match(/(.+?) - Rs (\d+)/);
+        const productName = match ? match[1].trim() : 'Unknown Product';
+        const unitPrice = match ? parseFloat(match[2]) : 0;
 
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-
-        function extractUsernameFromToken() {
-            const cookieName = 'Token';
-            const token = getCookie(cookieName);
-            console.log('Token:', token)
-            if (token) {
-                try {
-                    const decodedToken = jwt_decode(token);
-                    const username = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
-                    console.log(`Username: ${username}`);
-                    document.getElementById('usernameValue').innerText = username;
-                } catch (e) {
-                    console.error('Error decoding token:', e);
-                }
-            } else {
-                console.error('Token not found in the cookie.');
-            }
-        }
-
-        function printAllSales() {
-  
-            console.log('Print all sales');
-        
-            // Clear the table before adding new rows
-            $("#SalesAndTotalCosts").empty();
-        
-            let totalCost = 0;
-        
-            $('.saleEntry').each(function () {
-                const $saleEntry = $(this);
-                const saleData = {
-                    productType: $saleEntry.data('productType'),
-                    item: $saleEntry.data('item'),
-                    itemName: $saleEntry.data('itemName'),
-                    quantity: $saleEntry.data('quantity'),
-                    totalCost: $saleEntry.data('totalCost')
-                };
-                console.log('Sale:', saleData);
-                
-        
-                const match = saleData.itemName.match(/(.+?) - Rs (\d+)/);
-                const productName = match ? match[1].trim() : 'Unknown Product';
-                const unitPrice = match ? parseFloat(match[2]) : 0;
-        
-                const newRow = `<tr>
+        const newRow = `<tr>
                     <td>${productName}</td>
                     <td>${saleData.quantity}</td>
                     <td>${unitPrice}</td>
                     <td>${saleData.totalCost}</td>
                 </tr>`;
-        
-                // Append the new row to the table
-                $("#SalesAndTotalCosts").append(newRow);
-        
-                // Accumulate total cost
-                totalCost += parseFloat(saleData.totalCost);
-            });
-        
-            // Append the total cost row to the table
-            const totalRow = `<tr class="mt-2">
+
+        // Append the new row to the table
+        $("#SalesAndTotalCosts").append(newRow);
+
+        // Accumulate total cost
+        totalCost += parseFloat(saleData.totalCost);
+    });
+
+    // Append the total cost row to the table
+    const totalRow = `<tr class="mt-2">
                 <td colspan="3">Total</td>
                 <td>${totalCost.toFixed(2)}</td>
             </tr>`;
-            $("#SalesAndTotalCosts").append(totalRow);
-        
-            // Update the total value in the print section
-            $("#totalValue").text(totalCost.toFixed(2));
-        
-            // Add client and additional information
-            addRelevantClientInformation();
-            addDriverAndCarInfo();
-        
-            // Ensure the print section is visible for printing
-            $('.printWindow').removeClass('d-none');
-        
-            // Trigger print
-            window.print();
-        
-            // Hide the print section after printing
-            $('.printWindow').addClass('d-none');
-        
-            printSalesData()
-            saveSalesData()
-        
-        }
+    $("#SalesAndTotalCosts").append(totalRow);
+
+    // Update the total value in the print section
+    $("#totalValue").text(totalCost.toFixed(2));
+
+    // Add client and additional information
+    addRelevantClientInformation();
+    addDriverAndCarInfo();
+
+    // Ensure the print section is visible for printing
+    $('.printWindow').removeClass('d-none');
+
+    // Trigger print
+    window.print();
+
+    // Hide the print section after printing
+    $('.printWindow').addClass('d-none');
+
+    printSalesData()
+    saveSalesData()
+
+}
 
 function validateSalesData() {
     // Ensure that client, car registration, and driver name are selected
     const clientSelect = $('#clientSelect');
-    const vehicleRegSelect = $('#vehicleRegSelect');
+    const vehicleRegSelect = $('#vehicleRegSelect')
+    vehicleRegSelect.select2
+        ;
     const driversNameSelect = $('#driversNameSelect');
 
     if (!clientSelect.val() || !vehicleRegSelect.val() || !driversNameSelect.val()) {
@@ -587,7 +622,7 @@ async function prepareSalesDataForPrinting() {
 
     // Clear the table before adding new rows
     $("#SalesAndTotalCosts").empty();
-  
+
     addRelevantClientInformation(clientInfo);
     addDriverAndCarInfo(clientInfo);
 }
@@ -600,141 +635,151 @@ function hidePrintWindow() {
     $('.printWindow').addClass('d-none');
 }
 
-        
-        function collectSalesData() {
-            let salesData = [];
-            let totalCost = 0;
 
-            
-            // Check if salesData is empty
-        
+function collectSalesData() {
+    let salesData = [];
+    let totalCost = 0;
 
-            $('.saleEntry').each(function (index) {
-                var $saleEntry = $(this);
-                const itemName = $saleEntry.data('itemName');
-                const itemId = $saleEntry.data('item');
-                
 
-              
+    // Check if salesData is empty
 
-                var priceMatch = itemName.match(/Rs\s(\d+\.\d+|\d+)/);
-                var price = priceMatch ? parseFloat(priceMatch[1]) : null;
 
-                if (price === null) {
-                    console.error('Price could not be extracted from item name:', itemName);
-                } else {
-                    console.log('Extracted Price:', price);
-                }
+    $('.saleEntry').each(function (index) {
+        var $saleEntry = $(this);
+        const itemName = $saleEntry.data('itemName');
+        const itemId = $saleEntry.data('item');
 
-                var name = itemName.split(/\s*-\s*/)[0];
-                var saleData = {
-                    id: index + 1, 
-                    productType: $saleEntry.data('productType'),
-                    ItemId: itemId,
-                    itemName: name,
-                    quantity: $saleEntry.data('quantity'),
-                    totalItemCost: $saleEntry.data('totalCost'),
-                    unitPrice: price
-                };
 
-                salesData.push(saleData);
-                totalCost += parseFloat(saleData.totalItemCost);
-            });
 
-            const clientInfo = {
-                ClientId: $('#clientSelect option:selected').val(),
-                Username: $('#usernameValue').text(),
-                date: new Date().toLocaleString(),
-                driverName: $('#driversNameSelect').val(),
-                carRegNo: $('#vehicleRegSelect option:selected').val(),
-                mileage: $('.inputMileage').val(),
-                totalCost: totalCost.toFixed(2)
-            };
-            localStorage.setItem('sales', JSON.stringify(salesData));
 
-            return { salesData, clientInfo };
+        var priceMatch = itemName.match(/Rs\s(\d+\.\d+|\d+)/);
+        var price = priceMatch ? parseFloat(priceMatch[1]) : null;
+
+        if (price === null) {
+            console.error('Price could not be extracted from item name:', itemName);
+        } else {
+            console.log('Extracted Price:', price);
         }
 
+        var name = itemName.split(/\s*-\s*/)[0];
+        var saleData = {
+            id: index + 1,
+            productType: $saleEntry.data('productType'),
+            ItemId: itemId,
+            itemName: name,
+            quantity: $saleEntry.data('quantity'),
+            totalItemCost: $saleEntry.data('totalCost'),
+            unitPrice: price
+        };
+
+        salesData.push(saleData);
+        totalCost += parseFloat(saleData.totalItemCost);
+    });
+
+    const clientInfo = {
+        ClientId: $('#clientSelect option:selected').val(),
+        Username: $('#usernameValue').text(),
+        date: new Date().toLocaleString().split('-').reverse().join('-').split(',')[0],
+        driverName: $('#driversNameSelect').val(),
+        carRegNo: $('#vehicleRegSelect option:selected').val(),
+        mileage: $('.inputMileage').val(),
+        totalCost: totalCost.toFixed(2)
+    };
+    localStorage.setItem('sales', JSON.stringify(salesData));
+
+    return { salesData, clientInfo };
+}
 
 
-        function printSalesData() {
-            const { salesData, clientInfo } = collectSalesData();
-            console.log('Sales data:', JSON.stringify(salesData));
-            console.log('Client info:', JSON.stringify(clientInfo));
-        }
 
-        function saveSalesData() {
-            const tokenCookie = document.cookie.split('; ').find(row => row.startsWith('Token='));
-            if (!tokenCookie) {
-                console.error('Token not found');
-                return;
+function printSalesData() {
+    const { salesData, clientInfo } = collectSalesData();
+    console.log('Sales data:', JSON.stringify(salesData));
+    console.log('Client info:', JSON.stringify(clientInfo));
+}
+
+function saveSalesData() {
+    const tokenCookie = document.cookie.split('; ').find(row => row.startsWith('Token='));
+    if (!tokenCookie) {
+        console.error('Token not found');
+        return;
+    }
+    const token = tokenCookie.split('=')[1];
+    const { salesData, clientInfo } = collectSalesData();
+
+    console.log('Sales data:', JSON.stringify(salesData));
+    console.log('Client info:', JSON.stringify(clientInfo));
+
+    fetch('sales.aspx/AddSales', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify({
+            salesJson: JSON.stringify(salesData),
+            clientInfoJson: JSON.stringify(clientInfo)
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-            const token = tokenCookie.split('=')[1];
-            const { salesData, clientInfo } = collectSalesData();
+            return response.json();
+        })
+        .then(data => {
+            if (data.d) {
+                console.log('Data saved successfully:', data.d);
 
-            console.log('Sales data:', JSON.stringify(salesData));
-            console.log('Client info:', JSON.stringify(clientInfo));
 
-            fetch('sales.aspx/AddSales', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token,
-                },
-                body: JSON.stringify({
-                    salesJson: JSON.stringify(salesData),
-                    clientInfoJson: JSON.stringify(clientInfo)
-                })
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.d) {
-                        console.log('Data saved successfully:', data.d);
-                    
-
-                    } else {
-                        console.error('Error saving data:', data);
-                    }
-                })
-                .catch(error => {
-                    console.error('Fetch error:', error);
-                });
-        }
+            } else {
+                console.error('Error saving data:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+}
 
 
 
 
-        function addRelevantClientInformation() {
-            const client = $('#clientSelect option:selected').text();
-            const date = new Date().toLocaleString();
+function addRelevantClientInformation() {
+    const client = $('#clientSelect option:selected').text();
+    let date = new Date().toLocaleString(); //  saleDate is a date, and is saved  in this format: '26/06/2024, should be like this: 2024-05-30
 
-            $('#TimePrint').text(date);
-            $('#clientValue').text(client);
-        }
+   /* date = date.split(' ')[0].split('/').reverse().join('-'); //2024,-06-26*/
+    date = date.split('-').reverse().join('-').split(',')[0]; //2024-06-26
 
-        function addDriverAndCarInfo() {
-            const driverName = $('#driversNameSelect option:selected').text(); // Changed to use .text() to get the selected option's text
-            const carRegNo = $('#vehicleRegSelect option:selected').val();
 
-            const mileage = $('.inputMileage').val();
+    $('#TimePrint').text(date);
+    $('#clientValue').text(client);
+}
 
-            $('#driverNamePrint').text(driverName);
-            $('#carRegNoPrint').text(carRegNo);
-            $('#mileagePrint').text(mileage);
-            $('#mileagePrint').append(' km');
-        }
+function addDriverAndCarInfo() {
+   
+    const driverName = $('#driversNameSelect option:selected').text(); // Changed to use .text() to get the selected option's text
+    const carRegNo = $('#vehicleRegSelect option:selected').val();
+    //carRegNo.select2({
+    //    placeholder: "Choose...",
+    //    tags: true,
+    //    tokenSeparators: [',', ' ']
+    //});
 
-        function determineTotalCostForAllSales() {
-            const totalCost = $('.saleEntry').toArray().reduce((sum, saleEntry) => {
-                const $saleEntry = $(saleEntry);
-                return sum + (parseFloat($saleEntry.find(`#totalCost${$saleEntry.attr('id').replace('sale', '')}`).val()) || 0);
-            }, 0);
+    const mileage = $('.inputMileage').val();
 
-            $('#totalSalesCosts').val(totalCost.toFixed(2));
-            $('#totalValue').text(totalCost.toFixed(2));
-        }
+    $('#driverNamePrint').text(driverName);
+    $('#carRegNoPrint').text(carRegNo);
+    $('#mileagePrint').text(mileage);
+    $('#mileagePrint').append(' km');
+}
+
+function determineTotalCostForAllSales() {
+    const totalCost = $('.saleEntry').toArray().reduce((sum, saleEntry) => {
+        const $saleEntry = $(saleEntry);
+        return sum + (parseFloat($saleEntry.find(`#totalCost${$saleEntry.attr('id').replace('sale', '')}`).val()) || 0);
+    }, 0);
+
+    $('#totalSalesCosts').val(totalCost.toFixed(2));
+    $('#totalValue').text(totalCost.toFixed(2));
+}

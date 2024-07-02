@@ -7,6 +7,9 @@ using System;
 
 namespace SezwanPayroll.DTO
 {
+
+
+
     public class JWT
     {
         private static readonly string secretKey = "pbRCLIbbr3wOhDXOrNSB9AY-Gzy9CDqUuDkh_qjFpNQ";
@@ -17,11 +20,11 @@ namespace SezwanPayroll.DTO
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, username),
-                new Claim("role_id", roleId.ToString()),
-                new Claim("User_Id", userId.ToString())
-            };
+        {
+            new Claim(ClaimTypes.Name, username),
+            new Claim("role_id", roleId.ToString()),
+            new Claim("User_Id", userId.ToString())
+        };
 
             var token = new JwtSecurityToken(
                 issuer: "Sezwan Technologies Ltd",
@@ -62,4 +65,5 @@ namespace SezwanPayroll.DTO
             }
         }
     }
+
 }

@@ -1,4 +1,5 @@
 ﻿'use strict';
+
 var reportsjs = function () {
     return {
 

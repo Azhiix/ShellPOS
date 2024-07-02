@@ -148,11 +148,12 @@ $(document).ready(function () {
         var userId = $('#hiddenUserId').val();
 
         if (!password) {
-           $("#passwordChange").addClass("is-invalid");
-
-           
-            return $('#passwordChange').focus();
-            // Exit the function if password is not entered
+           customSwal.fire({
+                title: 'Please enter a new password',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return; // Exit the function if password is not entered
         }
 
         $.ajax({
@@ -178,8 +179,7 @@ $(document).ready(function () {
                     confirmButtonText: 'OK'
                 });
                 $('#usernameChange').val('');
-                
-                $('#passwordChange').val('').removeClass("is-invalid"); // Remove is-invalid class here
+                $('#passwordChange').val('');
                 $('#roleId').val('');
                 $('#fname').val('');
                 $('#hiddenPermissionNames').val('');
@@ -255,10 +255,6 @@ $(document).ready(function () {
                     confirmButtonText: 'OK'
                 });
                 $('#viewAllProductsDropdown').trigger('click');
-                //lets clear all now
-                $('#productnameValue').val('');
-                $('#unitprice').val('');
-                $('#hiddenProductId').val('');
             },
             error: function (xhr, textStatus, errorThrown) {
                 $("#result").text("Error: " + errorThrown);

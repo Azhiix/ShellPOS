@@ -1,38 +1,24 @@
 ﻿.expandable {
     cursor: pointer;
 }
-
 .details {
     display: none;
-    text-align: center; /* Center align text within the details section */
 }
-
-.details .table-wrapper {
-    text-align: left; /* Align text inside the table wrapper to the left */
-}
-
 .toggle-btn::after {
     content: '+';
 }
-
 .toggle-btn.collapsed::after {
     content: '-';
 }
-
 .text-end {
     text-align: right;
 }
-
 @media (max-width: 700px) {
     .table-responsive {
         overflow-x: auto;
     }
     table {
         min-width: 300px;
-    }
-    #salesTable th, #salesTable td {
-        font-size: 14px; /* Reduce font size for small screens */
-        padding: 5px; /* Reduce padding for small screens */
     }
 }
 
@@ -67,7 +53,7 @@ table tbody tr:hover {
     background-color: #f1f1f1;
 }
 
-h1.text-center {
+h1.text-center.text-md {
     font-size: 24px;
     margin-bottom: 20px;
 }
@@ -88,8 +74,4 @@ h1.text-center {
     position: sticky;
     top: 0;
     z-index: 2;
-}
-
-.dropdown-menu {
-    width: 100%; /* Make the dropdown span the entire width */
 }

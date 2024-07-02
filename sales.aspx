@@ -1,8 +1,7 @@
-﻿<%@ Page Language="C#" Title="Sales" AutoEventWireup="true" MasterPageFile="~/Site1.Master" CodeBehind="sales.aspx.cs" Inherits="SezwanPayroll.sales" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site1.Master" CodeBehind="sales.aspx.cs" Inherits="SezwanPayroll.sales" %>
 
 <asp:Content ID="ContentHead" ContentPlaceHolderID="head" runat="server">
     <meta charset="UTF-8">
-    <title>Sales</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
    
