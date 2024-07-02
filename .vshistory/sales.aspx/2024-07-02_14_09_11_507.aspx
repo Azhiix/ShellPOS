@@ -34,7 +34,7 @@
                 <div class="col-4">
                     <label for="vehicleRegSelect" class="form-label car-registration">Car Registration No.:</label>
                 </div>
-                <div class="col-4">
+                <div class="col-8">
     <select class="form-select" id="vehicleRegSelect" >
         <option value="" disabled selected>Choose...</option>
     </select>
@@ -46,7 +46,7 @@
             <div class="col-4">
                 <label for="driversNameSelect" class="form-label">Driver's Name:</label>
             </div>
-            <div class="col-4">
+            <div class="col-8">
                 <select class="form-select" id="driversNameSelect" >
                     <option value="" disabled selected>Choose...</option>
                 </select>

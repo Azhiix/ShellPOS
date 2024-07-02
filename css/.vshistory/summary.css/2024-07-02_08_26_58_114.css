@@ -75,13 +75,3 @@ h1.text-center.text-md {
     top: 0;
     z-index: 2;
 }
-
-
-@media(print){
-    header{
-        display: none;
-    }
-    footer{
-        display: none;
-    }
-}

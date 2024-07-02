@@ -78,10 +78,7 @@ h1.text-center.text-md {
 
 
 @media(print){
-    header{
-        display: none;
-    }
-    footer{
-        display: none;
+    header,footer{
+        display:none;
     }
 }

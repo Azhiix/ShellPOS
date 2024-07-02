@@ -26,7 +26,7 @@
                 <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
-                            <a class="nav-link " aria-current="page" href="reports.aspx">
+                            <a class="nav-link active" aria-current="page" href="reports.aspx">
                                 <i class="fas fa-chart-bar"></i>Reports
                             </a>
                         </li>

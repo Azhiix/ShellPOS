@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         detailsContainer.querySelector('#clientValue').textContent = selectedSale.ClientName;
         detailsContainer.querySelector('#driverNamePrint').textContent = selectedSale.DriverName;
         detailsContainer.querySelector('#carRegNoPrint').textContent = selectedSale.CarRegNo;
-     
+        detailsContainer.querySelector('#mileagePrint').textContent = selectedSale.Mileage || '';
 
         // Populate the items in the table
         let itemsHtml = '';

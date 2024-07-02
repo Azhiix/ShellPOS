@@ -27,7 +27,7 @@
         <p>Client: <span id="clientValue">Sezwan Co Ltd</span></p>
         <p>Driver: <span id="driverNamePrint">Driver 2</span></p>
         <p>Car Registration: <span id="carRegNoPrint">XYZ789</span></p>
-      
+        <p>Mileage: <span id="mileagePrint"></span></p>
         <div class="table-wrapper">
             <table class="table table-striped">
                 <thead>
