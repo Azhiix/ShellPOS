@@ -350,32 +350,7 @@ $(document).ready(function () {
 
 
         $('#editClientBtn').click(function () {
-            $.ajax({
-                type: "POST",
-                url: "admin.aspx/ShowClients",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    var clients = response.d;
-                    var select = $('#clientSelect');
-                    select.empty();
-                    select.append($('<option>', { value: '', text: 'Select Client', selected: true, disabled: true }));
-                    clients.forEach(function (client) {
-                        select.append($('<option>', {
-                            value: client.ClientId,
-                            text: client.ClientName,
-                            'data-address': client.Address,
-                            'data-contact': client.ContactInfo,
-                            'data-brn': client.BrnNo
-                        }));
-                    });
-                    select.closest('.form-group').show();
-                },
-
-                error: function (xhr, textStatus, errorThrown) {
-                    $("#result").text("Error: " + errorThrown);
-                }
-            })
+            alert('The edit buttton')
         })
 
 

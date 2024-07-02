@@ -371,10 +371,6 @@ $(document).ready(function () {
                     });
                     select.closest('.form-group').show();
                 },
-
-                error: function (xhr, textStatus, errorThrown) {
-                    $("#result").text("Error: " + errorThrown);
-                }
             })
         })
 

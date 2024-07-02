@@ -40,7 +40,7 @@
           </form>
       </div>
   </div>
-        <!-- edit client Dropdown -->
+        <!-- edit client section -->
          <div class="card mb-4">
      <div class="card-header">
          <h5 class="mb-0">Edit Client <i class="fa-solid fa-business-time"></i></h5>
@@ -57,37 +57,37 @@
  </div>
 
 
-        <!-- Edit Client Section -->
+        <!-- Add Client Section -->
 
 
             <div class="card mb-4">
         <div class="card-header d-flex justify-content-between">
             <h5 class="mb-0">Edit Client Details <i class="fas fa-user-edit"></i></h5>
             <!-- we need to add a minimise ability now -->
-           <i class="fas fa-minus" id="minimiseClientDetails"></i>
+           <i class="fas fa-minus" id="minimiseUserDetails"></i>
            </div>
         <div class="card-body clsUserDetails">
             <div class="form-group mb-3 mt-4">
-                <label for="clientNameChange" class="form-label">Client Name</label>
-                <input type="text" class="form-control" id="clientNameChange" >
+                <label for="usernameChange" class="form-label">Username</label>
+                <input type="text" class="form-control" id="usernameChange" placeholder="Enter username">
             </div>
             <div class="form-group mb-3">
-                <label for="passwordChange" class="form-label">Contact Info</label>
-                <input type="password" class="form-control" id="contactInfoChange" >
+                <label for="passwordChange" class="form-label">Password</label>
+                <input type="password" class="form-control" id="passwordChange" placeholder="Enter password">
             </div>
             
-         
             <div class="form-group mb-3">
-                <label for="addressChange" class="form-label">Address</label>
-                <input type="text" class="form-control" id="addressChange" >
+                <label for="roleId" class="form-label">Role</label>
+                <select class="form-select" id="roleId">
+                    <option value="1">User</option>
+                    <option value="2">Admin</option>
+                </select>
             </div>
-
-
-             <div class="form-group mb-3">
-     <label for="BRNChange" class="form-label">BRN</label>
-     <input type="text" class="form-control" id="BRNChange" >
- </div>
-            <button type="button" class="btn btn-primary" id="editClientBtn">Edit Client</button>
+            <div class="form-group mb-3">
+                <label for="fname" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="fname" placeholder="Enter full name">
+            </div>
+            <button type="button" class="btn btn-primary" id="editBtn">Edit User</button>
         </div>
     </div>
 

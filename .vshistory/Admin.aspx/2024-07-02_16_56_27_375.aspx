@@ -40,7 +40,7 @@
           </form>
       </div>
   </div>
-        <!-- edit client Dropdown -->
+        <!-- edit client section -->
          <div class="card mb-4">
      <div class="card-header">
          <h5 class="mb-0">Edit Client <i class="fa-solid fa-business-time"></i></h5>

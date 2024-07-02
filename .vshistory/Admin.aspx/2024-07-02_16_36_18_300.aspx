@@ -40,70 +40,20 @@
           </form>
       </div>
   </div>
-        <!-- edit client Dropdown -->
          <div class="card mb-4">
      <div class="card-header">
-         <h5 class="mb-0">Edit Client <i class="fa-solid fa-business-time"></i></h5>
+         <h5 class="mb-0">Edit Users <i class="fas fa-users"></i></h5>
      </div>
      <div class="card-body">
          <div class="form-group mb-3">
              <select class="form-select" id="clientSelect">
-                 <option disabled selected>Select Client</option>
+                 <option disabled selected>Select User</option>
              </select>
-             <input type="hidden" id="hiddenCLientNames" />
-             <input type="hidden" id="hiddenClientId" />
+             <input type="hidden" id="hiddenPermissionNames" />
+             <input type="hidden" id="hiddenUserId" />
          </div>
      </div>
  </div>
-
-
-        <!-- Edit Client Section -->
-
-
-            <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between">
-            <h5 class="mb-0">Edit Client Details <i class="fas fa-user-edit"></i></h5>
-            <!-- we need to add a minimise ability now -->
-           <i class="fas fa-minus" id="minimiseClientDetails"></i>
-           </div>
-        <div class="card-body clsUserDetails">
-            <div class="form-group mb-3 mt-4">
-                <label for="clientNameChange" class="form-label">Client Name</label>
-                <input type="text" class="form-control" id="clientNameChange" >
-            </div>
-            <div class="form-group mb-3">
-                <label for="passwordChange" class="form-label">Contact Info</label>
-                <input type="password" class="form-control" id="contactInfoChange" >
-            </div>
-            
-         
-            <div class="form-group mb-3">
-                <label for="addressChange" class="form-label">Address</label>
-                <input type="text" class="form-control" id="addressChange" >
-            </div>
-
-
-             <div class="form-group mb-3">
-     <label for="BRNChange" class="form-label">BRN</label>
-     <input type="text" class="form-control" id="BRNChange" >
- </div>
-            <button type="button" class="btn btn-primary" id="editClientBtn">Edit Client</button>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <!-- Add User Section -->
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between">

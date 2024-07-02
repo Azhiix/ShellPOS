@@ -40,7 +40,7 @@
           </form>
       </div>
   </div>
-        <!-- edit client Dropdown -->
+        <!-- edit client section -->
          <div class="card mb-4">
      <div class="card-header">
          <h5 class="mb-0">Edit Client <i class="fa-solid fa-business-time"></i></h5>
@@ -57,7 +57,7 @@
  </div>
 
 
-        <!-- Edit Client Section -->
+        <!-- Add Client Section -->
 
 
             <div class="card mb-4">
@@ -69,25 +69,19 @@
         <div class="card-body clsUserDetails">
             <div class="form-group mb-3 mt-4">
                 <label for="clientNameChange" class="form-label">Client Name</label>
-                <input type="text" class="form-control" id="clientNameChange" >
+                <input type="text" class="form-control" id="clientNameChange" placeholder="Enter username">
             </div>
             <div class="form-group mb-3">
                 <label for="passwordChange" class="form-label">Contact Info</label>
-                <input type="password" class="form-control" id="contactInfoChange" >
+                <input type="password" class="form-control" id="contactInfoChange" placeholder="Enter password">
             </div>
             
          
             <div class="form-group mb-3">
                 <label for="addressChange" class="form-label">Address</label>
-                <input type="text" class="form-control" id="addressChange" >
+                <input type="text" class="form-control" id="addressChange" placeholder="Enter full name">
             </div>
-
-
-             <div class="form-group mb-3">
-     <label for="BRNChange" class="form-label">BRN</label>
-     <input type="text" class="form-control" id="BRNChange" >
- </div>
-            <button type="button" class="btn btn-primary" id="editClientBtn">Edit Client</button>
+            <button type="button" class="btn btn-primary" id="editClientBtn">Edit User</button>
         </div>
     </div>
 

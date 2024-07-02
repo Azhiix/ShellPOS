@@ -376,43 +376,42 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
 
 
     public static List<clsClient> DisplayAllClients()
+{
+    using (SqlConnection connection = new SqlConnection(connectionString))
     {
-        using (SqlConnection connection = new SqlConnection(connectionString))
+        List<clsClient> clients = new List<clsClient>();
+        connection.Open();
+
+        SqlDataReader dataReader;
+        
+        // Using STRING_AGG to concatenate the RegistrationNo and DriverName
+        string sql = "SELECT c.ClientID, c.Name, c.ContactInfo, c.Address, " +
+                     "STRING_AGG(v.RegistrationNo, ', ') AS RegistrationNos, " +
+                     "STRING_AGG(v.DriverName, ', ') AS DriverNames " +
+                     "FROM Clients c " +
+                     "JOIN Vehicles v ON c.ClientID = v.ClientID " +
+                     "GROUP BY c.ClientID, c.Name, c.ContactInfo, c.Address";
+
+        using (SqlCommand command = new SqlCommand(sql, connection))
         {
-            List<clsClient> clients = new List<clsClient>();
-            connection.Open();
-
-            SqlDataReader dataReader;
-
-            // Using LEFT JOIN to include clients without vehicles
-            string sql = "SELECT c.ClientID, c.Name, c.ContactInfo, c.Address, " +
-                         "ISNULL(STRING_AGG(v.RegistrationNo, ', '), '') AS RegistrationNos, " +
-                         "ISNULL(STRING_AGG(v.DriverName, ', '), '') AS DriverNames " +
-                         "FROM Clients c " +
-                         "LEFT JOIN Vehicles v ON c.ClientID = v.ClientID " +
-                         "GROUP BY c.ClientID, c.Name, c.ContactInfo, c.Address";
-
-            using (SqlCommand command = new SqlCommand(sql, connection))
+            dataReader = command.ExecuteReader();
+            while (dataReader.Read())
             {
-                dataReader = command.ExecuteReader();
-                while (dataReader.Read())
+                clients.Add(new clsClient
                 {
-                    clients.Add(new clsClient
-                    {
-                        ClientID = Convert.ToInt32(dataReader["ClientID"]),
-                        Name = dataReader["Name"].ToString(),
-                        ContactInfo = dataReader["ContactInfo"].ToString(),
-                        Address = dataReader["Address"].ToString(),
-                        RegistrationNo = dataReader["RegistrationNos"].ToString(),
-                        DriverName = dataReader["DriverNames"].ToString(),
-                    });
-                }
-                dataReader.Close();
+                    ClientID = Convert.ToInt32(dataReader["ClientID"]),
+                    Name = dataReader["Name"].ToString(),
+                    ContactInfo = dataReader["ContactInfo"].ToString(),
+                    Address = dataReader["Address"].ToString(),
+                    RegistrationNo = dataReader["RegistrationNos"].ToString(),
+                    DriverName = dataReader["DriverNames"].ToString(),
+                });
             }
-            return clients;
+            dataReader.Close();
         }
+        return clients;
     }
-
+}
 
 
 

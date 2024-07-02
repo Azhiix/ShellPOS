@@ -20,8 +20,6 @@ namespace SezwanPayroll.DTO
                       
        public string DriverName { get; set; }
 
-        public string BRN { get; set; }
-
 
 
     }

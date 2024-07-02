@@ -210,6 +210,7 @@
     <Content Include="js\Revamped\payslip.js" />
     <Content Include="js\Revamped\payroll.js" />
     <Content Include="js\Revamped\plugins.bundle.js" />
+    <Content Include="js\Revamped\reports.js" />
     <Content Include="js\Revamped\scripts.bundle.js" />
     <Content Include="js\sales.js" />
     <Content Include="js\summary.js" />
