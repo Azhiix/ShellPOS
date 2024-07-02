@@ -16,55 +16,55 @@
 </asp:Content>
 
 <asp:Content ID="ContentBody" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-       <div class="container full-height">
+    <div class="container full-height">
         <!-- Client Information Section -->
         <div class="client-info border p-4 mb-3 shadow-sm rounded">
             <div class="row mb-3">
-                <div class="col-12 col-md-4">
+                <div class="col-4">
                     <label for="clientSelect" class="form-label">Select Client:</label>
                 </div>
-                <div class="col-12 col-md-8">
-                    <select class="form-select" id="clientSelect">
+                <div class="col-8">
+                    <select class="form-select" id="clientSelect" >
                         <option value="" disabled selected>Choose...</option>
                     </select>
                 </div>
             </div>
 
             <div class="row mb-3">
-                <div class="col-12 col-md-4">
+                <div class="col-4">
                     <label for="vehicleRegSelect" class="form-label car-registration">Car Registration No.:</label>
                 </div>
-                <div class="col-12 col-md-8">
-                    <select class="form-select" id="vehicleRegSelect">
-                        <option value="" disabled selected>Choose...</option>
-                    </select>
-                </div>
+                <div class="col-4">
+    <select class="form-select" id="vehicleRegSelect" >
+        <option value="" disabled selected>Choose...</option>
+    </select>
+</div>
+
             </div>
 
-            <div class="row mb-3">
-                <div class="col-12 col-md-4">
-                    <label for="driversNameSelect" class="form-label">Driver's Name:</label>
-                </div>
-                <div class="col-12 col-md-8">
-                    <select class="form-select" id="driversNameSelect">
-                        <option value="" disabled selected>Choose...</option>
-                    </select>
-                </div>
+         <div class="row mb-3">
+            <div class="col-4">
+                <label for="driversNameSelect" class="form-label">Driver's Name:</label>
             </div>
+            <div class="col-4">
+                <select class="form-select" id="driversNameSelect" >
+                    <option value="" disabled selected>Choose...</option>
+                </select>
+            </div>
+        </div>
 
-            <div class="row mb-3">
-                <div class="col-12 col-md-4">
+            <div class="row">
+                <div class="col-4">
                     <label for="inputMileage" class="form-label">Mileage:</label>
                 </div>
-                <div class="col-12 col-md-8">
+                <div class="col-8">
                     <div class="input-group">
-                        <input type="number" class="form-control inputMileage" placeholder="0" min="0" aria-label="Amount">
+                        <input type="number" class="form-control inputMileage" placeholder="0" min="0" aria-label="Amount" >
                         <span class="input-group-text">KM</span>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <!-- Sales Entries Section -->
         <div id="salesEntries" class="mb-3"></div>
