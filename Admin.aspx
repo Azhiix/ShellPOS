@@ -117,7 +117,7 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         <button type="button" class="btn btn-success" id="updateproductBtn">Save Changes</button>
-                      
+                        <button type="button" class="btn btn-danger" id="deleteProductBtn">Delete Product</button>
                     </div>
                 </form>
             </div>

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Globalization;
 
 public class DbConnect
 {
@@ -237,7 +238,6 @@ public class DbConnect
         }
     }
 
-
     public static List<clsSales> RecordSales(string dateFrom, string dateTo, string clientId, string vehicleRegNo)
     {
         List<clsSales> sales = new List<clsSales>();
@@ -267,21 +267,38 @@ JOIN Clients c ON s.ClientId = c.ClientID
 JOIN UserPermissions u ON s.UserId = u.UserID
 JOIN SaleItems si ON s.SaleId = si.SaleId
 JOIN ProductItems p ON si.ItemId = p.ItemId
-WHERE 1=1";
+WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appending conditions
 
             List<SqlParameter> parameters = new List<SqlParameter>();
 
             if (!string.IsNullOrEmpty(dateFrom))
             {
-                sql += " AND TRY_CONVERT(DATE, s.SaleDate, 101) >= TRY_CONVERT(DATE, @DateFrom, 101)";
-                parameters.Add(new SqlParameter("@DateFrom", dateFrom));
+                DateTime fromDate;
+                if (DateTime.TryParseExact(dateFrom, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fromDate))
+                {
+                    sql += " AND CONVERT(DATE, s.SaleDate, 103) >= @DateFrom";
+                    parameters.Add(new SqlParameter("@DateFrom", fromDate));
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid date format for 'dateFrom'. Please use 'dd/MM/yyyy'.");
+                }
             }
 
-            if (!string.IsNullOrEmpty(dateTo))
+            if (!string.IsNullOrEmpty(dateTo))      
             {
-                sql += " AND TRY_CONVERT(DATE, s.SaleDate, 101) <= TRY_CONVERT(DATE, @DateTo, 101)";
-                parameters.Add(new SqlParameter("@DateTo", dateTo));
+                DateTime toDate;
+                if (DateTime.TryParseExact(dateTo, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out toDate))
+                {
+                    sql += " AND CONVERT(DATE, s.SaleDate, 103) <= @DateTo";
+                    parameters.Add(new SqlParameter("@DateTo", toDate));
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid date format for 'dateTo'. Please use 'dd/MM/yyyy'.");
+                }
             }
+
 
             if (!string.IsNullOrEmpty(clientId))
             {
@@ -306,26 +323,18 @@ WHERE 1=1";
                 {
                     while (dataReader.Read())
                     {
-                        var saleId = Convert.ToInt32(dataReader["SaleId"]);
-                        var sale = sales.FirstOrDefault(s => s.SaleId == saleId);
-
-                        if (sale == null)
+                        var sale = new clsSales
                         {
-                            sale = new clsSales
-                            {
-                                SaleId = saleId,
-                                ClientId = Convert.ToInt32(dataReader["ClientId"]),
-                                ClientName = dataReader["ClientName"].ToString(),
-                                SaleDate = Convert.ToDateTime(dataReader["SaleDate"]).ToString("MM/dd/yyyy"),
-                                TotalCost = Convert.ToDecimal(dataReader["TotalCost"]),
-                                DriverName = dataReader["DriverName"].ToString(),
-                                CarRegNo = dataReader["CarRegNo"].ToString(),
-                                Username = dataReader["Username"].ToString(),
-                                SaleItems = new List<clsSaleItem>()
-                            };
-
-                            sales.Add(sale);
-                        }
+                            SaleId = Convert.ToInt32(dataReader["SaleId"]),
+                            ClientId = Convert.ToInt32(dataReader["ClientId"]),
+                            ClientName = dataReader["ClientName"].ToString(),
+                            SaleDate = dataReader["SaleDate"].ToString(),
+                            TotalCost = Convert.ToDecimal(dataReader["TotalCost"]),
+                            DriverName = dataReader["DriverName"].ToString(),
+                            CarRegNo = dataReader["CarRegNo"].ToString(),
+                            Username = dataReader["Username"].ToString(),
+                            SaleItems = new List<clsSaleItem>()
+                        };
 
                         clsSaleItem saleItem = new clsSaleItem
                         {
@@ -338,6 +347,7 @@ WHERE 1=1";
                         };
 
                         sale.SaleItems.Add(saleItem);
+                        sales.Add(sale);
                     }
                 }
             }
@@ -356,7 +366,16 @@ WHERE 1=1";
 
 
 
-public static List<clsClient> DisplayAllClients()
+
+
+
+
+
+
+
+
+
+    public static List<clsClient> DisplayAllClients()
 {
     using (SqlConnection connection = new SqlConnection(connectionString))
     {
@@ -411,9 +430,48 @@ public static List<clsClient> DisplayAllClients()
                 List<clsSalesData> salesDataList = new JavaScriptSerializer().Deserialize<List<clsSalesData>>(salesJson);
                 dynamic clientInfo = new JavaScriptSerializer().Deserialize<dynamic>(clientInfoJson);
 
+                // Debug logging to check clientInfo content
+                Console.WriteLine("clientInfo content:");
+                foreach (var key in clientInfo.Keys)
+                {
+                    Console.WriteLine($"{key}: {clientInfo[key]}");
+                }
+
+                // Check for each required key and log detailed messages if any key is missing
+                if (!clientInfo.ContainsKey("ClientId"))
+                {
+                    Console.WriteLine("Missing key: ClientId");
+                    throw new KeyNotFoundException("Missing key: ClientId");
+                }
+                if (!clientInfo.ContainsKey("date"))
+                {
+                    Console.WriteLine("Missing key: date");
+                    throw new KeyNotFoundException("Missing key: date");
+                }
+                if (!clientInfo.ContainsKey("totalCost"))
+                {
+                    Console.WriteLine("Missing key: totalCost");
+                    throw new KeyNotFoundException("Missing key: totalCost");
+                }
+                if (!clientInfo.ContainsKey("driverName"))
+                {
+                    Console.WriteLine("Missing key: driverName");
+                    throw new KeyNotFoundException("Missing key: driverName");
+                }
+                if (!clientInfo.ContainsKey("carRegNo"))
+                {
+                    Console.WriteLine("Missing key: carRegNo");
+                    throw new KeyNotFoundException("Missing key: carRegNo");
+                }
+                if (!clientInfo.ContainsKey("userId"))
+                {
+                    Console.WriteLine("Missing key: userId");
+                    throw new KeyNotFoundException("Missing key: userId");
+                }
+
                 // Convert necessary fields to the correct types and validate lengths
                 int clientId = Convert.ToInt32(clientInfo["ClientId"]);
-                string saleDate = clientInfo["date"];
+                string saleDate = clientInfo["date"];  // Use "date" as in the JSON
                 decimal totalCost = Convert.ToDecimal(clientInfo["totalCost"]);
                 string driverName = clientInfo["driverName"];
                 string carRegNo = clientInfo["carRegNo"];
@@ -430,20 +488,11 @@ public static List<clsClient> DisplayAllClients()
                     carRegNo = carRegNo.Substring(0, 50);
                 }
 
-                // Ensure SaleDate does not exceed 10 characters
-                if (saleDate.Length > 10)
-                {
-                    saleDate = saleDate.Substring(0, 10);
-                }
-
-                // Clean the date string to remove any extra characters
-                saleDate = saleDate.Split(',')[0].Trim();
-
                 // Insert Sales data and get the SaleId
                 string sqlInsertQuery = @"
-            INSERT INTO Sales (ClientId, SaleDate, TotalCost, DriverName, CarRegNo, UserId) 
-            VALUES (@ClientId, @SaleDate, @TotalCost, @DriverName, @CarRegNo, @UserId);
-            SELECT SCOPE_IDENTITY()";
+                INSERT INTO Sales (ClientId, SaleDate, TotalCost, DriverName, CarRegNo, UserId) 
+                VALUES (@ClientId, @SaleDate, @TotalCost, @DriverName, @CarRegNo, @UserId);
+                SELECT SCOPE_IDENTITY()";
 
                 SqlCommand saleCmd = new SqlCommand(sqlInsertQuery, connection, transaction);
                 saleCmd.Parameters.AddWithValue("@ClientId", clientId);
@@ -462,8 +511,8 @@ public static List<clsClient> DisplayAllClients()
 
                 // Insert SalesItems data
                 string sqlInsertItemsQuery = @"
-            INSERT INTO SaleItems (SaleId, ItemId, Quantity, UnitPrice, TotalCost) 
-            VALUES (@SaleId, @ItemId, @Quantity, @UnitPrice, @TotalCost)";
+                INSERT INTO SaleItems (SaleId, ItemId, Quantity, UnitPrice, TotalCost) 
+                VALUES (@SaleId, @ItemId, @Quantity, @UnitPrice, @TotalCost)";
 
                 foreach (var item in salesDataList)
                 {
@@ -493,7 +542,13 @@ public static List<clsClient> DisplayAllClients()
 
 
 
-public static List<clsProducts> displayProducts() 
+
+
+
+
+
+
+    public static List<clsProducts> displayProducts() 
 {
         List<clsProducts> products = new List<clsProducts>();
 
@@ -607,7 +662,6 @@ public static List<clsProducts> displayProducts()
             JOIN UserPermissions u ON s.UserId = u.UserID
             JOIN SaleItems si ON s.SaleId = si.SaleId
             JOIN ProductItems p ON si.ItemId = p.ItemId
-            
             WHERE s.SaleDate = @SaleDate AND s.UserId = @UserId";
 
             using (SqlCommand command = new SqlCommand(sql, connection))
@@ -634,7 +688,6 @@ public static List<clsProducts> displayProducts()
                                 DriverName = dataReader["DriverName"].ToString(),
                                 CarRegNo = dataReader["CarRegNo"].ToString(),
                                 Username = dataReader["Username"].ToString(),
-                               
                                 SaleItems = new List<clsSaleItem>()
                             };
 

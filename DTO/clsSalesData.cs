@@ -22,7 +22,7 @@ namespace SezwanPayroll.DTO
 
         public int ClientId { get; set; }
 
-        public string Date { get; set; }
+        public string date { get; set; }
 
         public string DriverName { get; set; }
 

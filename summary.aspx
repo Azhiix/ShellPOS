@@ -1,15 +1,15 @@
-﻿<%@ Page Title="Summary" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="summary.aspx.cs" Inherits="SezwanPayroll.summary" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="summary.aspx.cs" Inherits="SezwanPayroll.summary" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="stylesheet" href="css/summary.css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="container">
-        <h1 class="text-center">All Your Sales</h1>
-        <div class="table-responsive">
+    <div>
+        <h1 class='text-center text-md'>All Your Sales</h1>
+        <div class="table-wrapper">
             <table id="salesTable" class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Sale Date</th>
+                        <th id="saleDate">Sale Date</th>
                         <th>Client Name</th>
                         <th>Total Cost</th>
                         <th>Actions</th>
@@ -28,7 +28,7 @@
         <p>Driver: <span id="driverNamePrint">Driver 2</span></p>
         <p>Car Registration: <span id="carRegNoPrint">XYZ789</span></p>
         <p>Mileage: <span id="mileagePrint"></span></p>
-        <div class="table-responsive">
+        <div class="table-wrapper">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -40,14 +40,14 @@
                 </thead>
                 <tbody id="SalesAndTotalCosts">
                     <tr>
-                        <td class='item'>WATER CRYSTAL BIG CYLINDER</td>
-                        <td class='quantity'>23424</td>
-                        <td class='unitPrice'>200</td>
-                        <td class='totalPriceInternal'>4684800</td>
+                        <td>Small Ice</td>
+                        <td>423423</td>
+                        <td>135</td>
+                        <td>57162105</td>
                     </tr>
-                    <tr class='totalPrice'>
+                    <tr>
                         <td colspan="3" class="text-end"><strong>Total</strong></td>
-                        <td><strong>4684800</strong></td>
+                        <td><strong>57162105</strong></td>
                     </tr>
                 </tbody>
             </table>
