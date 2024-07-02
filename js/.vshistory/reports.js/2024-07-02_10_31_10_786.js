@@ -198,8 +198,8 @@
         const formattedDateFrom = formatDateToDDMMYYYY(dateFrom);
         const formattedDateTo = formatDateToDDMMYYYY(dateTo);
 
-        doc.text("Date From: " + formattedDateFrom, 150, 40);
-        doc.text("Date To: " + formattedDateTo, 150, 45);
+        doc.text("Invoice Date From: " + formattedDateFrom, 150, 40);
+        doc.text("Invoice Date To: " + formattedDateTo, 150, 45);
     
 
         // Table header
@@ -209,7 +209,7 @@
         doc.text("Item Description", 40, 70);
         doc.text("Quantity", 100, 70);
         doc.text("Price (Ex)", 120, 70);
-   
+        doc.text("Disc", 140, 70);
         doc.text("Total", 160, 70);
 
         // Table content

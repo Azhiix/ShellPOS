@@ -30,7 +30,7 @@
             </div>
 
             <section class="d-flex justify-content-between">
-                <button id="getSales" type="button" class="btn btn-primary mt-3">Search</button>
+                <button id="getSales" type="button" class="btn btn-primary mt-3">Fetch Data</button>
 
                 <button id="downloadCSV" class="btn btn-success mt-3">Download CSV</button>
 

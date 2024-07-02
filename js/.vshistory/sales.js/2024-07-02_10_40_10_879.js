@@ -529,6 +529,7 @@ function extractUsernameFromToken() {
 }
 
 function printAllSales() {
+
     console.log('Print all sales');
 
     // Clear the table before adding new rows
@@ -547,6 +548,7 @@ function printAllSales() {
         };
         console.log('Sale:', saleData);
 
+
         const match = saleData.itemName.match(/(.+?) - Rs (\d+)/);
         const productName = match ? match[1].trim() : 'Unknown Product';
         const unitPrice = match ? parseFloat(match[2]) : 0;
@@ -554,8 +556,8 @@ function printAllSales() {
         const newRow = `<tr>
                     <td>${productName}</td>
                     <td>${saleData.quantity}</td>
-                    <td>${unitPrice.toFixed(2)}</td>
-                    <td>${saleData.totalCost.toFixed(2)}</td>
+                    <td>${unitPrice}</td>
+                    <td>${saleData.totalCost}</td>
                 </tr>`;
 
         // Append the new row to the table
@@ -587,59 +589,11 @@ function printAllSales() {
 
     // Hide the print section after printing
     $('.printWindow').addClass('d-none');
+
+    printSalesData()
+    saveSalesData()
+
 }
-
-function addRelevantClientInformation() {
-    const client = $('#clientSelect option:selected').text();
-    let date = new Date().toISOString().split('T')[0]; // Use ISO date format for consistency
-
-    $('#TimePrint').text(date);
-    $('#clientValue').text(client);
-}
-
-function addDriverAndCarInfo() {
-    const driverName = $('#driversNameSelect option:selected').text();
-    const carRegNo = $('#vehicleRegSelect option:selected').val();
-    const mileage = $('.inputMileage').val();
-
-    $('#driverNamePrint').text(driverName);
-    $('#carRegNoPrint').text(carRegNo);
-    $('#mileagePrint').text(mileage + ' km');
-}
-
-// CSS for print layout
-const printStyle = `
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    .printWindow, .printWindow * {
-        visibility: visible;
-    }
-    .printWindow {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        padding: 5px;
-        font-size: 10px; /* Adjust font size for small print */
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    table, th, td {
-        border: 1px solid black;
-    }
-    th, td {
-        padding: 2px;
-        text-align: left;
-    }
-}
-`;
-
-// Append print style to head
-$('head').append(`<style>${printStyle}</style>`);
 
 function validateSalesData() {
     // Ensure that client, car registration, and driver name are selected
