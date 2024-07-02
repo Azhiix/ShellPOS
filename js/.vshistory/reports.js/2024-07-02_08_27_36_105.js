@@ -200,7 +200,7 @@
 
         doc.text("Invoice Date From: " + formattedDateFrom, 150, 40);
         doc.text("Invoice Date To: " + formattedDateTo, 150, 45);
-    
+        doc.text("Payment Method: Bank Transfer", 150, 50);
 
         // Table header
         doc.setFontSize(10);

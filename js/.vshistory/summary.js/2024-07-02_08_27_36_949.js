@@ -4,10 +4,9 @@ let totalCashCost = 0;
 function determineCurrentDate() {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth() + 1; // JavaScript months are 0-based
+    const currentMonth = currentDate.getMonth() + 1;
     const currentDay = currentDate.getDate();
-    const determineCurrentDate = `${currentDay < 10 ? '0' + currentDay : currentDay}/${currentMonth < 10 ? '0' + currentMonth : currentMonth}/${currentYear}`; // Outputs in DD/MM/YYYY format
-    return determineCurrentDate;
+    return `${currentYear}-${currentMonth < 10 ? '0' + currentMonth : currentMonth}-${currentDay < 10 ? '0' + currentDay : currentDay}`; // 2024-05-23 IS the format we need,
 }
 
 function determineTotalNumberOfSalesItems(salesData) {

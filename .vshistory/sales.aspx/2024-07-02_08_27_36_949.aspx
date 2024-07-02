@@ -140,7 +140,7 @@
             <hr />
             <table class="table">
                 <thead>
-                    <tr class="text-2xl">
+                    <tr>
                         <th>Item</th>
                         <th>Qty</th>
                         <th>Unit</th>

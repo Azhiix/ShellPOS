@@ -4,6 +4,10 @@ let totalCashCost = 0;
 function determineCurrentDate() {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentDay = currentDate.getDate();
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1; // JavaScript months are 0-based
     const currentDay = currentDate.getDate();
     const determineCurrentDate = `${currentDay < 10 ? '0' + currentDay : currentDay}/${currentMonth < 10 ? '0' + currentMonth : currentMonth}/${currentYear}`; // Outputs in DD/MM/YYYY format
