@@ -15,7 +15,11 @@ namespace SezwanPayroll.DTO
         public string DriverName { get; set; }
         public string CarRegNo { get; set; }
         public string Username { get; set; }
+
+        public string agentName { get; set; }
         public List<clsSaleItem> SaleItems { get; set; }
+
+        public List<clsUserPermission> UserPermissions { get; set; }
     }
 
     public class clsSaleItem
@@ -28,6 +32,8 @@ namespace SezwanPayroll.DTO
 
         public string ItemName { get; set; }
     }
+
+
 
 
 

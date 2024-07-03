@@ -66,7 +66,6 @@ function validateSale(saleId) {
 
     return true;
 }
-
 $(document).ready(function () {
     // Initialize the select2 dropdowns
     $('.js-example-basic-single').select2();

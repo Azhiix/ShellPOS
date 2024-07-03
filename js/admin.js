@@ -39,6 +39,8 @@ $(document).ready(function () {
     $('#minimiseClientDetails').on('click', function () {
         $('.clsUserDetails').toggle();
 
+    });
+
         // Add User
         $("#submitBtn").on('click', function () {
             var username = $("#username").val();
@@ -292,96 +294,92 @@ $(document).ready(function () {
             });
         });
 
-        $('#clientSubmit').click(function () {
-            var clientName = $('#clientName').val();
-            var address = $('#clientAddress').val();
-            var contactInfo = $('#clientContact').val();
-            var brnNo = $('#BrnNo').val(); // Correct the variable name to match the input ID
+    $('#clientSubmit').click(function () {
+        var clientName = $('#clientName').val();
+        var address = $('#clientAddress').val();
+        var contactInfo = $('#clientContact').val();
+        var brnNo = $('#BrnNo').val(); // Correct the variable name to match the input ID
+        var registrationNo = $('#RegistrationNo').val();
+        var driverName = $('#DriverName').val();
+        var mileage = $('#Mileage').val();
 
-            if (!clientName) {
-                $('#clientName').addClass('is-invalid');
-                return;
-            } else {
-                $('#clientName').removeClass('is-invalid');
+        // Validate required fields
+        if (!clientName) {
+            $('#clientName').addClass('is-invalid');
+            return;
+        } else {
+            $('#clientName').removeClass('is-invalid');
+        }
+
+        if (!address) {
+            $('#clientAddress').addClass('is-invalid');
+            return;
+        } else {
+            $('#clientAddress').removeClass('is-invalid');
+        }
+
+        if (!contactInfo) {
+            $('#clientContact').addClass('is-invalid');
+            return;
+        } else {
+            $('#clientContact').removeClass('is-invalid');
+        }
+
+        // Ensure mileage is a number or null
+        mileage = mileage ? parseInt(mileage, 10) : null;
+
+        // AJAX call to create a new client
+        $.ajax({
+            type: "POST",
+            url: "admin.aspx/CreateClient",
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({
+                name: clientName,
+                address: address,
+                contactInfo: contactInfo,
+                brn: brnNo,
+                registrationNo: registrationNo,
+                driverName: driverName,
+                mileage: mileage
+            }),
+            success: function (response) {
+                console.log('Client created successfully:', response.d);
+                // Clear the input fields
+              window.location.href ='admin.aspx'
+            },
+            error: function (xhr, status, error) {
+                console.error('Error creating client:', error);
             }
-
-            if (!address) {
-                $('#clientAddress').addClass('is-invalid');
-                return;
-
-
-            } else {
-                $('#clientAddress').removeClass('is-invalid');
-            }
-            if (!contactInfo) {
-                $('#clientContact').addClass('is-invalid');
-                return;
-
-            } else {
-                $('#clientContact').removeClass('is-invalid');
-            }
-
-
-            $.ajax({
-                type: "POST",
-                url: "admin.aspx/createClient",
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify({
-                    name: clientName,
-                    address: address,
-                    contactInfo: contactInfo,
-                    brn: brnNo
-                }),
-                success: function (response) {
-                    console.log('Client created successfully:', response.d);
-                    // Clear the input fields
-                    $('#clientName').val('');
-                    $('#clientAddress').val('');
-                    $('#clientContact').val('');
-                    $('#BrnNo').val('');
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error creating client:', error);
-                }
-            });
         });
+    });
+
+
 
 
 
         $('#editClientBtn').click(function () {
+           
             $.ajax({
                 type: "POST",
                 url: "admin.aspx/ShowClients",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
-                    var clients = response.d;
-                    var select = $('#clientSelect');
-                    select.empty();
-                    select.append($('<option>', { value: '', text: 'Select Client', selected: true, disabled: true }));
-                    clients.forEach(function (client) {
-                        select.append($('<option>', {
-                            value: client.ClientId,
-                            text: client.ClientName,
-                            'data-address': client.Address,
-                            'data-contact': client.ContactInfo,
-                            'data-brn': client.BrnNo
-                        }));
-                    });
-                    select.closest('.form-group').show();
+                    var clients = response.d; // response.d is the default behavior of ASP.NET WebMethods
+                    console.log(clients);
                 },
-
-                error: function (xhr, textStatus, errorThrown) {
-                    $("#result").text("Error: " + errorThrown);
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ', status, error);
                 }
-            })
-        })
+            });
+        });
+
 
 
     })
 
-});
+
 
 document.addEventListener('DOMContentLoaded', function () {
     var productDropdown = document.getElementById('viewAllProductsDropdown');
@@ -418,3 +416,134 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+
+
+$(document).ready(function () {
+    // Fetch clients and populate dropdown on page load
+    $.ajax({
+        type: "POST",
+        url: "admin.aspx/ShowClients",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            var clients = response.d; // response.d is typically used in ASP.NET for JSON responses
+            var clientSelect = $('#clientSelect');
+            clientSelect.empty();
+            clientSelect.append('<option disabled selected>Select Client</option>');
+            clients.forEach(function (client) {
+                clientSelect.append(
+                    `<option value="${client.ClientID}" 
+                             data-name="${client.Name}" 
+                             data-contactinfo="${client.ContactInfo}" 
+                             data-address="${client.Address}" 
+                             data-brn="${client.BRN}">
+                        ${client.Name}
+                    </option>`
+                );
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX Error: ', status, error);
+        }
+    });
+
+    // Handle client selection from dropdown
+    $('#clientSelect').change(function () {
+        var selectedOption = $(this).find('option:selected');
+        $('#clientNameChange').val(selectedOption.data('name'));
+        $('#contactInfoChange').val(selectedOption.data('contactinfo'));
+        $('#addressChange').val(selectedOption.data('address'));
+        $('#BRNChange').val(selectedOption.data('brn'));
+    });
+
+    // Handle client update
+
+    $('#editClientBtn').click(function () {
+
+        var clientId = $('#clientSelect').val();
+        var name = $('#clientNameChange').val();
+        var contactInfo = $('#contactInfoChange').val();
+        var address = $('#addressChange').val();
+        var brn = $('#BRNChange').val();
+
+        // Validate fields
+        if (!name) {
+            $('#clientNameChange').addClass('is-invalid');
+
+            return;
+
+        } else {
+            $('#clientNameChange').removeClass('is-invalid');
+
+
+
+            if (!contactInfo) {
+                $('#contactInfoChange').addClass('is-invalid');
+                return;
+
+
+            } else {
+                $('#contactInfoChange').removeClass('is-invalid');
+            }
+
+
+
+
+            if (!address) {
+                $('#addressChange').addClass('is-invalid');
+                return
+
+            } else {
+                $('#addressChange').removeClass('is-invalid')
+            }
+
+
+
+
+            $.ajax({
+                type: "POST",
+                url: "admin.aspx/updateClientInfo",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({
+                    clientId: clientId,
+                    name: name,
+                    contactInfo: contactInfo,
+                    address: address,
+                    brn: brn
+                }),
+
+
+                success: function (response) {
+                    console.log('Client updated successfully:', response.d);
+                    // Clear the input fields
+
+                    //$('#clientNameChange').val('');
+                    //$('#contactInfoChange').val('');
+                    //$('#addressChange').val('');
+                    //$('#BRNChange').val('');
+                },
+            })
+
+
+        }
+
+
+
+
+
+
+
+
+    })
+
+
+});
+
+
+
+
+
+
+/*admin.aspx/updateClientInfo*/

@@ -44,16 +44,30 @@ namespace SezwanPayroll
             return clients;
         }
 
+        [WebMethod()] 
+
+        public static List<clsUserPermission> DisplayUserAgent()
+        {
+            return DbConnect.DisplayUserAgent();
+        }
 
         [WebMethod()]
-        public static List<clsSales> ShowSales(string dateFrom, string dateTo, string clientId, string vehicleRegNo)
+        public static List<clsSales> ShowSales(string dateFrom, string dateTo, string clientId, string vehicleRegNo, int agentId)
         {
             
-            List<clsSales> sales = DbConnect.RecordSales(dateFrom,dateTo, clientId, vehicleRegNo);
+            List<clsSales> sales = DbConnect.RecordSales(dateFrom,dateTo, clientId, vehicleRegNo, agentId);
 
             return sales;
 
         }
+
+
+        [WebMethod]
+        public static bool DeleteSale(int saleId)
+        {
+            return DbConnect.DeleteSales(saleId);
+        }
+
     }
 
 }

@@ -12,34 +12,52 @@
 
         <!-- Add Client Section -->
 
-          <div class="card mb-4">
-      <div class="card-header d-flex justify-content-between">
-          <h5 class="mb-0">Add A Client <i class="fa-solid fa-building"></i></h5>
-          <i class="fas fa-minus" id="minimiseAddClient"></i>
-      </div>
-      <div class="card-body add-client">
-          <form id="clientForm">
-              <div class="form-group mb-3">
-                  <label for="username" class="form-label">Client Name</label>
-                  <input type="text" class="form-control" id="clientName" name="username">
-              </div>
-              <div class="form-group mb-3">
-                  <label for="clientAddress" class="form-label">Address</label>
-                  <input type="text" class="form-control" id="clientAddress" name="password">
-              </div>
-              <div class='form-group mb-3'>
-              <label for="clientContact" class="form-label">Contact Information</label>
-              <input type="text" class="form-control" id="clientContact">
-          </div>
-          <div class=form-group mb-3>
-              <label for="BrnNo" class="form-label">BRN Number</label>
-            <input type="text" class="form-control" id="BrnNo"/>
-          </div>
-             
-              <button type="button" class="btn btn-success" id="clientSubmit">Create Client</button>
-          </form>
-      </div>
-  </div>
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between">
+        <h5 class="mb-0">Add A Client <i class="fa-solid fa-building"></i></h5>
+        <i class="fas fa-minus" id="minimiseAddClient"></i>
+    </div>
+    <div class="card-body add-client">
+        <form id="clientForm">
+            <div class="form-group mb-3">
+                <label for="clientName" class="form-label">Client Name</label>
+                <input type="text" class="form-control" id="clientName" name="clientName" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="clientAddress" class="form-label">Address</label>
+                <input type="text" class="form-control" id="clientAddress" name="clientAddress" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="clientContact" class="form-label">Contact Information</label>
+                <input type="text" class="form-control" id="clientContact" name="clientContact" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="BrnNo" class="form-label">BRN Number</label>
+                <input type="text" class="form-control" id="BrnNo" name="brnNo" required>
+            </div>
+
+             <h4> Vehicle Information</h4>
+ <!-- Vehicle Information -->
+ <div class="form-group mb-3">
+     <label for="RegistrationNo" class="form-label">Registration Number</label>
+     <input type="text" class="form-control" id="RegistrationNo" name="registrationNo">
+ </div>
+ <div class="form-group mb-3">
+     <label for="DriverName" class="form-label">Driver Name</label>
+     <input type="text" class="form-control" id="DriverName" name="driverName">
+ </div>
+ <div class="form-group mb-3">
+     <label for="Mileage" class="form-label">Mileage</label>
+     <input type="number" class="form-control" id="Mileage" name="mileage">
+ </div>
+
+
+            <button type="button" class="btn btn-success" id="clientSubmit">Create Client</button>
+        </form>
+    </div>
+</div>
+
+
         <!-- edit client Dropdown -->
          <div class="card mb-4">
      <div class="card-header">
@@ -72,8 +90,8 @@
                 <input type="text" class="form-control" id="clientNameChange" >
             </div>
             <div class="form-group mb-3">
-                <label for="passwordChange" class="form-label">Contact Info</label>
-                <input type="password" class="form-control" id="contactInfoChange" >
+                <label for="contactInfoChange" class="form-label">Contact Info</label>
+                <input type="text" class="form-control" id="contactInfoChange" >
             </div>
             
          
@@ -87,7 +105,11 @@
      <label for="BRNChange" class="form-label">BRN</label>
      <input type="text" class="form-control" id="BRNChange" >
  </div>
+            <div class="d-flex justify-content-between">
             <button type="button" class="btn btn-primary" id="editClientBtn">Edit Client</button>
+            <button type="button" class="btn btn-primary" id="deleteClientBtn">Delete Client</button>
+                </div>
+
         </div>
     </div>
 
