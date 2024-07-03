@@ -103,21 +103,17 @@
             <h3>Shell Ebene</h3>
             <p>
                 Reduit Road, Ebene<br>
+ Sales-formatted-correctly,-admin-page-completed,-reports-page-adjusted
                 T: 464 6765 E: info@Barin.ebene@gmail.com<br>
                 BRN: C08078619
+
+                T: 424 1486 E: info@shell.com<br>
+
             </p>
-            <h4>INVOICE</h4>
-            <hr />
+            <h4>INVOICE No: 156</h4> 
+            <div>Date: <span id="TimePrint"></span></div>
             <table class="table table-borderless table-client">
                 <tbody>
-                    <tr>
-                        <td>Date</td>
-                        <td id="TimePrint"></td>
-                    </tr>
-                    <tr>
-                        <td>Agent</td>
-                        <td id="usernameValue">KHALEEL</td>
-                    </tr>
                     <tr>
                         <td>Client</td>
                         <td id="clientValue"></td>
@@ -128,43 +124,33 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <div class="inline-fields">
-                                <span>Car Registration No.: <span id="carRegNoPrint"></span></span>
-                                <span>Mileage: <span id="mileagePrint"></span></span>
-                            </div>
+                            <span>Car Reg No:&nbsp &nbsp &nbsp &nbsp &nbsp;<span id="carRegNoPrint"></span></span>
                         </td>
-                    </tr>
-
-                    <tr>
-                        <td>Inv #</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>Till</td>
-                        <td>TILL-02</td>
                     </tr>
                 </tbody>
             </table>
-            <hr />
             <table class="table">
                 <thead>
                     <tr class="text-2xl">
-                        <th>Item</th>
-                        <th>Qty</th>
-                        <th>Unit</th>
-                        <th>Total</th>
+                        <th style="font-weight: bold;">Item</th>
+                        <th style="font-weight: bold;">Qty</th>
+                        <th style="font-weight: bold;">Unit</th>
+                        <th style="font-weight: bold;">Total</th>
                     </tr>
                 </thead>
                 <tbody id="SalesAndTotalCosts">
                     <tr class="mt-2">
-                        <td colspan="3">Total</td>
-                        <td id="totalValue">190.00</td>
+                        <td style="font-weight: bold;" colspan="3">Total</td>
+                        <td style="font-weight: bold;" id="totalValue">190.00</td>
                     </tr>
                 </tbody>
             </table>
-            <h2 class="mt-3 ">******Thank you for your visit. See you again******<br />
-                Goods once sold cannot be exchanged nor returned.
-            </h2>
+
+
+            <%--<h4 class="mt-3 ">
+                ******Thank you for your visit. See you again******<br/>
+            </h4>--%>
+
         </div>
     </div>
 

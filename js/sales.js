@@ -556,7 +556,7 @@ function printAllSales() {
                     <td>${productName}</td>
                     <td>${saleData.quantity}</td>
                     <td>${unitPrice}</td>
-                    <td>${saleData.totalCost}</td>
+                    <td>${saleData.totalCost.toFixed(2)}</td>
                 </tr>`;
 
         // Append the new row to the table
@@ -568,8 +568,8 @@ function printAllSales() {
 
     // Append the total cost row to the table
     const totalRow = `<tr class="mt-2">
-                <td colspan="3">Total</td>
-                <td>${totalCost.toFixed(2)}</td>
+                <td style="font-weight: bold;" colspan="3">Total</td>
+                <td style="font-weight: bold;">${totalCost.toFixed(2)}</td>
             </tr>`;
     $("#SalesAndTotalCosts").append(totalRow);
 
@@ -769,8 +769,8 @@ function addDriverAndCarInfo() {
 
     $('#driverNamePrint').text(driverName);
     $('#carRegNoPrint').text(carRegNo);
-    $('#mileagePrint').text(mileage);
-    $('#mileagePrint').append(' km');
+    //$('#mileagePrint').text(mileage);
+    //$('#mileagePrint').append(' km');
 }
 
 function determineTotalCostForAllSales() {
