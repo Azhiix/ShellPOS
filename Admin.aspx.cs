@@ -96,30 +96,10 @@ namespace SezwanPayroll
 
         }
 
-        [WebMethod()]
-
-
+        [WebMethod]
         public static List<clsClient> ShowClients()
         {
-            var context = HttpContext.Current;
-            var authHeader = context.Request.Headers["Authorization"];
-
-            System.Diagnostics.Debug.WriteLine("Authorization header: " + authHeader); // Log the header
-
-            if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
-                throw new UnauthorizedAccessException("Authorization header is missing or invalid");
-
-            var token = authHeader.Substring("Bearer ".Length).Trim();
-            System.Diagnostics.Debug.WriteLine("Token received: " + token); // Log the token
-
-            var page = new sales();
-            string userId = page.GetUserId(token); // Validate token and get user ID
-
-            if (string.IsNullOrEmpty(userId))
-                throw new UnauthorizedAccessException("Invalid token");
-
-            List<clsClient> clients = DbConnect.DisplayAllClients();
-            return clients;
+            return DbConnect.DisplayAllClients();
         }
 
 
@@ -128,16 +108,15 @@ namespace SezwanPayroll
 
 
 
+        [WebMethod()]
 
-        [WebMethod()]       
 
-       
-        public static string CreateClient(string name, string contactInfo, string address, string brn)
+        public static string CreateClient(string name, string contactInfo, string address, string brn, string registrationNo = null, string driverName = null, int? mileage = null)
         {
             try
             {
                 // Assuming DbConnect.CreateClient method is implemented correctly
-                List<clsClient> newClient = DbConnect.CreateClient(name, contactInfo, address, brn);
+                List<clsClient> newClient = DbConnect.CreateClient(name, contactInfo, address, brn, registrationNo, driverName, mileage);
                 return "Client created successfully!";
             }
             catch (Exception ex)
@@ -145,7 +124,15 @@ namespace SezwanPayroll
                 return "Error creating client: " + ex.Message;
             }
         }
+                    
 
+        [WebMethod()] 
+
+        public static List<clsClient> updateClientInfo(int clientId, string name, string contactInfo, string address, string brn)
+        {
+            return DbConnect.updateClientInfo(clientId, name, contactInfo,address, brn);
+             
+        }
 
     }
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-   
+
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
@@ -16,13 +16,20 @@
 </asp:Content>
 
 <asp:Content ID="ContentBody" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-       <div class="container full-height">
+    <div class="container full-height">
         <!-- Client Information Section -->
         <div class="client-info border p-4 mb-3 shadow-sm rounded">
             <div class="row mb-3">
                 <div class="col-12 col-md-4">
-                    <label for="clientSelect" class="form-label">Select Client:</label>
+                    <label for="clientSelect" class="form-label">Company Name:</label>
                 </div>
+               <%-- <div class="col-2">
+   
+        <input type="checkbox" id="IsACash" name="scales"  />
+        <label for="IsACash">Is a Cash Sale</label>
+   
+
+</div>--%>
                 <div class="col-12 col-md-8">
                     <select class="form-select" id="clientSelect">
                         <option value="" disabled selected>Choose...</option>
@@ -61,6 +68,7 @@
                         <input type="number" class="form-control inputMileage" placeholder="0" min="0" aria-label="Amount">
                         <span class="input-group-text">KM</span>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -86,7 +94,7 @@
         </div>
     </div>
 
-   
+
 
     <!-- Receipt Section (Hidden for Printing) -->
     <div class="printWindow text-center d-none">
@@ -95,8 +103,8 @@
             <h3>Shell Ebene</h3>
             <p>
                 Reduit Road, Ebene<br>
-                T: 424 1486 E: info@shell.com<br>
-                BRN: 12345
+                T: 464 6765 E: info@Barin.ebene@gmail.com<br>
+                BRN: C08078619
             </p>
             <h4>INVOICE</h4>
             <hr />
@@ -154,8 +162,7 @@
                     </tr>
                 </tbody>
             </table>
-            <h2 class="mt-3 ">
-                ******Thank you for your visit. See you again******<br/>
+            <h2 class="mt-3 ">******Thank you for your visit. See you again******<br />
                 Goods once sold cannot be exchanged nor returned.
             </h2>
         </div>

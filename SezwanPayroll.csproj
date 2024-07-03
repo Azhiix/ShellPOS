@@ -1962,6 +1962,7 @@
     <Compile Include="DTO\clsProducts.cs" />
     <Compile Include="DTO\clsSales.cs" />
     <Compile Include="DTO\clsSalesData.cs" />
+    <Compile Include="DTO\clsUserPermission.cs" />
     <Compile Include="DTO\JWT.cs" />
     <Compile Include="login.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>

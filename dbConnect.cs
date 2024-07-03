@@ -13,6 +13,7 @@ using System.Runtime.Remoting.Messaging;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Globalization;
+using System.Reflection.Emit;
 
 public class DbConnect
 {
@@ -238,7 +239,7 @@ public class DbConnect
         }
     }
 
-    public static List<clsSales> RecordSales(string dateFrom, string dateTo, string clientId, string vehicleRegNo)
+    public static List<clsSales> RecordSales(string dateFrom, string dateTo, string clientId, string vehicleRegNo, int agentId)
     {
         List<clsSales> sales = new List<clsSales>();
 
@@ -285,7 +286,7 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                 }
             }
 
-            if (!string.IsNullOrEmpty(dateTo))      
+            if (!string.IsNullOrEmpty(dateTo))
             {
                 DateTime toDate;
                 if (DateTime.TryParseExact(dateTo, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out toDate))
@@ -299,7 +300,6 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                 }
             }
 
-
             if (!string.IsNullOrEmpty(clientId))
             {
                 sql += " AND s.ClientId = @ClientId";
@@ -312,7 +312,13 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                 parameters.Add(new SqlParameter("@VehicleRegNo", vehicleRegNo));
             }
 
-            using (SqlCommand command = new SqlCommand(sql, connection))
+            if (agentId > 0)
+            {
+                sql += " AND s.UserId = @AgentId";
+                parameters.Add(new SqlParameter("@AgentId", agentId));
+            }
+
+            using (SqlCommand command = new SqlCommand(sql, connection))    
             {
                 foreach (var parameter in parameters)
                 {
@@ -356,65 +362,152 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
         return sales;
     }
 
+    public static List<clsUserPermission> DisplayUserAgent()  
+    {
+        List<clsUserPermission> userPermissions = new List<clsUserPermission>();
 
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
 
+                string sqlUserPermissions = "SELECT UserID, Username FROM UserPermissions";
 
+                using (SqlCommand command = new SqlCommand(sqlUserPermissions, connection))
+                {
+                    using (SqlDataReader dataReader = command.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+                            userPermissions.Add(new clsUserPermission
+                            {
+                                UserID = Convert.ToInt32(dataReader["UserID"]),
+                                Username = dataReader["Username"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions (e.g., log them)
+            Console.WriteLine("An error occurred: " + ex.Message);
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return userPermissions;
+    }
 
 
     public static List<clsClient> DisplayAllClients()
     {
-        using (SqlConnection connection = new SqlConnection(connectionString))
+       
+        List<clsClient> clients = new List<clsClient>();
+
+        try
         {
-            List<clsClient> clients = new List<clsClient>();
-            connection.Open();
-
-            SqlDataReader dataReader;
-
-            // Using LEFT JOIN to include clients without vehicles
-            string sql = "SELECT c.ClientID, c.Name, c.ContactInfo, c.Address, " +
-                         "ISNULL(STRING_AGG(v.RegistrationNo, ', '), '') AS RegistrationNos, " +
-                         "ISNULL(STRING_AGG(v.DriverName, ', '), '') AS DriverNames " +
-                         "FROM Clients c " +
-                         "LEFT JOIN Vehicles v ON c.ClientID = v.ClientID " +
-                         "GROUP BY c.ClientID, c.Name, c.ContactInfo, c.Address";
-
-            using (SqlCommand command = new SqlCommand(sql, connection))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                dataReader = command.ExecuteReader();
-                while (dataReader.Read())
+                connection.Open();
+
+                // Using LEFT JOIN to include clients without vehicles
+                string sql = "SELECT c.ClientID, c.Name, c.ContactInfo, c.Address, c.BRN, " +
+                             "ISNULL(STRING_AGG(v.RegistrationNo, ', '), '') AS RegistrationNos, " +
+                             "ISNULL(STRING_AGG(v.DriverName, ', '), '') AS DriverNames " +
+                             "FROM Clients c " +
+                             "LEFT JOIN Vehicles v ON c.ClientID = v.ClientID " +
+                             "GROUP BY c.ClientID, c.Name, c.ContactInfo, c.Address, c.BRN";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    clients.Add(new clsClient
+                    using (SqlDataReader dataReader = command.ExecuteReader())
                     {
-                        ClientID = Convert.ToInt32(dataReader["ClientID"]),
-                        Name = dataReader["Name"].ToString(),
-                        ContactInfo = dataReader["ContactInfo"].ToString(),
-                        Address = dataReader["Address"].ToString(),
-                        RegistrationNo = dataReader["RegistrationNos"].ToString(),
-                        DriverName = dataReader["DriverNames"].ToString(),
-                    });
+                        while (dataReader.Read())
+                        {
+                            clients.Add(new clsClient
+                            {
+                                ClientID = Convert.ToInt32(dataReader["ClientID"]),
+                                Name = dataReader["Name"].ToString(),
+                                ContactInfo = dataReader["ContactInfo"].ToString(),
+                                Address = dataReader["Address" ].ToString(),
+                                BRN = dataReader["BRN"].ToString(), // Added BRN
+                                RegistrationNo = dataReader["RegistrationNos"].ToString(),
+                                DriverName = dataReader["DriverNames"].ToString(),
+                            });
+                        }
+                    }
                 }
-                dataReader.Close();
             }
-            return clients;
         }
+        catch (Exception ex)
+        {
+            // Handle exceptions (e.g., log them)
+            Console.WriteLine("An error occurred: " + ex.Message);
+        }
+
+        return clients;
     }
 
 
 
+    public static List<clsClient> updateClientInfo(int clientId, string name, string contactInfo, string address, string brn)
+    {
+       
+        List<clsClient> clients = new List<clsClient>();
+
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Update client information
+                string updateSql = "UPDATE Clients SET Name = @Name, ContactInfo = @ContactInfo, Address = @Address, BRN = @BRN WHERE ClientID = @ClientID";
+
+                using (SqlCommand command = new SqlCommand(updateSql, connection))
+                {
+                    command.Parameters.AddWithValue("@ClientID", clientId);
+                    command.Parameters.AddWithValue("@Name", name);
+                    command.Parameters.AddWithValue("@ContactInfo", contactInfo);
+                    command.Parameters.AddWithValue("@Address", address);
+                    command.Parameters.AddWithValue("@BRN", brn);
+
+                    int result = command.ExecuteNonQuery();
+                    if (result > 0)
+                    {
+                        // Retrieve updated client information
+                        string selectSql = "SELECT ClientID, Name, ContactInfo, Address, BRN FROM Clients WHERE ClientID = @ClientID";
+                        using (SqlCommand selectCommand = new SqlCommand(selectSql, connection))
+                        {
+                            selectCommand.Parameters.AddWithValue("@ClientID", clientId);
+                            using (SqlDataReader dataReader = selectCommand.ExecuteReader())
+                            {
+                                while (dataReader.Read())
+                                {
+                                    clients.Add(new clsClient
+                                    {
+                                        ClientID = Convert.ToInt32(dataReader["ClientID"]),
+                                        Name = dataReader["Name"].ToString(),
+                                        ContactInfo = dataReader["ContactInfo"].ToString(),
+                                        Address = dataReader["Address"].ToString(),
+                                        BRN = dataReader["BRN"].ToString()
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions (e.g., log them)
+            Console.WriteLine("An error occurred: " + ex.Message);
+        }
+
+        return clients;
+    }
 
     public static List<clsSalesData> CreateSalesData(string salesJson, string clientInfoJson)
     {
@@ -540,14 +633,6 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
             }
         }
     }
-
-
-
-
-
-
-
-
 
     public static List<clsProducts> displayProducts() 
 {
@@ -719,43 +804,59 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
     //Client creation 
 
 
-    public static List<clsClient> CreateClient(string name, string contactInfo, string address, string brn)
+    public static List<clsClient> CreateClient(string name, string contactInfo, string address, string brn, string registrationNo = null, string driverName = null, int? mileage = null)
     {
         List<clsClient> clients = new List<clsClient>();
-
-     
 
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
             connection.Open();
 
-            string insertQuery = @"
-        INSERT INTO [Shell_POS].[dbo].[Clients] (Name, ContactInfo, Address, BRN) 
-        VALUES (@Name, @ContactInfo, @Address, @BRN);
-        
-        SELECT SCOPE_IDENTITY();"; // This returns the ID of the newly inserted row
+            string insertClientQuery = @"
+            INSERT INTO [Shell_POS].[dbo].[Clients] (Name, ContactInfo, Address, BRN) 
+            VALUES (@Name, @ContactInfo, @Address, @BRN);
+            
+            SELECT SCOPE_IDENTITY();"; // This returns the ID of the newly inserted row
 
-            using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+            using (SqlCommand insertClientCommand = new SqlCommand(insertClientQuery, connection))
             {
-                insertCommand.Parameters.AddWithValue("@Name", name);
-                insertCommand.Parameters.AddWithValue("@ContactInfo", contactInfo);
-                insertCommand.Parameters.AddWithValue("@Address", address);
-                insertCommand.Parameters.AddWithValue("@BRN", brn);
+                insertClientCommand.Parameters.AddWithValue("@Name", name);
+                insertClientCommand.Parameters.AddWithValue("@ContactInfo", contactInfo);
+                insertClientCommand.Parameters.AddWithValue("@Address", address);
+                insertClientCommand.Parameters.AddWithValue("@BRN", brn);
 
                 // Execute the insert command and get the new client ID
-                int newClientId = Convert.ToInt32(insertCommand.ExecuteScalar());
+                int newClientId = Convert.ToInt32(insertClientCommand.ExecuteScalar());
+
+                // Insert vehicle information if provided
+                if (!string.IsNullOrEmpty(registrationNo) && !string.IsNullOrEmpty(driverName) && mileage.HasValue)
+                {
+                    string insertVehicleQuery = @"
+                    INSERT INTO [Shell_POS].[dbo].[Vehicles] (ClientID, RegistrationNo, DriverName, Mileage) 
+                    VALUES (@ClientID, @RegistrationNo, @DriverName, @Mileage)";
+
+                    using (SqlCommand insertVehicleCommand = new SqlCommand(insertVehicleQuery, connection))
+                    {
+                        insertVehicleCommand.Parameters.AddWithValue("@ClientID", newClientId);
+                        insertVehicleCommand.Parameters.AddWithValue("@RegistrationNo", registrationNo);
+                        insertVehicleCommand.Parameters.AddWithValue("@DriverName", driverName);
+                        insertVehicleCommand.Parameters.AddWithValue("@Mileage", mileage.Value);
+
+                        insertVehicleCommand.ExecuteNonQuery();
+                    }
+                }
 
                 // Retrieve the newly inserted client
-                string selectQuery = @"
-            SELECT TOP 1 ClientID, Name, ContactInfo, Address, BRN
-            FROM [Shell_POS].[dbo].[Clients]
-            WHERE ClientID = @ClientID";
+                string selectClientQuery = @"
+                SELECT ClientID, Name, ContactInfo, Address, BRN
+                FROM [Shell_POS].[dbo].[Clients]
+                WHERE ClientID = @ClientID";
 
-                using (SqlCommand selectCommand = new SqlCommand(selectQuery, connection))
+                using (SqlCommand selectClientCommand = new SqlCommand(selectClientQuery, connection))
                 {
-                    selectCommand.Parameters.AddWithValue("@ClientID", newClientId);
+                    selectClientCommand.Parameters.AddWithValue("@ClientID", newClientId);
 
-                    using (SqlDataReader dataReader = selectCommand.ExecuteReader())
+                    using (SqlDataReader dataReader = selectClientCommand.ExecuteReader())
                     {
                         if (dataReader.Read())
                         {
@@ -768,7 +869,7 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                                 BRN = dataReader["BRN"].ToString()
                             };
 
-                            clients.Add(newClient);
+                            clients.Add(newClient);     
                         }
                     }
                 }
@@ -776,6 +877,57 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
         }
 
         return clients;
+    }
+
+
+
+    public static bool DeleteSales(int saleId)
+    {
+      
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            try
+            {
+                connection.Open();
+
+                // Start a transaction
+                using (SqlTransaction transaction = connection.BeginTransaction())
+                {
+                    // Delete from SaleItems table first
+                    string deleteSaleItemsQuery = @"
+                DELETE FROM [Shell_POS].[dbo].[SaleItems]
+                WHERE SaleId = @SaleId;";
+
+                    using (SqlCommand deleteSaleItemsCommand = new SqlCommand(deleteSaleItemsQuery, connection, transaction))
+                    {
+                        deleteSaleItemsCommand.Parameters.AddWithValue("@SaleId", saleId);
+                        deleteSaleItemsCommand.ExecuteNonQuery();
+                    }
+
+                    // Delete from Sales table
+                    string deleteSalesQuery = @"
+                DELETE FROM [Shell_POS].[dbo].[Sales]
+                WHERE SaleId = @SaleId;";
+
+                    using (SqlCommand deleteSalesCommand = new SqlCommand(deleteSalesQuery, connection, transaction))
+                    {
+                        deleteSalesCommand.Parameters.AddWithValue("@SaleId", saleId);
+                        deleteSalesCommand.ExecuteNonQuery();
+                    }
+
+                    // Commit the transaction
+                    transaction.Commit();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (you can replace this with your logging mechanism)
+                Console.WriteLine("Error deleting sales: " + ex.Message);
+                return false;
+            }
+        }
     }
 
 
