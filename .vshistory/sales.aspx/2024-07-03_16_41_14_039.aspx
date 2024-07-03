@@ -104,7 +104,7 @@
             <p>
                 Reduit Road, Ebene<br>
  
-                T: 464 6765 E: Barin.ebene@gmail.com<br>
+                T: 464 6765 E: info@Barin.ebene@gmail.com<br>
                 BRN: C08078619
                 
 

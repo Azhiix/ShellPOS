@@ -104,9 +104,9 @@
             <p>
                 Reduit Road, Ebene<br>
  
-                T: 464 6765 E: Barin.ebene@gmail.com<br>
+                T: 464 6765 E: info@Barin.ebene@gmail.com<br>
                 BRN: C08078619
-                
+                T: 424 1486 E: info@shell.com<br>
 
             </p>
             <h4>INVOICE No: 156</h4> 
