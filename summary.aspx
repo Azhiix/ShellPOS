@@ -13,7 +13,7 @@
                         <th>Client Name</th>
                         <th>Total Cost</th>
                         <th>Actions</th>
-                        <th>Print</th>
+                      
                     </tr>
                 </thead>
                 <tbody>
@@ -57,8 +57,7 @@
     <div id="totalCostContainer">
         <!-- Total cost will be displayed here -->
     </div>
-
-    <div id='totalSalesContainer'></div>
+ 
     <div id="totalCashCostContainer"></div>
     <div class='printWindow text-center'>
         <!-- Print window content will be displayed here -->

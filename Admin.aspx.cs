@@ -111,12 +111,12 @@ namespace SezwanPayroll
         [WebMethod()]
 
 
-        public static string CreateClient(string name, string contactInfo, string address, string brn, string registrationNo = null, string driverName = null, int? mileage = null)
+        public static string CreateClient(string name, string contactInfo, string address, string brn, List<clsVehicle> vehicles)
         {
             try
             {
                 // Assuming DbConnect.CreateClient method is implemented correctly
-                List<clsClient> newClient = DbConnect.CreateClient(name, contactInfo, address, brn, registrationNo, driverName, mileage);
+                List<clsClient> newClient = DbConnect.CreateClient(name, contactInfo, address, brn,vehicles);
                 return "Client created successfully!";
             }
             catch (Exception ex)

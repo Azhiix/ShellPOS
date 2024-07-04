@@ -32,6 +32,8 @@ namespace SezwanPayroll.DTO
 
         public string Username { get; set; }
 
+        public int isCashOrCredit { get; set; }
+
 
     }
 }

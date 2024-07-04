@@ -1,0 +1,183 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="SezwanPayroll.Site1" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>EasyPay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="css/Revamped/commonCss.css" rel="stylesheet" />
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="img/Revamped/ShellLogo.png" width="80" height="60" alt="Shell Logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link " aria-current="page" href="reports.aspx">
+                                <i class="fas fa-chart-bar"></i>Reports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="sales.aspx">
+                                <i class="fas fa-cash-register"></i>Sales
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin.aspx">
+                                <i class="fas fa-user-cog"></i>Admin Settings
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="summary.aspx">
+                                <i class="fa-solid fa-table-list"></i>Summary
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="payment.aspx">
+                                <i class="fa-solid fa-table-list"></i>Payments
+                            </a>
+                        </li>
+
+
+                    </ul>
+                    <div class="navbar-nav">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-user"></i>User
+                        </a>
+                    </div>
+
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mt-4">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+        </div>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        /* Custom CSS for the Navbar */
+        .navbar {
+            background-color: #f8f9fa; /* Light background */
+        }
+
+        .navbar-brand img {
+            transition: transform 0.2s ease-in-out; /* Smooth logo transition */
+        }
+
+            .navbar-brand img:hover {
+                transform: scale(1.1); /* Slightly enlarge the logo on hover */
+            }
+
+        .navbar-nav .nav-link {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #343a40;
+            transition: color 0.2s ease-in-out;
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: #007bff;
+            }
+
+            .navbar-nav .nav-link.active {
+                color: #0056b3;
+                font-weight: 700;
+            }
+
+        .navbar-toggler {
+            border-color: rgba(0, 0, 0, 0.1); /* Light border for the toggler */
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); /* Custom icon color */
+        }
+
+        /* Styles for small screens */
+        @media (max-width: 1000px) {
+            .navbar-nav {
+                text-align: center;
+                width: 100%;
+            }
+
+                .navbar-nav .nav-item {
+                    margin-bottom: 0.5rem;
+                }
+
+                    .navbar-nav .nav-item:not(:last-child) {
+                        border-bottom: 1px solid #dee2e6;
+                    }
+        }
+
+        /* Additional Custom Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border-radius: 50px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+            .btn-custom:hover {
+                background-color: #0056b3;
+                transform: scale(1.05);
+            }
+
+        .card-custom {
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+            .card-custom .card-header {
+                background-color: #f8f9fa;
+                border-bottom: 1px solid #dee2e6;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            .card-custom .card-body {
+                padding: 20px;
+            }
+
+        .form-control-custom {
+            border-radius: 50px;
+            padding: 10px 20px;
+            border: 1px solid #ced4da;
+        }
+
+            .form-control-custom:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            }
+    </style>
+
+
+    <script src='./js/ThemeAssets/SweetAlert/sweetalert.js'></script>
+</body>
+</html>

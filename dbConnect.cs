@@ -525,43 +525,7 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                 dynamic clientInfo = new JavaScriptSerializer().Deserialize<dynamic>(clientInfoJson);
 
                 // Debug logging to check clientInfo content
-                Console.WriteLine("clientInfo content:");
-                foreach (var key in clientInfo.Keys)
-                {
-                    Console.WriteLine($"{key}: {clientInfo[key]}");
-                }
-
-                // Check for each required key and log detailed messages if any key is missing
-                if (!clientInfo.ContainsKey("ClientId"))
-                {
-                    Console.WriteLine("Missing key: ClientId");
-                    throw new KeyNotFoundException("Missing key: ClientId");
-                }
-                if (!clientInfo.ContainsKey("date"))
-                {
-                    Console.WriteLine("Missing key: date");
-                    throw new KeyNotFoundException("Missing key: date");
-                }
-                if (!clientInfo.ContainsKey("totalCost"))
-                {
-                    Console.WriteLine("Missing key: totalCost");
-                    throw new KeyNotFoundException("Missing key: totalCost");
-                }
-                if (!clientInfo.ContainsKey("driverName"))
-                {
-                    Console.WriteLine("Missing key: driverName");
-                    throw new KeyNotFoundException("Missing key: driverName");
-                }
-                if (!clientInfo.ContainsKey("carRegNo"))
-                {
-                    Console.WriteLine("Missing key: carRegNo");
-                    throw new KeyNotFoundException("Missing key: carRegNo");
-                }
-                if (!clientInfo.ContainsKey("userId"))
-                {
-                    Console.WriteLine("Missing key: userId");
-                    throw new KeyNotFoundException("Missing key: userId");
-                }
+                
 
                 // Convert necessary fields to the correct types and validate lengths
                 int clientId = Convert.ToInt32(clientInfo["ClientId"]);
@@ -570,6 +534,7 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                 string driverName = clientInfo["driverName"];
                 string carRegNo = clientInfo["carRegNo"];
                 int userId = Convert.ToInt32(clientInfo["userId"]);
+                int isCashOrCredit = Convert.ToInt32(clientInfo["isCashOrCredit"]);
 
                 // Ensure lengths do not exceed the maximum allowed lengths
                 if (driverName.Length > 255)
@@ -584,8 +549,8 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
 
                 // Insert Sales data and get the SaleId
                 string sqlInsertQuery = @"
-                INSERT INTO Sales (ClientId, SaleDate, TotalCost, DriverName, CarRegNo, UserId) 
-                VALUES (@ClientId, @SaleDate, @TotalCost, @DriverName, @CarRegNo, @UserId);
+                INSERT INTO Sales (ClientId, SaleDate, TotalCost, DriverName, CarRegNo, UserId,isCashOrCredit) 
+                VALUES (@ClientId, @SaleDate, @TotalCost, @DriverName, @CarRegNo, @UserId,@isCashOrCredit);
                 SELECT SCOPE_IDENTITY()";
 
                 SqlCommand saleCmd = new SqlCommand(sqlInsertQuery, connection, transaction);
@@ -595,6 +560,7 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                 saleCmd.Parameters.AddWithValue("@DriverName", driverName);
                 saleCmd.Parameters.AddWithValue("@CarRegNo", carRegNo);
                 saleCmd.Parameters.AddWithValue("@UserId", userId);
+                saleCmd.Parameters.AddWithValue("@isCashOrCredit", isCashOrCredit);
 
                 object result = saleCmd.ExecuteScalar();
 
@@ -804,7 +770,7 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
     //Client creation 
 
 
-    public static List<clsClient> CreateClient(string name, string contactInfo, string address, string brn, string registrationNo = null, string driverName = null, int? mileage = null)
+    public static List<clsClient> CreateClient(string name, string contactInfo, string address, string brn, List<clsVehicle> vehicles)
     {
         List<clsClient> clients = new List<clsClient>();
 
@@ -813,10 +779,10 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
             connection.Open();
 
             string insertClientQuery = @"
-            INSERT INTO [Shell_POS].[dbo].[Clients] (Name, ContactInfo, Address, BRN) 
-            VALUES (@Name, @ContactInfo, @Address, @BRN);
-            
-            SELECT SCOPE_IDENTITY();"; // This returns the ID of the newly inserted row
+        INSERT INTO [Shell_POS].[dbo].[Clients] (Name, ContactInfo, Address, BRN) 
+        VALUES (@Name, @ContactInfo, @Address, @BRN);
+        
+        SELECT SCOPE_IDENTITY();"; // This returns the ID of the newly inserted row
 
             using (SqlCommand insertClientCommand = new SqlCommand(insertClientQuery, connection))
             {
@@ -829,28 +795,31 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                 int newClientId = Convert.ToInt32(insertClientCommand.ExecuteScalar());
 
                 // Insert vehicle information if provided
-                if (!string.IsNullOrEmpty(registrationNo) && !string.IsNullOrEmpty(driverName) && mileage.HasValue)
+                foreach (var vehicle in vehicles)
                 {
-                    string insertVehicleQuery = @"
+                    if (!string.IsNullOrEmpty(vehicle.RegistrationNo) && !string.IsNullOrEmpty(vehicle.DriverName) && vehicle.Mileage.HasValue)
+                    {
+                        string insertVehicleQuery = @"
                     INSERT INTO [Shell_POS].[dbo].[Vehicles] (ClientID, RegistrationNo, DriverName, Mileage) 
                     VALUES (@ClientID, @RegistrationNo, @DriverName, @Mileage)";
 
-                    using (SqlCommand insertVehicleCommand = new SqlCommand(insertVehicleQuery, connection))
-                    {
-                        insertVehicleCommand.Parameters.AddWithValue("@ClientID", newClientId);
-                        insertVehicleCommand.Parameters.AddWithValue("@RegistrationNo", registrationNo);
-                        insertVehicleCommand.Parameters.AddWithValue("@DriverName", driverName);
-                        insertVehicleCommand.Parameters.AddWithValue("@Mileage", mileage.Value);
+                        using (SqlCommand insertVehicleCommand = new SqlCommand(insertVehicleQuery, connection))
+                        {
+                            insertVehicleCommand.Parameters.AddWithValue("@ClientID", newClientId);
+                            insertVehicleCommand.Parameters.AddWithValue("@RegistrationNo", vehicle.RegistrationNo);
+                            insertVehicleCommand.Parameters.AddWithValue("@DriverName", vehicle.DriverName);
+                            insertVehicleCommand.Parameters.AddWithValue("@Mileage", vehicle.Mileage.Value);
 
-                        insertVehicleCommand.ExecuteNonQuery();
+                            insertVehicleCommand.ExecuteNonQuery();
+                        }
                     }
                 }
 
                 // Retrieve the newly inserted client
                 string selectClientQuery = @"
-                SELECT ClientID, Name, ContactInfo, Address, BRN
-                FROM [Shell_POS].[dbo].[Clients]
-                WHERE ClientID = @ClientID";
+            SELECT ClientID, Name, ContactInfo, Address, BRN
+            FROM [Shell_POS].[dbo].[Clients]
+            WHERE ClientID = @ClientID";
 
                 using (SqlCommand selectClientCommand = new SqlCommand(selectClientQuery, connection))
                 {
@@ -869,7 +838,7 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                                 BRN = dataReader["BRN"].ToString()
                             };
 
-                            clients.Add(newClient);     
+                            clients.Add(newClient);
                         }
                     }
                 }
@@ -878,7 +847,6 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
 
         return clients;
     }
-
 
 
     public static bool DeleteSales(int saleId)
@@ -931,6 +899,120 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
     }
 
 
+
+    public static List<clsSales> displayAllClientBasedSales(string dateFrom, string dateTo, string clientId)
+    {
+        List<clsSales> salesData = new List<clsSales>();
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string sql = @"
+        SELECT 
+            c.ClientID, c.Name AS ClientName, c.ContactInfo, c.Address, c.BRN, 
+            v.VehicleID, v.RegistrationNo, v.DriverName, v.Mileage,
+            s.SaleId, s.SaleDate, s.TotalCost, s.DriverName AS SaleDriverName, s.CarRegNo, s.UserId, s.isCashOrCredit,
+            si.SaleItemId, si.ItemId, si.Quantity, si.UnitPrice, si.TotalCost AS ItemTotalCost,
+            p.ItemName,
+            u.Username
+        FROM Clients c
+        LEFT JOIN Vehicles v ON c.ClientID = v.ClientID
+        LEFT JOIN Sales s ON c.ClientID = s.ClientId
+        LEFT JOIN SaleItems si ON s.SaleId = si.SaleId
+        LEFT JOIN ProductItems p ON si.ItemId = p.ItemId
+        LEFT JOIN UserPermissions u ON s.UserId = u.UserID
+        WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appending conditions
+
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            if (!string.IsNullOrEmpty(dateFrom))
+            {
+                DateTime fromDate;
+                if (DateTime.TryParseExact(dateFrom, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fromDate))
+                {
+                    sql += " AND CONVERT(DATE, s.SaleDate, 103) >= @DateFrom";
+                    parameters.Add(new SqlParameter("@DateFrom", fromDate));
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid date format for 'dateFrom'. Please use 'dd/MM/yyyy'.");
+                }
+            }
+
+            if (!string.IsNullOrEmpty(dateTo))
+            {
+                DateTime toDate;
+                if (DateTime.TryParseExact(dateTo, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out toDate))
+                {
+                    sql += " AND CONVERT(DATE, s.SaleDate, 103) <= @DateTo";
+                    parameters.Add(new SqlParameter("@DateTo", toDate));
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid date format for 'dateTo'. Please use 'dd/MM/yyyy'.");
+                }
+            }
+
+            if (!string.IsNullOrEmpty(clientId))
+            {
+                sql += " AND c.ClientID = @ClientId";
+                parameters.Add(new SqlParameter("@ClientId", clientId));
+            }
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                foreach (var parameter in parameters)
+                {
+                    command.Parameters.Add(parameter);
+                }
+
+                using (SqlDataReader dataReader = command.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        int saleId = Convert.ToInt32(dataReader["SaleId"]);
+                        var sale = salesData.FirstOrDefault(s => s.SaleId == saleId);
+
+                        if (sale == null)
+                        {
+                            sale = new clsSales
+                            {
+                                SaleId = saleId,
+                                ClientId = Convert.ToInt32(dataReader["ClientId"]),
+                                ClientName = dataReader["ClientName"].ToString(),
+                                SaleDate = dataReader["SaleDate"].ToString(),
+                                TotalCost = Convert.ToDecimal(dataReader["TotalCost"]),
+                                DriverName = dataReader["SaleDriverName"].ToString(),
+                                CarRegNo = dataReader["CarRegNo"].ToString(),
+                                Username = dataReader["Username"].ToString(),
+                                SaleItems = new List<clsSaleItem>()
+                            };
+
+                            salesData.Add(sale);
+                        }
+
+                        if (dataReader["SaleItemId"] != DBNull.Value)
+                        {
+                            clsSaleItem saleItem = new clsSaleItem
+                            {
+                                SaleItemId = Convert.ToInt32(dataReader["SaleItemId"]),
+                                ItemId = Convert.ToInt32(dataReader["ItemId"]),
+                                ItemName = dataReader["ItemName"].ToString(),
+                                Quantity = Convert.ToInt32(dataReader["Quantity"]),
+                                UnitPrice = Convert.ToDecimal(dataReader["UnitPrice"]),
+                                TotalCost = Convert.ToDecimal(dataReader["ItemTotalCost"])
+                            };
+
+                            sale.SaleItems.Add(saleItem);
+                        }
+                    }
+                }
+            }
+        }
+
+        return salesData;
+    }
 
 
 }

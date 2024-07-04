@@ -299,9 +299,6 @@ $(document).ready(function () {
         var address = $('#clientAddress').val();
         var contactInfo = $('#clientContact').val();
         var brnNo = $('#BrnNo').val(); // Correct the variable name to match the input ID
-        var registrationNo = $('#RegistrationNo').val();
-        var driverName = $('#DriverName').val();
-        var mileage = $('#Mileage').val();
 
         // Validate required fields
         if (!clientName) {
@@ -325,10 +322,24 @@ $(document).ready(function () {
             $('#clientContact').removeClass('is-invalid');
         }
 
-        // Ensure mileage is a number or null
-        mileage = mileage ? parseInt(mileage, 10) : null;
+        // Collect all vehicle information
+        var vehicles = [];
+        $('#vehicleInfoContainer .vehicle-info').each(function () {
+            var registrationNo = $(this).find('input[name="registrationNo[]"]').val();
+            var driverName = $(this).find('input[name="driverName[]"]').val();
+            var mileage = $(this).find('input[name="mileage[]"]').val();
 
-        // AJAX call to create a new client
+            // Ensure mileage is a number or null
+            mileage = mileage ? parseInt(mileage, 10) : null;
+
+            vehicles.push({
+                registrationNo: registrationNo,
+                driverName: driverName,
+                mileage: mileage
+            });
+        });
+
+        // AJAX call to create a new client with multiple vehicles
         $.ajax({
             type: "POST",
             url: "admin.aspx/CreateClient",
@@ -339,20 +350,19 @@ $(document).ready(function () {
                 address: address,
                 contactInfo: contactInfo,
                 brn: brnNo,
-                registrationNo: registrationNo,
-                driverName: driverName,
-                mileage: mileage
+                vehicles: vehicles
             }),
             success: function (response) {
                 console.log('Client created successfully:', response.d);
                 // Clear the input fields
-              window.location.href ='admin.aspx'
+                window.location.href = 'admin.aspx';
             },
             error: function (xhr, status, error) {
                 console.error('Error creating client:', error);
             }
         });
     });
+
 
 
 
@@ -541,6 +551,14 @@ $(document).ready(function () {
 
 });
 
+document.getElementById('addVehicleBtn').addEventListener('click', function () {
+    // Clone the first vehicle-info div
+    var vehicleInfo = document.querySelector('.vehicle-info').cloneNode(true);
+    // Clear the input fields in the cloned div
+    vehicleInfo.querySelectorAll('input').forEach(input => input.value = '');
+    // Append the cloned div to the container
+    document.getElementById('vehicleInfoContainer').appendChild(vehicleInfo);
+});
 
 
 
