@@ -1736,6 +1736,7 @@
     <Compile Include="DTO\clsClient.cs" />
     <Compile Include="DTO\clsLogin.cs" />
     <Compile Include="dbConnect.cs" />
+    <Compile Include="DTO\clsPayment.cs" />
     <Compile Include="DTO\clsProducts.cs" />
     <Compile Include="DTO\clsSales.cs" />
     <Compile Include="DTO\clsSalesData.cs" />

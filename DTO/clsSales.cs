@@ -16,10 +16,13 @@ namespace SezwanPayroll.DTO
         public string CarRegNo { get; set; }
         public string Username { get; set; }
 
+        public Decimal TotalAmountPaid { get; set; }
+
         public string agentName { get; set; }
         public List<clsSaleItem> SaleItems { get; set; }
 
         public List<clsUserPermission> UserPermissions { get; set; }
+        
     }
 
     public class clsSaleItem

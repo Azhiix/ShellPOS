@@ -1,7 +1,7 @@
 ﻿
 
 function triggerPageRefresh() {
-    customSwal.fire({
+    Swal.fire({
         title: 'Success!',
         text: 'Sale succesfully saved.',
         icon: 'success',
@@ -739,7 +739,7 @@ function collectSalesData() {
         carRegNo: $('#vehicleRegSelect option:selected').val(),
         mileage: $('.inputMileage').val(),
         totalCost: totalCost.toFixed(2),
-        isCashOrCredit: $('#payment-method').val()
+       
     };
     localStorage.setItem('sales', JSON.stringify(salesData));
 

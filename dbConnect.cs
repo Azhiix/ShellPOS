@@ -14,6 +14,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Globalization;
 using System.Reflection.Emit;
+using System.Data;
 
 public class DbConnect
 {
@@ -534,7 +535,7 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                 string driverName = clientInfo["driverName"];
                 string carRegNo = clientInfo["carRegNo"];
                 int userId = Convert.ToInt32(clientInfo["userId"]);
-                int isCashOrCredit = Convert.ToInt32(clientInfo["isCashOrCredit"]);
+               
 
                 // Ensure lengths do not exceed the maximum allowed lengths
                 if (driverName.Length > 255)
@@ -549,8 +550,8 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
 
                 // Insert Sales data and get the SaleId
                 string sqlInsertQuery = @"
-                INSERT INTO Sales (ClientId, SaleDate, TotalCost, DriverName, CarRegNo, UserId,isCashOrCredit) 
-                VALUES (@ClientId, @SaleDate, @TotalCost, @DriverName, @CarRegNo, @UserId,@isCashOrCredit);
+                INSERT INTO Sales (ClientId, SaleDate, TotalCost, DriverName, CarRegNo, UserId) 
+                VALUES (@ClientId, @SaleDate, @TotalCost, @DriverName, @CarRegNo, @UserId);
                 SELECT SCOPE_IDENTITY()";
 
                 SqlCommand saleCmd = new SqlCommand(sqlInsertQuery, connection, transaction);
@@ -560,7 +561,7 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                 saleCmd.Parameters.AddWithValue("@DriverName", driverName);
                 saleCmd.Parameters.AddWithValue("@CarRegNo", carRegNo);
                 saleCmd.Parameters.AddWithValue("@UserId", userId);
-                saleCmd.Parameters.AddWithValue("@isCashOrCredit", isCashOrCredit);
+              
 
                 object result = saleCmd.ExecuteScalar();
 
@@ -909,20 +910,25 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
             connection.Open();
 
             string sql = @"
-        SELECT 
-            c.ClientID, c.Name AS ClientName, c.ContactInfo, c.Address, c.BRN, 
-            v.VehicleID, v.RegistrationNo, v.DriverName, v.Mileage,
-            s.SaleId, s.SaleDate, s.TotalCost, s.DriverName AS SaleDriverName, s.CarRegNo, s.UserId, s.isCashOrCredit,
-            si.SaleItemId, si.ItemId, si.Quantity, si.UnitPrice, si.TotalCost AS ItemTotalCost,
-            p.ItemName,
-            u.Username
-        FROM Clients c
-        LEFT JOIN Vehicles v ON c.ClientID = v.ClientID
-        LEFT JOIN Sales s ON c.ClientID = s.ClientId
-        LEFT JOIN SaleItems si ON s.SaleId = si.SaleId
-        LEFT JOIN ProductItems p ON si.ItemId = p.ItemId
-        LEFT JOIN UserPermissions u ON s.UserId = u.UserID
-        WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appending conditions
+            SELECT 
+                c.ClientID, c.Name AS ClientName, c.ContactInfo, c.Address, c.BRN, 
+                v.VehicleID, v.RegistrationNo, v.DriverName, v.Mileage,
+                s.SaleId, s.SaleDate, s.TotalCost, s.DriverName AS SaleDriverName, s.CarRegNo, s.UserId, s.isCashOrCredit,
+                si.SaleItemId, si.ItemId, si.Quantity, si.UnitPrice, si.TotalCost AS ItemTotalCost,
+                p.ItemName,
+                u.Username,
+                ISNULL((
+                    SELECT SUM(p.Amount)
+                    FROM Payments p
+                    WHERE p.ClientID = c.ClientID
+                ), 0) AS TotalAmountPaid
+            FROM Clients c
+            LEFT JOIN Vehicles v ON c.ClientID = v.ClientID
+            LEFT JOIN Sales s ON c.ClientID = s.ClientId
+            LEFT JOIN SaleItems si ON s.SaleId = si.SaleId
+            LEFT JOIN ProductItems p ON si.ItemId = p.ItemId
+            LEFT JOIN UserPermissions u ON s.UserId = u.UserID
+            WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appending conditions
 
             List<SqlParameter> parameters = new List<SqlParameter>();
 
@@ -966,7 +972,7 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                 {
                     command.Parameters.Add(parameter);
                 }
-
+             
                 using (SqlDataReader dataReader = command.ExecuteReader())
                 {
                     while (dataReader.Read())
@@ -986,7 +992,8 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
                                 DriverName = dataReader["SaleDriverName"].ToString(),
                                 CarRegNo = dataReader["CarRegNo"].ToString(),
                                 Username = dataReader["Username"].ToString(),
-                                SaleItems = new List<clsSaleItem>()
+                                SaleItems = new List<clsSaleItem>(),
+                                TotalAmountPaid = Convert.ToDecimal(dataReader["TotalAmountPaid"]) // Assign the total amount paid
                             };
 
                             salesData.Add(sale);
@@ -1013,6 +1020,181 @@ WHERE 1=1"; // Start with a WHERE clause that is always true to simplify appendi
 
         return salesData;
     }
+
+
+
+
+    public static List<clsPayment> savePayment( string specificDate, decimal amount, string reference, string comments, int clientId, int paymentTypeId)
+    {
+        List<clsPayment> payments = new List<clsPayment>();
+
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string insertPaymentQuery = @"
+                INSERT INTO [Shell_POS].[dbo].[Payments] 
+                (ClientID, PaymentTypeID, SpecificDate, Amount, Reference, Comments, CreatedDate) 
+                VALUES 
+                (@ClientID, @PaymentTypeID,@SpecificDate, @Amount, @Reference, @Comments, GETDATE());
+
+                SELECT SCOPE_IDENTITY();";
+
+                using (SqlCommand insertPaymentCommand = new SqlCommand(insertPaymentQuery, connection))
+                {
+                    insertPaymentCommand.Parameters.AddWithValue("@ClientID", clientId);
+                    insertPaymentCommand.Parameters.AddWithValue("@PaymentTypeID", paymentTypeId);
+
+                    string[] dateFormats = { "dd/MM/yyyy", "MM-dd-yyyy", "yyyy-MM-dd" }; // Add more formats as needed
+
+                    //if (!string.IsNullOrEmpty(dateFrom))
+                    //{
+                    //    if (DateTime.TryParseExact(dateFrom, dateFormats, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fromDate))
+                    //    {
+                    //        insertPaymentCommand.Parameters.Add("@DateFrom", SqlDbType.Date).Value = fromDate;
+                    //    }
+                    //    else
+                    //    {
+                    //        throw new ArgumentException("Invalid DateFrom format");
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    insertPaymentCommand.Parameters.Add("@DateFrom", SqlDbType.Date).Value = DBNull.Value;
+                    //}
+
+                    //if (!string.IsNullOrEmpty(dateTo))
+                    //{
+                    //    if (DateTime.TryParseExact(dateTo, dateFormats, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime toDate))
+                    //    {
+                    //        insertPaymentCommand.Parameters.Add("@DateTo", SqlDbType.Date).Value = toDate;
+                    //    }
+                    //    else
+                    //    {
+                    //        throw new ArgumentException("Invalid DateTo format");
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    insertPaymentCommand.Parameters.Add("@DateTo", SqlDbType.Date).Value = DBNull.Value;
+                    //}
+
+                    if (!string.IsNullOrEmpty(specificDate))
+                    {
+                        if (DateTime.TryParseExact(specificDate, dateFormats, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime specific))
+                        {
+                            insertPaymentCommand.Parameters.Add("@SpecificDate", SqlDbType.Date).Value = specific;
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Invalid SpecificDate format");
+                        }
+                    }
+                    else
+                    {
+                        insertPaymentCommand.Parameters.Add("@SpecificDate", SqlDbType.Date).Value = DBNull.Value;
+                    }
+
+                    insertPaymentCommand.Parameters.AddWithValue("@Amount", amount);
+                    insertPaymentCommand.Parameters.AddWithValue("@Reference", reference);
+                    insertPaymentCommand.Parameters.AddWithValue("@Comments", comments ?? (object)DBNull.Value);
+
+                    int newPaymentId = Convert.ToInt32(insertPaymentCommand.ExecuteScalar());
+
+                    string selectPaymentQuery = @"
+                    SELECT PaymentID, ClientID, PaymentTypeID, SpecificDate, Amount, Reference, Comments, CreatedDate
+                    FROM [Shell_POS].[dbo].[Payments]
+                    WHERE PaymentID = @PaymentID";
+
+                    using (SqlCommand selectPaymentCommand = new SqlCommand(selectPaymentQuery, connection))
+                    {
+                        selectPaymentCommand.Parameters.AddWithValue("@PaymentID", newPaymentId);
+
+                        using (SqlDataReader dataReader = selectPaymentCommand.ExecuteReader())
+                        {
+                            if (dataReader.Read())
+                            {
+                                clsPayment newPayment = new clsPayment
+                                {
+                                    PaymentID = Convert.ToInt32(dataReader["PaymentID"]),
+                                    ClientID = Convert.ToInt32(dataReader["ClientID"]),
+                                    PaymentTypeID = Convert.ToInt32(dataReader["PaymentTypeID"]),
+                                    SpecificDate = dataReader["SpecificDate"] != DBNull.Value ? Convert.ToDateTime(dataReader["SpecificDate"]).ToString("dd/MM/yyyy") : null,
+                                    Amount = Convert.ToDecimal(dataReader["Amount"]),
+                                    Reference = dataReader["Reference"].ToString(),
+                                    Comments = dataReader["Comments"] != DBNull.Value ? dataReader["Comments"].ToString() : null,
+                                    CreatedDate = Convert.ToDateTime(dataReader["CreatedDate"]).ToString("dd/MM/yyyy")
+                                };
+
+                                payments.Add(newPayment);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (use your logging mechanism here)
+            Console.WriteLine("Error in savePayment: " + ex.Message);
+            // Optionally, add some error handling or rethrow
+        }
+
+        return payments;
+    }
+
+
+
+    public static List<clsPayment> GetClientPayments(int clientID)
+    {
+        List<clsPayment> payments = new List<clsPayment>();
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string sql = @"
+            SELECT 
+                PaymentID, ClientID, PaymentTypeID,SpecificDate, Amount, Reference, Comments, CreatedDate
+            FROM 
+                [Shell_POS].[dbo].[Payments]
+            WHERE 
+                ClientID = @ClientID";
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@ClientID", clientID);
+
+                using (SqlDataReader dataReader = command.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        clsPayment payment = new clsPayment
+                        {
+                            PaymentID = Convert.ToInt32(dataReader["PaymentID"]),
+                            ClientID = Convert.ToInt32(dataReader["ClientID"]),
+                            PaymentTypeID = Convert.ToInt32(dataReader["PaymentTypeID"]),
+                          
+                            SpecificDate = dataReader["SpecificDate"] != DBNull.Value ? Convert.ToDateTime(dataReader["SpecificDate"]).ToString("dd/MM/yyyy") : null,
+                            Amount = Convert.ToDecimal(dataReader["Amount"]),
+                            Reference = dataReader["Reference"].ToString(),
+                            Comments = dataReader["Comments"] != DBNull.Value ? dataReader["Comments"].ToString() : null,
+                            CreatedDate = Convert.ToDateTime(dataReader["CreatedDate"]).ToString("dd/MM/yyyy")
+                        };
+
+                        payments.Add(payment);
+                    }
+                }
+            }
+        }
+
+        return payments;
+    }
+
+
+
 
 
 }

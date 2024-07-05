@@ -69,7 +69,7 @@
                 </div>
             </div>
             <!-- select for a cash or credit sale -->
-            <div class="container mt-4">
+          <%--  <div class="container mt-4">
                 <div class="form-group">
                     <label for="payment-method">Payment Method:</label>
                     <select class="form-control" id="payment-method" name="payment-method">
@@ -77,7 +77,7 @@
                         <option value="1">Cash</option>
                     </select>
                 </div>
-            </div>
+            </div>--%>
 
 
 

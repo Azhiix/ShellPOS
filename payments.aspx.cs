@@ -1,10 +1,12 @@
-﻿using SezwanPayroll.DTO;
+﻿using SezwanPayroll;
+using SezwanPayroll.DTO;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
+using System.Xml.Linq;
 
 namespace SezwanPayroll
 {
@@ -47,6 +49,41 @@ namespace SezwanPayroll
         }
 
 
+        [WebMethod]
+        public static List<clsPayment> submitPayment(string specificDate, decimal amount, string reference, string comments, int clientId, int paymentTypeId)
+        {
+            try
+            {
+                // Call the savePayment method with the provided parameters
+                List<clsPayment> result = DbConnect.savePayment(specificDate, amount, reference, comments, clientId, paymentTypeId);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (use your logging mechanism here)
+                Console.WriteLine("Error in submitPayment: " + ex.Message);
+                return null;
+            }
+        }
+
+
+
+        [WebMethod]
+        public static List<clsPayment> displayClientPayments(int clientID)
+        {
+            try
+            {
+                // Call the dbConnect function to get the payments
+                return DbConnect.GetClientPayments(clientID);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (use your logging mechanism here)
+                Console.WriteLine("Error in displayClientPayments: " + ex.Message);
+                return new List<clsPayment>();
+            }
+        }
+
 
     }
 
@@ -57,3 +94,28 @@ namespace SezwanPayroll
 
 
 //{ dateFrom: '01/07/2024', dateTo: '08/07/2024', clientID: '7'}
+
+
+
+//dateFrom: paymentDateFrom || null,
+//        dateTo: paymentDateTo || null,
+//        amount: amount,
+//        reference: reference,
+//        comments: comments,
+//        clientId: document.getElementById('clientSelect').value,
+//        paymentTypeId: paymentType
+
+
+
+
+//PaymentID   int	Unchecked
+//ClientID	int	Unchecked
+//PaymentTypeID	int	Unchecked
+//DateFrom	varchar(10)	Checked
+//DateTo	varchar(10)	Checked
+//SpecificDate	varchar(10)	Checked
+//Amount	decimal(10, 2)	Unchecked
+//Reference	varchar(255)	Unchecked
+//Comments	varchar(500)	Checked
+//CreatedDate	varchar(19)	Unchecked
+//		Unchecked

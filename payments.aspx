@@ -30,7 +30,7 @@
                         <option value="">Select Client</option>
                     </select>
                 </div>
-           <%--     <div class="col-md-3">
+                <%--     <div class="col-md-3">
                     <label for="agentSelect" class="form-label">Payment Type</label>
                     <select class="form-select" id="agentSelect">
                         <option value="0">Payment Type</option>
@@ -42,60 +42,112 @@
             </div>
         </div>
 
-        <div class="mt-5">
-            <div class="row">
-                <div class="col-md-4 totalOwed " style="display:">
-                    <div class="card text-white bg-info  mb-3">
-                        <div class="card-body ">
-                            <h5 class="card-title">Total Amount Owed</h5>
-                            <p class="card-text" id="totalAmountOwed"></p>
-                        </div>
+        <div class="paymentInfo d-none">
+             <div class="row">
+        <div class="col-md-4 totalOwed d-none">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Amount Owed</h5>
+                    <p class="card-text" id="totalAmountOwed"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 totalPaid ">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Amount Paid</h5>
+                    <p class="card-text" id="totalAmountPaid"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 outstandingAmount">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Outstanding Amount</h5>
+                    <p class="card-text" id="outstandingAmount"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 d-none payDetails">
+        <h5 class="mb-3">Payment Details</h5>
+        <div class="table-responsive">
+            <table id="paymentsTable" class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Reference</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Payments will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+        </div>
+
+
+
+
+
+    <div class="card p-4 mt-5 shadow-sm" style="border-radius: 10px; border: 1px solid #ddd; background-color: #f9f9f9;">
+        <h5 class="card-title mb-4">Pay Amount</h5>
+        <form id="paymentForm">
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" checked id="useSearchPeriod">
+                <label class="form-check-label" for="useSearchPeriod">
+                    Use same period as above
+                </label>
+            </div>
+           <%-- <div class="row g-3 align-items-center">
+                <div class="col-md-6 col-lg-4" id="paymentDateFromContainer">
+                    <label for="paymentDateFrom" class="form-label">Payment Date From</label>
+                    <input type="text" class="form-control flatpickr-input" id="paymentDateFrom" placeholder="Payment Date From" readonly="readonly">
+                </div>
+                <div class="col-md-6 col-lg-4" id="paymentDateToContainer">
+                    <label for="paymentDateTo" class="form-label">Payment Date To</label>
+                    <input type="text" class="form-control flatpickr-input" id="paymentDateTo" placeholder="Payment Date To" readonly="readonly">
+                </div>
+            </div>--%>
+            <div class="container mt-3">
+                <div class="row g-3">
+                    <div class="col-md-6 col-lg-4">
+                        <label for="paymentAmount" class="form-label">Amount</label>
+                        <input type="number" class="form-control" id="paymentAmount" placeholder="Enter amount">
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <label for="paymentReference" class="form-label">Payment Reference</label>
+                        <input type="text" class="form-control" id="paymentReference" placeholder="Reference number">
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <label for="paymentType" class="form-label">Payment Type</label>
+                        <select class="form-select" id="paymentType">
+                            <option value="">Select Type</option>
+                            <option value="1">Cash</option>
+                            <option value="2">Cheque</option>
+                            <option value="3">Bank Transfer</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label for="paymentComments" class="form-label">Additional Comments</label>
+                        <textarea class="form-control" id="paymentComments" rows="3" placeholder="Include any comments here"></textarea>
                     </div>
                 </div>
+            </div>
 
+            <div class="d-flex justify-content-end mt-4">
+                <button type="button" class="btn btn-primary btn-lg submitPayment">Submit Payment</button>
             </div>
-        </div>
-
-
-
-      <div class="card p-4 mt-5 shadow-sm" style="border-radius: 10px; border: 1px solid #ddd; background-color: #f9f9f9;">
-    <h5 class="card-title mb-4">Pay Amount</h5>
-    <form id="paymentForm">
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" id="useSearchPeriod">
-            <label class="form-check-label" for="useSearchPeriod">
-                Use same period as above
-            </label>
-        </div>
-        <div class="row g-3 align-items-center">
-            <div class="col-md-6 col-lg-4" id="paymentDateFromContainer">
-                <label for="paymentDateFrom" class="form-label">Payment Date From</label>
-                <input type="text" class="form-control flatpickr-input" id="paymentDateFrom" placeholder="Payment Date From" readonly="readonly">
-            </div>
-            <div class="col-md-6 col-lg-4" id="paymentDateToContainer">
-                <label for="paymentDateTo" class="form-label">Payment Date To</label>
-                <input type="text" class="form-control flatpickr-input" id="paymentDateTo" placeholder="Payment Date To" readonly="readonly">
-            </div>
-        </div>
-        <div class="row g-3 align-items-center mt-3">
-            <div class="col-md-6 col-lg-4">
-                <label for="paymentAmount" class="form-label">Amount</label>
-                <input type="number" class="form-control" id="paymentAmount" placeholder="Amount">
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <label for="paymentReference" class="form-label">Payment Reference</label>
-                <input type="text" class="form-control" id="paymentReference" placeholder="Payment Reference">
-            </div>
-            <div class="col-12">
-                <label for="paymentComments" class="form-label">Additional Comments</label>
-                <textarea class="form-control" id="paymentComments" rows="3" placeholder="Additional Comments"></textarea>
-            </div>
-        </div>
-        <div class="d-flex justify-content-end mt-4">
-            <button type="submit" class="btn btn-primary btn-lg">Submit Payment</button>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 
     </div>
 
