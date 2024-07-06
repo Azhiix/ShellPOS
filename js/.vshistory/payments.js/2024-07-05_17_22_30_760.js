@@ -215,7 +215,7 @@ function displayPayments(paymentData) {
     let totalAmountPaid = 0;
 
     paymentData.forEach(payment => {
-        totalAmountPaid += payment.Amount;                                                                                                                                                                                                                        
+        totalAmountPaid += payment.Amount;
         const row = `
             <tr>
                 <td>${payment.CreatedDate}</td>

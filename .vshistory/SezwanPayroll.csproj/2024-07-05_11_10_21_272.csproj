@@ -214,7 +214,6 @@
     <Content Include="js\sales.js" />
     <Content Include="js\summary.js" />
     <Content Include="js\ThemeAssets\JQuery\jquery.js" />
-    <Content Include="js\ThemeAssets\JsPDF\jspdf.js" />
     <Content Include="login.aspx" />
     <None Include="packages.config" />
     <Content Include="packages\IdentityModel.6.0.0\.signature.p7s" />

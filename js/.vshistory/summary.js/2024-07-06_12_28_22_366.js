@@ -1,35 +1,23 @@
-﻿let totalCost = 0; // Variable to store the total cost of all sales
-let totalCashCost = 0;
-
-function determineCurrentDate() {
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth() + 1; // JavaScript months are 0-based
-    const currentDay = currentDate.getDate();
-    const determineCurrentDate = `${currentDay < 10 ? '0' + currentDay : currentDay}/${currentMonth < 10 ? '0' + currentMonth : currentMonth}/${currentYear}`; // Outputs in DD/MM/YYYY format
-    return determineCurrentDate;
-}
-
-function determineTotalNumberOfSalesItems(salesData) {
-    let totalItems = 0;
-    salesData.forEach(sale => {
-        if (sale.SaleItems) {
-            totalItems += sale.SaleItems.length;
-        }
-    });
-    return totalItems;
-}
-
-function determineNumberofSales() {
-    const numberOfRows = document.querySelectorAll('#salesTable tbody tr').length;
-    return numberOfRows;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
     const salesTable = document.getElementById('salesTable').querySelector('tbody');
     const saleDetails = document.getElementById('saleDetailsTemplate').cloneNode(true);
     saleDetails.style.display = 'none';
     document.body.appendChild(saleDetails);
+
+    const printAllSalesBtn = document.getElementById('printAllSalesBtn');
+    const printSaleBtn = saleDetails.querySelector('#printSaleBtn');
+
+    // Function to print the content of a given element
+    const printContent = (element) => {
+        const printWindow = window.open('', '', 'width=800,height=600');
+        printWindow.document.write('<html><head><title>Print</title>');
+        printWindow.document.write('<link rel="stylesheet" type="text/css" href="css/summary.css">'); // Add your CSS link here
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(element.innerHTML);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    };
 
     // Function to populate the sales details
     const populateSaleDetails = (selectedSale) => {
@@ -108,16 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
-                // Display total cost, total number of sales, and total number of items sold
-                const totalNumberOfSalesItems = determineTotalNumberOfSalesItems(salesData);
-                document.getElementById('totalCostContainer').textContent = `Total Cost: ${totalCost.toFixed(2)}`;
-                 console.log('Total Cost:', totalCost.toFixed(2));
-                console.log(determineCurrentDate(), 'today\'s current date is');
-                console.log('Total Number of Sales Items:', totalNumberOfSalesItems);
-                console.log('Total Cash Cost:', totalCashCost.toFixed(2));
+
+
             }
-        })
-        .catch(error => {
-            console.error('Error fetching sales data:', error);
-        });
-});
+
+        }
+
+                        

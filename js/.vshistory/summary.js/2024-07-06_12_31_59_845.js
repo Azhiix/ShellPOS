@@ -111,7 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Display total cost, total number of sales, and total number of items sold
                 const totalNumberOfSalesItems = determineTotalNumberOfSalesItems(salesData);
                 document.getElementById('totalCostContainer').textContent = `Total Cost: ${totalCost.toFixed(2)}`;
-                 console.log('Total Cost:', totalCost.toFixed(2));
+                document.getElementById('totalSalesContainer').textContent = `Total Sales: ${determineNumberofSales()} Total Items Sold: ${totalNumberOfSalesItems}`;
+                document.getElementById('totalCashCostContainer').textContent = `Total Cash Cost: ${totalCashCost.toFixed(2)}`;
+                console.log('Total Cost:', totalCost.toFixed(2));
                 console.log(determineCurrentDate(), 'today\'s current date is');
                 console.log('Total Number of Sales Items:', totalNumberOfSalesItems);
                 console.log('Total Cash Cost:', totalCashCost.toFixed(2));

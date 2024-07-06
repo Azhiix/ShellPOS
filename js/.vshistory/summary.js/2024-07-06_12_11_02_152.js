@@ -21,15 +21,17 @@ function determineTotalNumberOfSalesItems(salesData) {
 }
 
 function determineNumberofSales() {
-    const numberOfRows = document.querySelectorAll('#salesTable tbody tr').length;
-    return numberOfRows;
+    const numberOfRows = document.querySelectorAll('#salesTable tbody tr');
+    return numberOfRows.length;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const salesTable = document.getElementById('salesTable').querySelector('tbody');
-    const saleDetails = document.getElementById('saleDetailsTemplate').cloneNode(true);
-    saleDetails.style.display = 'none';
-    document.body.appendChild(saleDetails);
+    const saleDetails = document.getElementById('saleDetailsTemplate');
+    let selectedSaleForReprint = null;
+
+    const printSummaryBtn = document.getElementById('printSummaryBtn');
+    const printInvoiceBtn = document.getElementById('printInvoiceBtn');
 
     // Function to populate the sales details
     const populateSaleDetails = (selectedSale) => {
@@ -103,15 +105,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     row.querySelector('.select-btn').addEventListener('click', (e) => {
                         e.preventDefault();
+                        selectedSaleForReprint = sale;
                         populateSaleDetails(sale);
                         saleDetails.style.display = 'block';
+                        printInvoiceBtn.disabled = false; // Enable the reprint invoice button
                     });
                 });
 
                 // Display total cost, total number of sales, and total number of items sold
                 const totalNumberOfSalesItems = determineTotalNumberOfSalesItems(salesData);
                 document.getElementById('totalCostContainer').textContent = `Total Cost: ${totalCost.toFixed(2)}`;
-                 console.log('Total Cost:', totalCost.toFixed(2));
+                document.getElementById('totalSalesContainer').textContent = `Total Sales are ${determineNumberofSales()} and Total Number of Items Sold are ${totalNumberOfSalesItems}`;
+                document.getElementById('totalCashCostContainer').textContent = `Total Cash Cost: ${totalCashCost.toFixed(2)}`;
+                console.log('Total Cost:', totalCost.toFixed(2));
                 console.log(determineCurrentDate(), 'today\'s current date is');
                 console.log('Total Number of Sales Items:', totalNumberOfSalesItems);
                 console.log('Total Cash Cost:', totalCashCost.toFixed(2));
@@ -120,4 +126,37 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error('Error fetching sales data:', error);
         });
+
+    // Function to print the summary
+    function printSummary() {
+        const printContent = document.getElementById('salesTable').outerHTML;
+        const printWindow = window.open('', '', 'height=600,width=800');
+        printWindow.document.write('<html><head><title>Sales Summary</title>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write('<h1>Sales Summary</h1>');
+        printWindow.document.write(printContent);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+    // Function to print a specific invoice
+    function printInvoice() {
+        if (!selectedSaleForReprint) {
+            alert('Please select a sale to reprint the invoice.');
+            return;
+        }
+        const printContent = saleDetails.outerHTML;
+        const printWindow = window.open('', '', 'height=600,width=800');
+        printWindow.document.write('<html><head><title>Invoice</title>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(printContent);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+    // Attach event listeners to the print buttons
+    printSummaryBtn.addEventListener('click', printSummary);
+    printInvoiceBtn.addEventListener('click', printInvoice);
 });

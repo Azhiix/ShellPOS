@@ -21,15 +21,13 @@ function determineTotalNumberOfSalesItems(salesData) {
 }
 
 function determineNumberofSales() {
-    const numberOfRows = document.querySelectorAll('#salesTable tbody tr').length;
-    return numberOfRows;
+    const numberOfRows = document.querySelectorAll('#salesTable tr');
+    return numberOfRows.length;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const salesTable = document.getElementById('salesTable').querySelector('tbody');
-    const saleDetails = document.getElementById('saleDetailsTemplate').cloneNode(true);
-    saleDetails.style.display = 'none';
-    document.body.appendChild(saleDetails);
+    const saleDetails = document.getElementById('saleDetails');
 
     // Function to populate the sales details
     const populateSaleDetails = (selectedSale) => {
@@ -111,7 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Display total cost, total number of sales, and total number of items sold
                 const totalNumberOfSalesItems = determineTotalNumberOfSalesItems(salesData);
                 document.getElementById('totalCostContainer').textContent = `Total Cost: ${totalCost.toFixed(2)}`;
-                 console.log('Total Cost:', totalCost.toFixed(2));
+                document.getElementById('totalSalesContainer').textContent = `Total Sales are ${determineNumberofSales()} and Total Number of Items Sold are ${totalNumberOfSalesItems}`;
+                document.getElementById('totalCashCostContainer').textContent = `Total Cash Cost: ${totalCashCost.toFixed(2)}`;
+                console.log('Total Cost:', totalCost.toFixed(2));
                 console.log(determineCurrentDate(), 'today\'s current date is');
                 console.log('Total Number of Sales Items:', totalNumberOfSalesItems);
                 console.log('Total Cash Cost:', totalCashCost.toFixed(2));

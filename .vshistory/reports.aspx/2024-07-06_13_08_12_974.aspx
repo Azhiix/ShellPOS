@@ -13,7 +13,7 @@
         </div>
         <div class="table-responsive">
             <table id="salesTable" class="table table-striped table-bordered">
-                <thead class="table">
+                <thead class="table-dark">
                     <tr>
                         <th>Sale Date</th>
                         <th>Client Name</th>
