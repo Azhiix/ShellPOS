@@ -28,26 +28,24 @@ function fetchClientInfo() {
         },
     })
         .then(response => {
-            console.log('Received response:', response);
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.statusText}`);
             }
             return response.json();
         })
         .then(data => {
-            console.log('Received data:', data);
             if (data && data.d) {
                 const clientSelect = document.getElementById('clientSelect');
                 const optionEl = `<option value="">Select Client</option>
-            ${data.d.map(client => `<option value="${client.ClientID}">${client.Name}</option>`).join('')}`;
+                ${data.d.map(client => `<option value="${client.ClientID}">${client.Name}</option>`).join('')}`;
                 clientSelect.innerHTML = optionEl;
             } else {
                 throw new Error('Unexpected response structure');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            customSwal.fire({
+            console.error('Error fetching client info:', error);
+            Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'Failed to load client information. Please try again later.',
@@ -56,39 +54,35 @@ function fetchClientInfo() {
 }
 
 function setupDatePickers() {
-    let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-    let yyyy = today.getFullYear();
-
-    today = mm + '-' + dd + '-' + yyyy;
+    const dateFormat = "d/m/Y";
 
     flatpickr("#dateFrom", {
-        defaultDate: today,
-        dateFormat: "m-d-Y",
+        defaultDate: new Date(),
+        dateFormat: dateFormat,
         onChange: function (selectedDates, dateStr, instance) {
             flatpickr("#dateTo", {
                 minDate: dateStr,
-                dateFormat: "m-d-Y",
+                dateFormat: dateFormat,
             });
         }
     });
+
     flatpickr("#dateTo", {
-        defaultDate: today,
-        dateFormat: "m-d-Y",
+        defaultDate: new Date(),
+        dateFormat: dateFormat,
     });
+
     flatpickr("#paymentDateFrom", {
-        dateFormat: "m-d-Y"
+        dateFormat: dateFormat
     });
+
     flatpickr("#paymentDateTo", {
-        dateFormat: "m-d-Y"
+        dateFormat: dateFormat
     });
 }
 
 function formatDateToDDMMYYYY(dateString) {
-    console.log("Original date string:", dateString);
-    const [month, day, year] = dateString.split('-');
-    console.log("Parsed month:", month, "Parsed day:", day, "Parsed year:", year);
+    const [day, month, year] = dateString.split('/');
     return `${day}/${month}/${year}`;
 }
 
@@ -97,7 +91,7 @@ function filterSales() {
     const dateTo = document.getElementById('dateTo').value;
 
     if (!dateFrom || !dateTo) {
-        customSwal.fire({
+        Swal.fire({
             icon: 'error',
             title: 'Error',
             text: 'Please select a date range',
@@ -111,8 +105,6 @@ function filterSales() {
         clientID: document.getElementById('clientSelect').value,
     };
 
-    console.log('Sending payload:', payload);
-
     fetch('payments.aspx/displayClientSales', {
         method: 'POST',
         headers: {
@@ -120,47 +112,31 @@ function filterSales() {
         },
         body: JSON.stringify(payload),
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            return response.json();
+        })
         .then(data => {
-            console.log('Received data:', data);
             if (data && data.d) {
                 summarizeSales(data.d);
                 fetchPayments(payload.clientID, payload.dateFrom, payload.dateTo);
-                
             } else {
-                customSwal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Unexpected response structure.',
-                });
+                throw new Error('Unexpected response structure');
             }
         })
-       
-       
+        .catch(error => {
+            console.error('Error fetching sales data:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to load sales data. Please try again later.',
+            });
+        });
 }
-
-
-
-function summarizeSales(salesData) {
-    let totalAmountOwed = 0;
-
-    salesData.forEach(sale => {
-        totalAmountOwed += sale.TotalCost;
-    });
-
-    console.log('Total Amount Owed:', totalAmountOwed);
-    document.getElementById('totalAmountOwed').textContent = totalAmountOwed.toFixed(2);
-    document.querySelector('.totalOwed').classList.remove('d-none');
-}
-
-let isFetching = false;
 
 function fetchPayments(clientID, dateFrom, dateTo) {
-    if (isFetching) return; // Prevent multiple calls
-    isFetching = true;
-
-    console.log("Fetching payments with parameters:", { clientID, dateFrom, dateTo });
-
     fetch('payments.aspx/displayClientPayments', {
         method: 'POST',
         headers: {
@@ -175,49 +151,29 @@ function fetchPayments(clientID, dateFrom, dateTo) {
             return response.json();
         })
         .then(data => {
-            console.log('Received data:', data);
             if (data && data.d) {
                 const filteredPayments = data.d.filter(payment => {
-                    if (!payment.SpecificDate || !payment.SpecificDate.includes('/')) {
-                        console.warn('Invalid or missing SpecificDate for payment:', payment);
-                        return false;
-                    }
-                    try {
-                        const specificDate = new Date(payment.SpecificDate.split('/').reverse().join('-'));
-                        const dateFromObj = new Date(dateFrom.split('/').reverse().join('-'));
-                        const dateToObj = new Date(dateTo.split('/').reverse().join('-'));
-                        return specificDate >= dateFromObj && specificDate <= dateToObj;
-                    } catch (e) {
-                        console.error('Error parsing date for payment:', payment, e);
-                        return false;
-                    }
+                    const paymentDate = new Date(payment.CreatedDate.split('/').reverse().join('-'));
+                    const dateFromObj = new Date(dateFrom.split('/').reverse().join('-'));
+                    const dateToObj = new Date(dateTo.split('/').reverse().join('-'));
+                    return paymentDate >= dateFromObj && paymentDate <= dateToObj;
                 });
                 displayPayments(filteredPayments);
-                // Re-enable fetching after a successful fetch
-                isFetching = false;
             } else {
-                console.error('Unexpected response structure:', data);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Unexpected response structure.',
-                });
-                isFetching = false; // Re-enable fetching after handling error
+                throw new Error('Unexpected response structure');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error fetching payments data:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: `Failed to load payments data. ${error.message}`,
+                text: 'Failed to load payments data. Please try again later.',
             });
-            isFetching = false; // Re-enable fetching after handling error
         });
 }
 
 function displayPayments(paymentData) {
-    console.log('Payments data:', paymentData);
     const paymentsTableBody = document.querySelector('#paymentsTable tbody');
     paymentsTableBody.innerHTML = ''; // Clear existing rows
 
@@ -227,7 +183,7 @@ function displayPayments(paymentData) {
         totalAmountPaid += payment.Amount;
         const row = `
             <tr>
-                <td>${payment.SpecificDate}</td>
+                <td>${payment.CreatedDate}</td>
                 <td>${payment.Amount.toFixed(2)}</td>
                 <td>${payment.Reference}</td>
                 <td>${payment.Comments || ''}</td>
@@ -238,7 +194,6 @@ function displayPayments(paymentData) {
 
     document.querySelector('.paymentInfo').classList.remove('d-none');
     document.querySelector('.payDetails').classList.remove('d-none');
-    console.log('Total Amount Paid:', totalAmountPaid);
     document.getElementById('totalAmountPaid').textContent = totalAmountPaid.toFixed(2);
     document.querySelector('.totalPaid').classList.remove('d-none');
 
@@ -248,22 +203,19 @@ function displayPayments(paymentData) {
     document.querySelector('.outstandingAmount').classList.remove('d-none');
 }
 
-
 function submitPayment(event) {
     event.preventDefault();
-    let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-    let yyyy = today.getFullYear();
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    const specificDate = `${dd}/${mm}/${yyyy}`;
 
-    today = mm + '-' + dd + '-' + yyyy;
-
-    const specificDate = today
-    const amount = parseFloat(document.getElementById('paymentAmount').value); // Ensure Amount is a decimal
+    const amount = parseFloat(document.getElementById('paymentAmount').value);
     const reference = document.getElementById('paymentReference').value;
     const comments = document.getElementById('paymentComments').value;
-    const clientId = parseInt(document.getElementById('clientSelect').value); // Ensure clientId is an integer
-    const paymentTypeId = parseInt(document.getElementById('paymentType').value); // Ensure paymentTypeId is an integer
+    const clientId = parseInt(document.getElementById('clientSelect').value);
+    const paymentTypeId = parseInt(document.getElementById('paymentType').value);
 
     if (!amount || !reference) {
         Swal.fire({
@@ -283,8 +235,6 @@ function submitPayment(event) {
         paymentTypeId: paymentTypeId
     };
 
-    console.log('Sending payment payload:', payload);
-
     fetch('payments.aspx/submitPayment', {
         method: 'POST',
         headers: {
@@ -293,31 +243,26 @@ function submitPayment(event) {
         body: JSON.stringify(payload),
     })
         .then(response => {
-            console.log('Received response:', response);
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.statusText}`);
             }
             return response.json();
         })
         .then(data => {
-            console.log('Received data:', data);
             Swal.fire({
                 icon: 'success',
                 title: 'Payment Submitted',
                 text: 'The payment has been successfully submitted.',
             });
 
-            // Refresh the payments table and totals
             fetchPayments(clientId);
-            //now we clear all the values in the form
             document.getElementById('paymentAmount').value = '';
             document.getElementById('paymentReference').value = '';
             document.getElementById('paymentComments').value = '';
             document.getElementById('paymentType').value = '';
-
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error submitting payment:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -325,57 +270,3 @@ function submitPayment(event) {
             });
         });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Example usage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

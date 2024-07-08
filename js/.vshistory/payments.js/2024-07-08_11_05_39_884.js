@@ -126,7 +126,7 @@ function filterSales() {
             if (data && data.d) {
                 summarizeSales(data.d);
                 fetchPayments(payload.clientID, payload.dateFrom, payload.dateTo);
-                
+                window.locarion.href = 'payments.aspx'
             } else {
                 customSwal.fire({
                     icon: 'error',
@@ -135,8 +135,14 @@ function filterSales() {
                 });
             }
         })
-       
-       
+        .catch(error => {
+            console.error('Error:', error);
+            customSwal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to load sales data. Please try again later.',
+            });
+        });
 }
 
 
@@ -153,12 +159,7 @@ function summarizeSales(salesData) {
     document.querySelector('.totalOwed').classList.remove('d-none');
 }
 
-let isFetching = false;
-
 function fetchPayments(clientID, dateFrom, dateTo) {
-    if (isFetching) return; // Prevent multiple calls
-    isFetching = true;
-
     console.log("Fetching payments with parameters:", { clientID, dateFrom, dateTo });
 
     fetch('payments.aspx/displayClientPayments', {
@@ -193,8 +194,7 @@ function fetchPayments(clientID, dateFrom, dateTo) {
                     }
                 });
                 displayPayments(filteredPayments);
-                // Re-enable fetching after a successful fetch
-                isFetching = false;
+               
             } else {
                 console.error('Unexpected response structure:', data);
                 Swal.fire({
@@ -202,7 +202,6 @@ function fetchPayments(clientID, dateFrom, dateTo) {
                     title: 'Error',
                     text: 'Unexpected response structure.',
                 });
-                isFetching = false; // Re-enable fetching after handling error
             }
         })
         .catch(error => {
@@ -212,7 +211,6 @@ function fetchPayments(clientID, dateFrom, dateTo) {
                 title: 'Error',
                 text: `Failed to load payments data. ${error.message}`,
             });
-            isFetching = false; // Re-enable fetching after handling error
         });
 }
 
@@ -328,17 +326,6 @@ function submitPayment(event) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-// Example usage
 
 
 

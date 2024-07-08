@@ -126,7 +126,7 @@ function filterSales() {
             if (data && data.d) {
                 summarizeSales(data.d);
                 fetchPayments(payload.clientID, payload.dateFrom, payload.dateTo);
-                
+                window.locarion.href = 'payments.aspx'
             } else {
                 customSwal.fire({
                     icon: 'error',

@@ -59,26 +59,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('totalCostContainer').textContent = `Total Cost: ${totalCost.toFixed(2)}`;
     console.log('Total Cost:', totalCost.toFixed(2));
     console.log('Total Cash Cost:', totalCashCost.toFixed(2));
-
-    document.getElementById('printAllSalesBtn').addEventListener('click', async () => {
-        console.log('Print All Sales Button Clicked');
-        const token = document.cookie.split('; ').find(row => row.startsWith('Token='))?.split('=')[1];
-        if (!token) {
-            console.error('Token not found');
-            return;
-        }
-
-        const salesData = await fetchSalesData(token);
-        if (!salesData) return;
-
-        printAllSales(salesData);
-    });
-
-    document.getElementById('printSaleBtn').addEventListener('click', () => {
-        console.log('Print Sale Button Clicked');
-        const saleDetails = document.getElementById('saleDetailsTemplate');
-        printElement(saleDetails);
-    });
 });
 
 function populateSaleDetails(saleDetails, selectedSale) {
@@ -106,29 +86,23 @@ function populateSaleDetails(saleDetails, selectedSale) {
 }
 
 function printElement(element) {
-    const printWindow = window.open('');
+    const printWindow = window.open('', '_blank');
     const content = element.outerHTML;
 
+    // Add style within the body to ensure it gets applied
     const style = `<style>
-                     .print-button, #printSaleBtn, #printAllSalesBtn { display: none !important; }
+                     .print-button { display: none; }
                      @media print {
-                         .print-button, #printSaleBtn, #printAllSalesBtn { display: none !important; }
+                         .print-button { display: none; }
                      }
                    </style>`;
 
     printWindow.document.open();
-    printWindow.document.write(`
-        <html>
-            <head>
-                <title>Print</title>
-                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-                ${style}
-            </head>
-            <body>
-                ${content}
-            </body>
-        </html>
-    `);
+    printWindow.document.write('<html><head><title>Print</title><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></head>');
+    printWindow.document.write('<body>');
+    printWindow.document.write(style); // Add the style tag here
+    printWindow.document.write(content); // Then add the content
+    printWindow.document.write('</body></html>');
     printWindow.document.close();
     printWindow.onload = function () {
         printWindow.print();
@@ -136,61 +110,15 @@ function printElement(element) {
     };
 }
 
-function printAllSales(salesData) {
-    console.log('printAllSales function called'); // Debug log
-    if (!salesData || salesData.length === 0) {
-        console.error("No sales data available to print.");
-        return;
-    }
-    const salesContent = document.createElement('div');
-    salesData.forEach(sale => {
-        console.log("Processing sale:", sale); // Debugging log
-        if (!sale.SaleItems || sale.SaleItems.length === 0) {
-            console.warn("No items found for sale ID:", sale.SaleId);
-            return; // Skip to the next sale if there are no items
-        }
-        const saleElement = document.createElement('table');
-        saleElement.className = 'table table-striped';
-        let itemsHtml = `
-            <thead>
-                <tr>
-                    <th>Sale Date</th>
-                    <th>Client Name</th>
-                    <th>Item Name</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Total Cost</th>
-                </tr>
-            </thead>
-            <tbody>
-        `;
-        itemsHtml += sale.SaleItems.map(item => `
-            <tr>
-                <td>${sale.SaleDate}</td>
-                <td>${sale.ClientName}</td>
-                <td>${item.ItemName}</td>
-                <td>${item.Quantity}</td>
-                <td>${item.UnitPrice}</td>
-                <td>${item.TotalCost}</td>
-            </tr>
-        `).join('');
-        itemsHtml += `
-            <tr class="table-info">
-                <td colspan="5" class="text-end"><strong>Total for Sale</strong></td>
-                <td><strong>${sale.TotalCost}</strong></td>
-            </tr>
-            </tbody>
-        `;
-        saleElement.innerHTML = itemsHtml;
-        salesContent.appendChild(saleElement);
-    });
 
-    // Append the salesContent to the document body temporarily
-    document.body.appendChild(salesContent);
 
-    // Print the element
-    printElement(salesContent);
+document.getElementById('printAllSalesBtn').addEventListener('click', () => {
+    const salesTable = document.getElementById('salesTable');
+    printElement(salesTable);
+});
 
-    // Remove the element from the document after printing
-    document.body.removeChild(salesContent);
-}
+document.getElementById('printSaleBtn').addEventListener('click', () => {
+    console.log('Button Clicked');
+    const saleDetails = document.getElementById('saleDetailsTemplate');
+    printElement(saleDetails);
+});

@@ -126,7 +126,7 @@ function filterSales() {
             if (data && data.d) {
                 summarizeSales(data.d);
                 fetchPayments(payload.clientID, payload.dateFrom, payload.dateTo);
-                
+                window.locarion.href = 'payments.aspx'
             } else {
                 customSwal.fire({
                     icon: 'error',
@@ -135,8 +135,14 @@ function filterSales() {
                 });
             }
         })
-       
-       
+        .catch(error => {
+            console.error('Error:', error);
+            customSwal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to load sales data. Please try again later.',
+            });
+        });
 }
 
 
@@ -336,10 +342,43 @@ function submitPayment(event) {
 
 
 
+function displayPayments(paymentData) {
+    console.log('Payments data:', paymentData);
+    const paymentsTableBody = document.querySelector('#paymentsTable tbody');
+    paymentsTableBody.innerHTML = ''; // Clear existing rows
 
+    let totalAmountPaid = 0;
+
+    paymentData.forEach(payment => {
+        totalAmountPaid += payment.Amount;
+        const row = `
+            <tr>
+                <td>${payment.SpecificDate}</td>
+                <td>${payment.Amount.toFixed(2)}</td>
+                <td>${payment.Reference}</td>
+                <td>${payment.Comments || ''}</td>
+            </tr>
+        `;
+        paymentsTableBody.innerHTML += row;
+    });
+
+    document.querySelector('.paymentInfo').classList.remove('d-none');
+    document.querySelector('.payDetails').classList.remove('d-none');
+    console.log('Total Amount Paid:', totalAmountPaid);
+    document.getElementById('totalAmountPaid').textContent = totalAmountPaid.toFixed(2);
+    document.querySelector('.totalPaid').classList.remove('d-none');
+
+    const totalAmountOwed = parseFloat(document.getElementById('totalAmountOwed').textContent);
+    const outstandingAmount = totalAmountOwed - totalAmountPaid;
+    document.getElementById('outstandingAmount').textContent = outstandingAmount.toFixed(2);
+    document.querySelector('.outstandingAmount').classList.remove('d-none');
+}
 
 // Example usage
-
+const clientID = 'someClientID';
+const dateFrom = '01/01/2024';
+const dateTo = '31/12/2024';
+fetchPayments(clientID, dateFrom, dateTo);
 
 
 

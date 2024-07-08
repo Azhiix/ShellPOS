@@ -126,7 +126,7 @@ function filterSales() {
             if (data && data.d) {
                 summarizeSales(data.d);
                 fetchPayments(payload.clientID, payload.dateFrom, payload.dateTo);
-                
+                window.locarion.href = 'payments.aspx'
             } else {
                 customSwal.fire({
                     icon: 'error',
@@ -135,8 +135,14 @@ function filterSales() {
                 });
             }
         })
-       
-       
+        .catch(error => {
+            console.error('Error:', error);
+            customSwal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to load sales data. Please try again later.',
+            });
+        });
 }
 
 
@@ -153,12 +159,7 @@ function summarizeSales(salesData) {
     document.querySelector('.totalOwed').classList.remove('d-none');
 }
 
-let isFetching = false;
-
 function fetchPayments(clientID, dateFrom, dateTo) {
-    if (isFetching) return; // Prevent multiple calls
-    isFetching = true;
-
     console.log("Fetching payments with parameters:", { clientID, dateFrom, dateTo });
 
     fetch('payments.aspx/displayClientPayments', {
@@ -193,8 +194,9 @@ function fetchPayments(clientID, dateFrom, dateTo) {
                     }
                 });
                 displayPayments(filteredPayments);
-                // Re-enable fetching after a successful fetch
-                isFetching = false;
+                // Re-invoke fetchPayments function after a successful display
+                // You can set a timeout if necessary to avoid quick re-invocation
+                setTimeout(() => fetchPayments(clientID, dateFrom, dateTo), 1000);
             } else {
                 console.error('Unexpected response structure:', data);
                 Swal.fire({
@@ -202,7 +204,6 @@ function fetchPayments(clientID, dateFrom, dateTo) {
                     title: 'Error',
                     text: 'Unexpected response structure.',
                 });
-                isFetching = false; // Re-enable fetching after handling error
             }
         })
         .catch(error => {
@@ -212,7 +213,6 @@ function fetchPayments(clientID, dateFrom, dateTo) {
                 title: 'Error',
                 text: `Failed to load payments data. ${error.message}`,
             });
-            isFetching = false; // Re-enable fetching after handling error
         });
 }
 
@@ -338,17 +338,96 @@ function submitPayment(event) {
 
 
 
-// Example usage
 
 
+function fetchPayments(clientID, dateFrom, dateTo) {
+    console.log("Fetching payments with parameters:", { clientID, dateFrom, dateTo });
 
+    fetch('payments.aspx/displayClientPayments', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ clientID: clientID }),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Received data:', data);
+            if (data && data.d) {
+                const filteredPayments = data.d.filter(payment => {
+                    if (!payment.SpecificDate || !payment.SpecificDate.includes('/')) {
+                        console.warn('Invalid or missing SpecificDate for payment:', payment);
+                        return false;
+                    }
+                    try {
+                        const specificDate = new Date(payment.SpecificDate.split('/').reverse().join('-'));
+                        const dateFromObj = new Date(dateFrom.split('/').reverse().join('-'));
+                        const dateToObj = new Date(dateTo.split('/').reverse().join('-'));
+                        return specificDate >= dateFromObj && specificDate <= dateToObj;
+                    } catch (e) {
+                        console.error('Error parsing date for payment:', payment, e);
+                        return false;
+                    }
+                });
+                displayPayments(filteredPayments);
+                // Re-invoke fetchPayments function after a successful display
+                // You can set a timeout if necessary to avoid quick re-invocation
+                setTimeout(() => fetchPayments(clientID, dateFrom, dateTo), 1000);
+            } else {
+                console.error('Unexpected response structure:', data);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Unexpected response structure.',
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: `Failed to load payments data. ${error.message}`,
+            });
+        });
+}
 
+function displayPayments(paymentData) {
+    console.log('Payments data:', paymentData);
+    const paymentsTableBody = document.querySelector('#paymentsTable tbody');
+    paymentsTableBody.innerHTML = ''; // Clear existing rows
 
+    let totalAmountPaid = 0;
 
+    paymentData.forEach(payment => {
+        totalAmountPaid += payment.Amount;
+        const row = `
+            <tr>
+                <td>${payment.SpecificDate}</td>
+                <td>${payment.Amount.toFixed(2)}</td>
+                <td>${payment.Reference}</td>
+                <td>${payment.Comments || ''}</td>
+            </tr>
+        `;
+        paymentsTableBody.innerHTML += row;
+    });
 
+    document.querySelector('.paymentInfo').classList.remove('d-none');
+    document.querySelector('.payDetails').classList.remove('d-none');
+    console.log('Total Amount Paid:', totalAmountPaid);
+    document.getElementById('totalAmountPaid').textContent = totalAmountPaid.toFixed(2);
+    document.querySelector('.totalPaid').classList.remove('d-none');
 
-
-
+    const totalAmountOwed = parseFloat(document.getElementById('totalAmountOwed').textContent);
+    const outstandingAmount = totalAmountOwed - totalAmountPaid;
+    document.getElementById('outstandingAmount').textContent = outstandingAmount.toFixed(2);
+    document.querySelector('.outstandingAmount').classList.remove('d-none');
+}
 
 
 

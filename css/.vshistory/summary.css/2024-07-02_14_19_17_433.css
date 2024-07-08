@@ -84,8 +84,4 @@ h1.text-center.text-md {
     footer{
         display: none;
     }
-
-    #printSaleBtn{
-        display: none;
-    }
 }

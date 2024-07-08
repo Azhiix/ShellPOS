@@ -61,18 +61,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log('Total Cash Cost:', totalCashCost.toFixed(2));
 
     document.getElementById('printAllSalesBtn').addEventListener('click', async () => {
-        console.log('Print All Sales Button Clicked');
+        console.log('Print All Sales button clicked');
         const token = document.cookie.split('; ').find(row => row.startsWith('Token='))?.split('=')[1];
         if (!token) {
             console.error('Token not found');
             return;
         }
+        console.log('Token found:', token);
 
         const salesData = await fetchSalesData(token);
+        console.log('Sales data received:', salesData);
         if (!salesData) return;
 
         printAllSales(salesData);
     });
+
+    function printAllSales(salesData) {
+        console.log('printAllSales function called with data:', salesData);
+        // ... rest of the function
+    }
 
     document.getElementById('printSaleBtn').addEventListener('click', () => {
         console.log('Print Sale Button Clicked');
@@ -142,13 +149,16 @@ function printAllSales(salesData) {
         console.error("No sales data available to print.");
         return;
     }
+
     const salesContent = document.createElement('div');
+
     salesData.forEach(sale => {
         console.log("Processing sale:", sale); // Debugging log
         if (!sale.SaleItems || sale.SaleItems.length === 0) {
             console.warn("No items found for sale ID:", sale.SaleId);
             return; // Skip to the next sale if there are no items
         }
+
         const saleElement = document.createElement('table');
         saleElement.className = 'table table-striped';
         let itemsHtml = `
@@ -164,6 +174,7 @@ function printAllSales(salesData) {
             </thead>
             <tbody>
         `;
+
         itemsHtml += sale.SaleItems.map(item => `
             <tr>
                 <td>${sale.SaleDate}</td>
@@ -174,6 +185,7 @@ function printAllSales(salesData) {
                 <td>${item.TotalCost}</td>
             </tr>
         `).join('');
+
         itemsHtml += `
             <tr class="table-info">
                 <td colspan="5" class="text-end"><strong>Total for Sale</strong></td>
@@ -185,12 +197,5 @@ function printAllSales(salesData) {
         salesContent.appendChild(saleElement);
     });
 
-    // Append the salesContent to the document body temporarily
-    document.body.appendChild(salesContent);
-
-    // Print the element
-    printElement(salesContent);
-
-    // Remove the element from the document after printing
-    document.body.removeChild(salesContent);
+    printElement(salesContent); // This will send the whole content for printing
 }

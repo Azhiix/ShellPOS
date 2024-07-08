@@ -9,7 +9,7 @@
     <div class="container my-5">
         <h1 class="text-center mb-4">All Your Sales</h1>
         <div class="d-flex justify-content-center mb-3">
-            <button type="button" id="printAllSalesBtn" class="btn btn-primary btnSale">Print All Sales</button>
+            <button id="printAllSalesBtn" class="btn btn-primary">Print All Sales</button>
         </div>
         <div class="table-responsive">
             <table id="salesTable" class="table table-striped table-bordered">
@@ -32,7 +32,7 @@
             <p>Client: <span id="clientValue">Sezwan Co Ltd</span></p>
             <p>Driver: <span id="driverNamePrint">Driver 2</span></p>
             <p>Car Registration: <span id="carRegNoPrint">XYZ789</span></p>
-            <button type="button" id="printSaleBtn" class="btn btn-secondary my-3">Print This Sale</button>
+            <button id="printSaleBtn" class="btn btn-secondary my-3">Print This Sale</button>
 
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">

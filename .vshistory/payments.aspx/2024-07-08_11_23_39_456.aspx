@@ -101,7 +101,7 @@
     <div class="card p-4 mt-5 shadow-sm" style="border-radius: 10px; border: 1px solid #ddd; background-color: #f9f9f9;">
         <h5 class="card-title mb-4">Pay Amount</h5>
         <form id="paymentForm">
-            <div class="form-check mb-3 d-none">
+            <div class="form-check mb-3 hidden">
                 <input class="form-check-input" type="checkbox" checked id="useSearchPeriod">
                 <label class="form-check-label" for="useSearchPeriod">
                     Use same period as above

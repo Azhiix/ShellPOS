@@ -126,7 +126,7 @@ function filterSales() {
             if (data && data.d) {
                 summarizeSales(data.d);
                 fetchPayments(payload.clientID, payload.dateFrom, payload.dateTo);
-                
+                window.locarion.href = 'payments.aspx'
             } else {
                 customSwal.fire({
                     icon: 'error',
@@ -135,8 +135,14 @@ function filterSales() {
                 });
             }
         })
-       
-       
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to load sales data. Please try again later.',
+            });
+        });
 }
 
 
